@@ -11,6 +11,8 @@ class TeleportDataTest{
             Point(150, 0) to Point(0 , 50),
             Point(199, 1) to Point(0, 101),
             Point(150, 49) to Point(149, 50),
+            Point(0, 50) to Point(0, 50),
+            Point(101, 0) to Point(48, 50),
         )
 
 
