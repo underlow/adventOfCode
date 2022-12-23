@@ -1,2 +1,2 @@
 # adventOfCode
-https://adventofcode.com/2022/stats
+https://adventofcode.com
