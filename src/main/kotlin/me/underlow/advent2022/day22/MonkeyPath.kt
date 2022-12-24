@@ -30,6 +30,8 @@ class Direction(start: Int = 1) {
 
     val code
         get() = (directions.size + currentDirection - 1) % directions.size
+
+    fun clone() = Direction(currentDirection)
 }
 
 class Monkey(private val field: MonkeyField, val isCube: Boolean = false) {
@@ -48,11 +50,7 @@ class Monkey(private val field: MonkeyField, val isCube: Boolean = false) {
     private fun move(move: Move) {
         repeat(move.steps) {
             position = if (isCube) {
-                val next = nextPossibleStepOnCube(position, direction)
-                if (next != null) {
-                    next.second.forEach { applyOp(it) }
-                    next.first
-                } else position
+                nextPossibleStepOnCube(position, direction) ?: position
             } else
                 nextPossibleStep(position, direction.current) ?: position
         }
@@ -70,7 +68,7 @@ class Monkey(private val field: MonkeyField, val isCube: Boolean = false) {
 
 
     // find next point (either requested step or wrap around tha map) or null if move is impossble
-    fun nextPossibleStep(point: Point, direction: Point): Point? {
+    private fun nextPossibleStep(point: Point, direction: Point): Point? {
 
         var nextPoint = field.step(point, direction)
 
@@ -88,8 +86,7 @@ class Monkey(private val field: MonkeyField, val isCube: Boolean = false) {
     }
 
     // part 2
-    fun nextPossibleStepOnCube(point: Point, direction: Direction): Pair<Point, List<MonkeyOp>>? {
-
+    private fun nextPossibleStepOnCube(point: Point, direction: Direction): Point? {
 
         var nextPoint = field.step(point, direction.current)
 
@@ -100,7 +97,21 @@ class Monkey(private val field: MonkeyField, val isCube: Boolean = false) {
             require(field.get(retPoint) != FieldCell.OuterWall) {
                 "We got outside of the field"
             }
-            return retPoint to teleportData.rotation
+
+            val newDirection = this.direction.clone()
+
+            while (field[nextPoint] == FieldCell.OuterWall)
+                nextPoint = field.step(nextPoint, newDirection.current)
+
+            require(field[nextPoint] != FieldCell.OuterWall) {
+                "We got outside of the field"
+            }
+
+            if (field[nextPoint] == FieldCell.Wall)
+                return null // cannot move
+            // can move
+            teleportData.rotation.forEach { r -> applyOp(r) }
+            return nextPoint
         }
 
         require(field.get(nextPoint) != FieldCell.OuterWall) {
@@ -110,7 +121,7 @@ class Monkey(private val field: MonkeyField, val isCube: Boolean = false) {
         if (field.get(nextPoint) == FieldCell.Wall)
             return null // cannot move
         // can move
-        return nextPoint to emptyList()
+        return nextPoint
     }
 
     data class Position(val x: Int, val y: Int, val facingCode: Int)
