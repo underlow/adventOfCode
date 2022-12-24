@@ -4,26 +4,32 @@ import me.underlow.advent2022.Point
 
 data class TeleportData(
     val id: Int,
-    val xRange: IntRange,
-    val yRange: IntRange,
     val op: (Point) -> Point,
     val rotation: List<MonkeyOp> /*only rotation*/,
-    val checkContaind: (Point) -> Boolean = { false }
+    val checkPoint: (Point) -> Boolean = { false }
 )
 
 
 object Teleport {
 
     fun findTeleport(nextPoint: Point): TeleportData =
-        teleportForPart2.find { nextPoint.x in it.xRange && nextPoint.y in it.yRange }
+        teleportForPart2.find { it.checkPoint(nextPoint) }
             ?: error("Bad teleport")
+
+    fun call(vararg func: (Point) -> Point): (Point) -> Point = {
+        var p = it
+        for (f in func) {
+            p = f(p)
+        }
+        p
+    }
 
     // coord - coordinates in plane filled with square tiles.
     // cube at (50, 50) should have coords (1,1)
     data class Cube(val id: String, val coord: Point, val size: Int = cubeSize) {
         // rotate clockwise mapping point to a new location
         fun rotate(): (Point) -> Point {
-            return { Point(coord.x * size + it.y - coord.y * size, coord.y * size + it.x - coord.x * size) }
+            return { Point(coord.x * size + it.y - coord.y * size, (coord.y + 1) * size - it.x + coord.x * size) }
         }
 
         // moves to x sizes of cube left or right
@@ -67,25 +73,21 @@ object Teleport {
         // top side
         TeleportData(
             1,
-            3 * cubeSize until 4 * cubeSize,
-            0.toRange(),
-            { Point(0, it.x - 2 * cubeSize) },
-            listOf(CounterClockwise)
-
+            call(cTop.rotate(), cTop.rotate(), cTop.rotate(), cTop.shiftY(1), cTop.shiftX(-4)),
+            listOf(CounterClockwise),
+            cTop::left
         ),
         TeleportData(
             2,
-            (4 * cubeSize - 1).toRange(),
-            0 until cubeSize,
-            { Point(0, it.y + 2 * cubeSize) },
-            emptyList()
+            call(cTop.shiftY(2), cTop.shiftX(-4)),
+            emptyList(),
+            cTop::left
         ),
         TeleportData(
             3,
-            3 * cubeSize until 4 * cubeSize,
-            (cubeSize - 1).toRange(),
-            { Point(3 * cubeSize - 1, it.x - 2 * cubeSize) },
-            listOf(Clockwise)
+            call(cTop.rotate(), cTop.rotate(), cTop.rotate(), cTop.shiftY(1)),
+            listOf(Clockwise),
+            cTop::left
         ),
         // rear side
         TeleportData(
