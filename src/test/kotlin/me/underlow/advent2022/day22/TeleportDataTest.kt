@@ -2,9 +2,11 @@ package me.underlow.advent2022.day22
 
 import me.underlow.advent2022.Point
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class TeleportDataTest{
+    @Disabled
     @Test
     fun testTeleport(){
         val points = listOf(
