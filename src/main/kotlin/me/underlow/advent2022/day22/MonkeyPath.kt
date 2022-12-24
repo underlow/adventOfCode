@@ -8,13 +8,15 @@ object CounterClockwise : MonkeyOp
 data class Move(val steps: Int) : MonkeyOp
 
 class Direction(start: Int = 1) {
+    enum class Name { Up, Right, Down, Left }
+
     private val directions = listOf(
         Point(-1, 0),  // go up
         Point(0, +1),  // go right
         Point(+1, 0),  // go down
         Point(0, -1),  // go left
     )
-
+    private val names = listOf("up", "right", "down", "left")
     private var currentDirection = 1
 
     fun rotateCounterClockwise() {
@@ -25,6 +27,9 @@ class Direction(start: Int = 1) {
         currentDirection = (currentDirection + 1) % (directions.size)
     }
 
+    val name
+        get() = Name.values()[currentDirection]
+
     val current
         get() = directions[currentDirection]
 
@@ -32,6 +37,8 @@ class Direction(start: Int = 1) {
         get() = (directions.size + currentDirection - 1) % directions.size
 
     fun clone() = Direction(currentDirection)
+
+    override fun toString(): String = "Direction[${names[currentDirection]}]"
 }
 
 class Monkey(private val field: MonkeyField, val isCube: Boolean = false) {
@@ -90,15 +97,28 @@ class Monkey(private val field: MonkeyField, val isCube: Boolean = false) {
 
         var nextPoint = field.step(point, direction.current)
 
+
+
         if (field.get(nextPoint) == FieldCell.OuterWall) {
-            val teleportData = Teleport.findTeleport(point)
+            if (point.x in setOf(100, 199, 149, 49) && point.y in setOf(50, 0, 99)) {
+                println("ops")
+            }
+            val teleportData = Teleport.findTeleport(point, direction.name)
             val retPoint = teleportData.op(point)
 
             require(field.get(retPoint) == FieldCell.OuterWall) {
                 "We have not got outside of the field"
             }
 
-            val newDirection = this.direction.clone()
+            val newDirection = this.direction.clone() //todo: apply ops
+
+            teleportData.rotation.forEach {
+                when (it) {
+                    Clockwise -> newDirection.rotateClockwise()
+                    CounterClockwise -> newDirection.rotateCounterClockwise()
+                    else -> error("Not a rotation")
+                }
+            }
 
             while (field[nextPoint] == FieldCell.OuterWall)
                 nextPoint = field.step(nextPoint, newDirection.current)
@@ -132,6 +152,10 @@ class Monkey(private val field: MonkeyField, val isCube: Boolean = false) {
             position.y,
             direction.code
         )
+    }
+
+    override fun toString(): String {
+        return "Monkey($position, $direction)"
     }
 }
 
