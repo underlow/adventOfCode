@@ -72,7 +72,7 @@ object Teleport {
 
         fun bottom(p: Point): Boolean =
             p.x == (coord.x + 1) * size - 1 &&
-                    p.y in ((coord.y + 1) * size until (coord.y + 1) * size)
+                    p.y in (coord.y * size until (coord.y + 1) * size)
 
     }
 

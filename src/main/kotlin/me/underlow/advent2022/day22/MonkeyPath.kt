@@ -94,8 +94,8 @@ class Monkey(private val field: MonkeyField, val isCube: Boolean = false) {
             val teleportData = Teleport.findTeleport(point)
             val retPoint = teleportData.op(point)
 
-            require(field.get(retPoint) != FieldCell.OuterWall) {
-                "We got outside of the field"
+            require(field.get(retPoint) == FieldCell.OuterWall) {
+                "We have not got outside of the field"
             }
 
             val newDirection = this.direction.clone()
