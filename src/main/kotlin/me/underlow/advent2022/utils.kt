@@ -24,6 +24,12 @@ data class Point(val x: Int, val y: Int) {
 //    fun left() = Point(x , y - 1)
 //    fun right() = Point(x , y + 1)
 }
+// North-East-South-West points for x-down - y - right axis
+// |------> y
+// |
+// v
+// x
+val nesw = listOf(Point(-1, 0), Point(0, 1), Point(1, 0), Point(0, -1))
 
 fun <T> checkResult(actual: T, expected: T) {
     check(actual == expected) { "$actual is incorrect answer" }

@@ -7,13 +7,14 @@ import me.underlow.advent2022.getResourceAsLines
 
 object BlizzardBasin {
 
-    fun part1(list: List<String>): Long {
-        val directions = parseInput(list)
-        return 0
+    fun part1(list: List<String>): Int {
+        val lines = parseInput(list)
+        val field = Field(lines)
+        return field.findPath()
     }
 
-    private fun parseInput(list: List<String>): Any {
-        TODO("Not yet implemented")
+    private fun parseInput(list: List<String>): Array<Array<Char>> {
+        return list.map { it.toCharArray().toTypedArray() }.toTypedArray()
     }
 
     fun part2(list: List<String>): Long {
@@ -24,11 +25,11 @@ object BlizzardBasin {
 
 
 fun main() {
-    val input = getResourceAsLines("/")
+    val input = getResourceAsLines("/24 - BlizzardBasin.txt")
     val res1 = BlizzardBasin.part1(input)
     val res2 = BlizzardBasin.part2(input)
 
-    checkResult(res1, 0)
+    checkResult(res1, 274)
     checkResult(res2, 0)
 
     println(res1)
