@@ -30,7 +30,11 @@ class MonkeyField(input: Array<Array<Char>>) {
     }
 
     operator fun get(x: Int, y: Int) = map[x][y]
-    operator fun get(p: Point) = get(p.x, p.y)
+    operator fun get(p: Point): FieldCell {
+        if (p.x !in 0 until sizeX || p.y !in 0 until sizeY)
+            return FieldCell.OuterWall
+        return get(p.x, p.y)
+    }
     operator fun set(x: Int, y: Int, c: Char) {
         map[x][y] = FieldCell.fromString(c)
     }

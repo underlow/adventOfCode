@@ -1,19 +1,21 @@
 package me.underlow.advent2022.day22
 
 import me.underlow.advent2022.Point
+import javax.print.attribute.standard.DocumentName
 
 data class TeleportData(
     val id: Int,
     val op: (Point) -> Point,
     val rotation: List<MonkeyOp> /*only rotation*/,
-    val checkPoint: (Point) -> Boolean
+    val checkPoint: (Point) -> Boolean,
+    val direction: Direction.Name
 )
 
 
 object Teleport {
 
-    fun findTeleport(nextPoint: Point): TeleportData =
-        teleportForPart2.find { it.checkPoint(nextPoint) }
+    fun findTeleport(nextPoint: Point, name: Direction.Name): TeleportData =
+        teleportForPart2.find { it.checkPoint(nextPoint) && it.direction == name }
             ?: error("Bad teleport for $nextPoint")
 
     fun call(vararg func: (Point) -> Point): (Point) -> Point = {
@@ -93,72 +95,82 @@ object Teleport {
             1,
             call(cTop::rotateCounterCW, cTop.shiftY(1), cTop.shiftX(-4)),
             listOf(CounterClockwise),
-            cTop::left
+            cTop::left,
+            Direction.Name.Left
         ),
         TeleportData(
             2,
             call(cTop.shiftY(2), cTop.shiftX(-4)),
             emptyList(),
-            cTop::bottom
+            cTop::bottom,
+            Direction.Name.Down
         ),
         TeleportData(
             3,
             call(cTop::rotateCounterCW, cTop.shiftY(1)),
             listOf(Clockwise),
-            cTop::right
+            cTop::right,
+            Direction.Name.Right
         ),
         // rear side
         TeleportData(
             4,
             call(cRear::rotate180, cRear.shiftX(-2)),
             listOf(CounterClockwise, CounterClockwise),
-            cRear::left
-
+            cRear::left,
+            Direction.Name.Left
         ),
         TeleportData(
             5,
             call(cRear::rotateCW, cRear.shiftX(-1)),
             listOf(Clockwise),
-            cRear::top
+            cRear::top,
+            Direction.Name.Up
         ),
         // bottom side
         TeleportData(
             6,
             call(cBottom::rotateCounterCW, cBottom.shiftY(-1)),
             listOf(CounterClockwise),
-            cBottom::left
+            cBottom::left,
+            Direction.Name.Left
         ),
         TeleportData(
             7,
             call(cBottom::rotateCounterCW, cBottom.shiftY(+1)),
             listOf(CounterClockwise),
-            cBottom::right
+            cBottom::right,
+            Direction.Name.Right
         ),
         // front side
         TeleportData(
             8,
             call(cFront::rotateCW, cFront.shiftX(1)),
             listOf(CounterClockwise, CounterClockwise),
-            cFront::bottom
+            cFront::bottom,
+            Direction.Name.Down
         ),
         TeleportData(
             9,
-            call(cFront::rotate180, cFront.shiftX(-2), cFront.shiftY(1)),
+            call(cFront::rotate180, cFront.shiftX(-2), cFront.shiftY(2)),
             listOf(Clockwise),
-            cFront::right
+            cFront::right,
+            Direction.Name.Right
         ),
         // back side
         TeleportData(
             10,
             call(cBack::rotate180, cBack.shiftX(2), cBack.shiftY(-2)),
             listOf(CounterClockwise, CounterClockwise),
-            cBack::left
+            cBack::left,
+            Direction.Name.Left
         ),
         TeleportData(
             11,
             call(cBack::rotateCW, cBack.shiftX(3), cBack.shiftY(-2)),
             listOf(Clockwise),
-            cBack::top
+            cBack::top,
+            Direction.Name.Up
         ),
 
         // left side
@@ -166,19 +178,22 @@ object Teleport {
             12,
             call(cLeft.shiftX(4), cLeft.shiftY(-2)),
             emptyList(),
-            cLeft::top
+            cLeft::top,
+            Direction.Name.Up
         ),
         TeleportData(
             13,
-            call(cLeft::rotate180, cLeft.shiftX(2), cLeft.shiftY(-1)),
+            call(cLeft::rotate180, cLeft.shiftX(2)),
             listOf(Clockwise, Clockwise),
-            cLeft::right
+            cLeft::right,
+            Direction.Name.Right
         ),
         TeleportData(
             14,
             call(cLeft::rotateCW, cLeft.shiftX(1)),
             listOf(CounterClockwise),
-            cLeft::bottom
+            cLeft::bottom,
+            Direction.Name.Down
         ),
     )
 }

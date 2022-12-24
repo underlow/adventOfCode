@@ -42,6 +42,7 @@ fun main() {
 
     checkResult(res1, 65368)
 //    checkResult(res2, 0)
+    check(res2 != 81377)
 
     println(res1)
     println(res2)
