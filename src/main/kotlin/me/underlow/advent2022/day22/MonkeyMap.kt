@@ -38,13 +38,13 @@ object MonkeyMap {
 fun main() {
     val input = getResourceAsLines("/22 - MonkeyMap.txt")
     val res1 = MonkeyMap.part1(input)
-    val res2 = MonkeyMap.part2(input)
+//    val res2 = MonkeyMap.part2(input)
 
     checkResult(res1, 65368)
 //    checkResult(res2, 0)
 
     println(res1)
-    println(res2)
+//    println(res2)
 }
 
 
