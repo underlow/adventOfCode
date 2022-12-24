@@ -13,7 +13,7 @@ class BlizzardBasinTest {
     @Test
     fun testPart2() {
         val result = BlizzardBasin.part2(input.split("\n"))
-        assertEquals(0, result)
+        assertEquals(54, result)
     }
 }
 

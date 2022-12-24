@@ -17,7 +17,7 @@ object Wall : CellState {
 }
 
 
-class Field(input: Array<Array<Char>>) {
+class BlizzardField(input: Array<Array<Char>>) {
     private val field: Array<Array<CellState>>
     private val sizeX: Int
     private val sizeY: Int
@@ -57,15 +57,15 @@ class Field(input: Array<Array<Char>>) {
         val point: Point/*, val steps: MutableList<Pair<Point,Point>> = mutableListOf()*/
     )
 
-    fun findPath(): Int {
-        val states = mutableListOf<RoundState>().apply { add(RoundState(0, start)) }
-        var currentMinRounds = sizeX * sizeY
+    private fun findOnePath(startPoint: Point, finishPoint: Point, round: Int): Int {
+        val states = mutableListOf<RoundState>().apply { add(RoundState(round, startPoint)) }
+        var currentMinRounds = sizeX * sizeY + round
         while (states.isNotEmpty()) {
             val s = states.removeAt(states.size - 1)
             if (s.round > currentMinRounds)
                 continue
 
-            if (s.point == finish) {
+            if (s.point == finishPoint) {
                 if (currentMinRounds > s.round) {
                     println("Current path ${s.round} - ${s.point}")
                 }
@@ -78,6 +78,28 @@ class Field(input: Array<Array<Char>>) {
         }
         return currentMinRounds - 1
     }
+
+    fun findPath(): Int {
+        return findOnePath(start, finish, 0)
+    }
+
+
+    fun findPath2part(): Int {
+        val one = findOnePath(start, finish, 0)
+        field.cleanVisitedAt()
+        val two = findOnePath(finish, start, one + 1)
+        field.cleanVisitedAt()
+        return findOnePath(start, finish, two + 1)
+    }
+
+    private fun Array<Array<CellState>>.cleanVisitedAt() {
+        forEach {
+            it.forEach {
+                if (it is Blizzards) it.visitedAt.clear()
+            }
+        }
+    }
+
 
     private fun nextStep(state: RoundState): List<RoundState> {
         if ((field[state.point.x][state.point.y] as Blizzards).visitedAt.contains(state.round))
@@ -132,6 +154,7 @@ class Field(input: Array<Array<Char>>) {
 //        println("Down [$x,$y] ${(0 until sizeX).map { field[it][y] }}")
     }
 
+    @Suppress("unused")
     fun dump(round: Int) {
         for (i in field[0].indices) {
             for (j in field.indices) {

@@ -9,7 +9,7 @@ object BlizzardBasin {
 
     fun part1(list: List<String>): Int {
         val lines = parseInput(list)
-        val field = Field(lines)
+        val field = BlizzardField(lines)
         return field.findPath()
     }
 
@@ -17,9 +17,10 @@ object BlizzardBasin {
         return list.map { it.toCharArray().toTypedArray() }.toTypedArray()
     }
 
-    fun part2(list: List<String>): Long {
-        val directions = parseInput(list)
-        return 0
+    fun part2(list: List<String>): Int {
+        val lines = parseInput(list)
+        val field = BlizzardField(lines)
+        return field.findPath2part()
     }
 }
 
@@ -30,7 +31,7 @@ fun main() {
     val res2 = BlizzardBasin.part2(input)
 
     checkResult(res1, 274)
-    checkResult(res2, 0)
+    checkResult(res2, 839)
 
     println(res1)
     println(res2)
