@@ -75,10 +75,8 @@ class MonkeyField(input: Array<Array<Char>>) {
 
         if (get(nextPoint) == FieldCell.OuterWall) {
             val teleportData = findTeleport(point)
-            if (teleportData.id == 13) {
-                println()
-            }
             val retPoint = teleportData.op(point)
+
             require(get(retPoint) != FieldCell.OuterWall) {
                 "We got outside of the field"
             }
