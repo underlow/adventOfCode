@@ -46,52 +46,9 @@ class MonkeyField(input: Array<Array<Char>>) {
         error("Cannot find start")
     }
 
-    // find next point (either requested step or wrap around tha map) or null if move is impossble
-    fun nextPossibleStep(point: Point, direction: Point): Point? {
-        fun step(p: Point, d: Point) =
-            Point((sizeX + p.x + d.x) % sizeX, (sizeY + p.y + d.y) % sizeY)
+    fun step(p: Point, d: Point) =
+        Point((sizeX + p.x + d.x) % sizeX, (sizeY + p.y + d.y) % sizeY)
 
-        var nextPoint = step(point, direction)
-
-        while (get(nextPoint) == FieldCell.OuterWall)
-            nextPoint = step(nextPoint, direction)
-
-        require(get(nextPoint) != FieldCell.OuterWall) {
-            "We got outside of the field"
-        }
-
-        if (get(nextPoint) == FieldCell.Wall)
-            return null // cannot move
-        // can move
-        return nextPoint
-    }
-
-    // part 2
-    fun nextPossibleStepOnCube(point: Point, direction: Point): Pair<Point, List<MonkeyOp>>? {
-        fun step(p: Point, d: Point) =
-            Point((sizeX + p.x + d.x) % sizeX, (sizeY + p.y + d.y) % sizeY)
-
-        var nextPoint = step(point, direction)
-
-        if (get(nextPoint) == FieldCell.OuterWall) {
-            val teleportData = findTeleport(point)
-            val retPoint = teleportData.op(point)
-
-            require(get(retPoint) != FieldCell.OuterWall) {
-                "We got outside of the field"
-            }
-            return retPoint to teleportData.rotation
-        }
-
-        require(get(nextPoint) != FieldCell.OuterWall) {
-            "We got outside of the field"
-        }
-
-        if (get(nextPoint) == FieldCell.Wall)
-            return null // cannot move
-        // can move
-        return nextPoint to emptyList()
-    }
 }
 
 

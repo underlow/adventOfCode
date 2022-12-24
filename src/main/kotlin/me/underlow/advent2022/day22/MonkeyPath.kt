@@ -7,7 +7,7 @@ object Clockwise : MonkeyOp
 object CounterClockwise : MonkeyOp
 data class Move(val steps: Int) : MonkeyOp
 
-class Direction(start: Int = 1){
+class Direction(start: Int = 1) {
     private val directions = listOf(
         Point(-1, 0),  // go up
         Point(0, +1),  // go right
@@ -24,14 +24,15 @@ class Direction(start: Int = 1){
     fun rotateClockwise() {
         currentDirection = (currentDirection + 1) % (directions.size)
     }
+
     val current
         get() = directions[currentDirection]
 
     val code
-        get () = (directions.size + currentDirection - 1) % directions.size
+        get() = (directions.size + currentDirection - 1) % directions.size
 }
 
-class Monkey(val field: MonkeyField, val isCube: Boolean = false) {
+class Monkey(private val field: MonkeyField, val isCube: Boolean = false) {
     private var position = field.findStart()
     private val direction = Direction()
 
@@ -47,13 +48,13 @@ class Monkey(val field: MonkeyField, val isCube: Boolean = false) {
     private fun move(move: Move) {
         repeat(move.steps) {
             position = if (isCube) {
-                val next = field.nextPossibleStepOnCube(position, direction.current)
-                if (next != null){
+                val next = nextPossibleStepOnCube(position, direction)
+                if (next != null) {
                     next.second.forEach { applyOp(it) }
                     next.first
                 } else position
             } else
-                field.nextPossibleStep(position, direction.current) ?: position
+                nextPossibleStep(position, direction.current) ?: position
         }
     }
 
@@ -65,6 +66,51 @@ class Monkey(val field: MonkeyField, val isCube: Boolean = false) {
             step = path.nextMove()
         }
         return finalPosition()
+    }
+
+
+    // find next point (either requested step or wrap around tha map) or null if move is impossble
+    fun nextPossibleStep(point: Point, direction: Point): Point? {
+
+        var nextPoint = field.step(point, direction)
+
+        while (field.get(nextPoint) == FieldCell.OuterWall)
+            nextPoint = field.step(nextPoint, direction)
+
+        require(field.get(nextPoint) != FieldCell.OuterWall) {
+            "We got outside of the field"
+        }
+
+        if (field.get(nextPoint) == FieldCell.Wall)
+            return null // cannot move
+        // can move
+        return nextPoint
+    }
+
+    // part 2
+    fun nextPossibleStepOnCube(point: Point, direction: Direction): Pair<Point, List<MonkeyOp>>? {
+
+
+        var nextPoint = field.step(point, direction.current)
+
+        if (field.get(nextPoint) == FieldCell.OuterWall) {
+            val teleportData = Teleport.findTeleport(point)
+            val retPoint = teleportData.op(point)
+
+            require(field.get(retPoint) != FieldCell.OuterWall) {
+                "We got outside of the field"
+            }
+            return retPoint to teleportData.rotation
+        }
+
+        require(field.get(nextPoint) != FieldCell.OuterWall) {
+            "We got outside of the field"
+        }
+
+        if (field.get(nextPoint) == FieldCell.Wall)
+            return null // cannot move
+        // can move
+        return nextPoint to emptyList()
     }
 
     data class Position(val x: Int, val y: Int, val facingCode: Int)
