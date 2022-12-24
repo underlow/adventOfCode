@@ -7,7 +7,7 @@ object Clockwise : MonkeyOp
 object CounterClockwise : MonkeyOp
 data class Move(val steps: Int) : MonkeyOp
 
-class Monkey(val field: MonkeyField, val isCube: Boolean = false) {
+class Direction(start: Int = 1){
     private val directions = listOf(
         Point(-1, 0),  // go up
         Point(0, +1),  // go right
@@ -16,37 +16,45 @@ class Monkey(val field: MonkeyField, val isCube: Boolean = false) {
     )
 
     private var currentDirection = 1
-    private var currentPosition = field.findStart()
+
+    fun rotateCounterClockwise() {
+        currentDirection = (directions.size + currentDirection - 1) % (directions.size)
+    }
+
+    fun rotateClockwise() {
+        currentDirection = (currentDirection + 1) % (directions.size)
+    }
+    val current
+        get() = directions[currentDirection]
+
+    val code
+        get () = (directions.size + currentDirection - 1) % directions.size
+}
+
+class Monkey(val field: MonkeyField, val isCube: Boolean = false) {
+    private var position = field.findStart()
+    private val direction = Direction()
 
     private fun applyOp(op: MonkeyOp) {
         when (op) {
-            Clockwise -> currentDirection = rotateClockwise()
-            CounterClockwise -> currentDirection = rotateCounterClockwise()
+            Clockwise -> direction.rotateClockwise()
+            CounterClockwise -> direction.rotateCounterClockwise()
             is Move -> move(op)
         }
     }
 
-    private fun rotateCounterClockwise(): Int {
-//        println("Rotate counterclockwise from $currentDirection to ${(directions.size + currentDirection - 1) % (directions.size )}")
-        return (directions.size + currentDirection - 1) % (directions.size)
-    }
-
-    private fun rotateClockwise(): Int {
-//        println("Rotate clockwise ${(currentDirection + 1) % (directions.size)}")
-        return (currentDirection + 1) % (directions.size)
-    }
 
     private fun move(move: Move) {
 //        print("Move from $currentPosition with direction ${directions[currentDirection]}")
         repeat(move.steps) {
-            currentPosition = if (isCube) {
-                val next = field.nextPossibleStepOnCube(currentPosition, directions[currentDirection])
+            position = if (isCube) {
+                val next = field.nextPossibleStepOnCube(position, direction.current)
                 if (next != null){
                     next.second.forEach { applyOp(it) }
                     next.first
-                } else currentPosition
+                } else position
             } else
-                field.nextPossibleStep(currentPosition, directions[currentDirection]) ?: currentPosition
+                field.nextPossibleStep(position, direction.current) ?: position
         }
 //        println(" to $currentPosition")
     }
@@ -65,9 +73,9 @@ class Monkey(val field: MonkeyField, val isCube: Boolean = false) {
 
     private fun finalPosition(): Position {
         return Position(
-            currentPosition.x,
-            currentPosition.y,
-            (directions.size + currentDirection - 1) % directions.size
+            position.x,
+            position.y,
+            direction.code
         )
     }
 }
