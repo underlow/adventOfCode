@@ -45,7 +45,6 @@ class Monkey(val field: MonkeyField, val isCube: Boolean = false) {
 
 
     private fun move(move: Move) {
-//        print("Move from $currentPosition with direction ${directions[currentDirection]}")
         repeat(move.steps) {
             position = if (isCube) {
                 val next = field.nextPossibleStepOnCube(position, direction.current)
@@ -56,7 +55,6 @@ class Monkey(val field: MonkeyField, val isCube: Boolean = false) {
             } else
                 field.nextPossibleStep(position, direction.current) ?: position
         }
-//        println(" to $currentPosition")
     }
 
     fun followPath(path: MonkeyPath): Position {
