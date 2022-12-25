@@ -1,11 +1,12 @@
 package me.underlow.advent2022.day07
 
+import me.underlow.advent2022.checkResult
 import me.underlow.advent2022.getResourceAsLines
 
 // https://adventofcode.com/2022/day/7
 
 fun main() {
-    val commands = getResourceAsLines("NoSpaceLeftOnDeviceInput.txt") // 1783610
+    val commands = getResourceAsLines("/07 - NoSpaceLeftOnDeviceInput.txt") // 1783610
     // split to command + result for list
     val tokens = splitToCommandTokens(commands)
 
@@ -21,7 +22,11 @@ fun main() {
     val sortedBy = searchRequired.filter { it.size >= spaceNeded }.toList().sortedBy { it.size }
 
     println(totalSum)
-    println(sortedBy[0].size) // 8465165 - too high
+    println(sortedBy[0].size)
+
+    checkResult(totalSum, 1783610)
+    checkResult(sortedBy[0].size, 4370655)
+
 }
 
 fun FilesystemItem.calculateSizes(): Int {

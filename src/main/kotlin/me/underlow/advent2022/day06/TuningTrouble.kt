@@ -1,5 +1,7 @@
 package me.underlow.advent2022.day06
 
+import me.underlow.advent2022.checkResult
+
 fun solve1(chiper: String): Int {
     for (i in 0 until chiper.length - 4) {
         if (setOf(chiper[i], chiper[i + 1], chiper[i + 2], chiper[i + 3]).size == 4) {
@@ -29,8 +31,13 @@ fun main() {
     println(solve1("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg")) // 10
     println(solve1("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw")) //11
     println()
-    println(solve1(chiper))
-    println(solve2(chiper))
+    val solve1 = solve1(chiper)
+    println(solve1)
+    val solve2 = solve2(chiper)
+    println(solve2)
+
+    checkResult(solve1, 1578)
+    checkResult(solve2, 2178)
 }
 
 private val chiper = """
