@@ -1,7 +1,6 @@
 package me.underlow.advent2022.day22
 
 import me.underlow.advent2022.Point
-import sun.jvm.hotspot.oops.CellTypeState.bottom
 
 data class TeleportData(
     val id: Int,
