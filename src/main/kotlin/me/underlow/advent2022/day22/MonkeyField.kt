@@ -1,7 +1,6 @@
 package me.underlow.advent2022.day22
 
 import me.underlow.advent2022.Point
-import me.underlow.advent2022.day22.Teleport.findTeleport
 
 enum class FieldCell(val c: Char) {
     OuterWall(' '), Wall('#'), Empty('.');

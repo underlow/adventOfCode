@@ -41,7 +41,7 @@ class Direction(start: Int = 1) {
     override fun toString(): String = "Direction[${names[currentDirection]}]"
 }
 
-class Monkey(private val field: MonkeyField, val isCube: Boolean = false) {
+class Monkey(private val field: MonkeyField, val isCube: Boolean = false, val teleport: Teleport) {
     private var position = field.findStart()
     private val direction = Direction()
 
@@ -67,6 +67,7 @@ class Monkey(private val field: MonkeyField, val isCube: Boolean = false) {
         var step = path.nextMove()
 
         while (step != null) {
+            println("Current position: $position dir: ${direction.name}")
             applyOp(step)
             step = path.nextMove()
         }
@@ -96,14 +97,14 @@ class Monkey(private val field: MonkeyField, val isCube: Boolean = false) {
     private fun nextPossibleStepOnCube(point: Point, direction: Direction): Point? {
 
         var nextPoint = field.step(point, direction.current)
-
+        if (point == Point(x=5, y=10)) {
+            println("ops")
+        }
 
 
         if (field.get(nextPoint) == FieldCell.OuterWall) {
-            if (point == Point(5, 11)) {
-                println("ops")
-            }
-            val teleportData = Teleport.findTeleport(point, direction.name)
+
+            val teleportData = teleport.findTeleport(point, direction.name)
             val retPoint = teleportData.op(point)
 
             require(field.get(retPoint) == FieldCell.OuterWall) {
@@ -131,6 +132,7 @@ class Monkey(private val field: MonkeyField, val isCube: Boolean = false) {
                 return null // cannot move
             // can move
             teleportData.rotation.forEach { r -> applyOp(r) }
+            println("Teleport to $nextPoint / ${newDirection.name}")
             return nextPoint
         }
 
