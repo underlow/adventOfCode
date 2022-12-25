@@ -1,15 +1,17 @@
 package me.underlow.advent2022.day19
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class NotEnoughMineralsKtTest {
+    @Disabled
     @Test
     fun testSolvePart1() {
         val result = NotEnoughMinerals.part1(input.split("\n"))
         assertEquals(33, result)
     }
-
+    @Disabled
     @Test
     fun testSolvePart2() {
         val result = NotEnoughMinerals.part2(input.split("\n"))
