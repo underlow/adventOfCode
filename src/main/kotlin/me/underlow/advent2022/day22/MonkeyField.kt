@@ -34,13 +34,13 @@ class MonkeyField(input: Array<Array<Char>>) {
             return FieldCell.OuterWall
         return get(p.x, p.y)
     }
-    operator fun set(x: Int, y: Int, c: Char) {
-        map[x][y] = FieldCell.fromString(c)
-    }
+//    operator fun set(x: Int, y: Int, c: Char) {
+//        map[x][y] = FieldCell.fromString(c)
+//    }
 
-    operator fun set(x: Int, y: Int, c: FieldCell) {
-        map[x][y] = c
-    }
+//    operator fun set(x: Int, y: Int, c: FieldCell) {
+//        map[x][y] = c
+//    }
 
     fun findStart(): Point {
         for (y in 0 until sizeY)
@@ -51,6 +51,9 @@ class MonkeyField(input: Array<Array<Char>>) {
 
     fun step(p: Point, d: Point) =
         Point((sizeX + p.x + d.x) % sizeX, (sizeY + p.y + d.y) % sizeY)
+
+    fun step2(p: Point, d: Point) =
+        Point(p.x + d.x, p.y + d.y)
 
 }
 

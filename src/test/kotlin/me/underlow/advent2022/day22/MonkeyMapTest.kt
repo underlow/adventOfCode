@@ -1,7 +1,6 @@
 package me.underlow.advent2022.day22
 
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class MonkeyMapTest {
@@ -26,7 +25,7 @@ class MonkeyMapTest {
 //    @Disabled
     @Test
     fun testSolvePart2() {
-        val result = MonkeyMap.part2(input.split("\n"))
+        val result = MonkeyMap.part2(input.split("\n"), TestTeleport())
         assertEquals(5031, result)
     }
 }

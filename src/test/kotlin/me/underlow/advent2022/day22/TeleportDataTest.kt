@@ -48,4 +48,58 @@ class TeleportDataTest {
 
     }
 
+    @Test
+    fun testCubeTransformOnTestData() {
+        val points = listOf(
+            Point(4, 4) to Point(4, 7),
+            Point(4, 7) to Point(7, 7),
+            Point(7, 7) to Point(7, 4),
+            Point(7, 4) to Point(4, 4),
+
+            Point(5, 5) to Point(5, 6),
+            Point(5, 6) to Point(6, 6),
+            Point(6, 6) to Point(6, 5),
+            Point(6, 5) to Point(5, 5),
+
+            Point(5, 4) to Point(4, 6),
+            Point(4, 6) to Point(6, 7),
+
+            Point(4, 7) to Point(7, 7),
+        )
+        val cRear = Teleport.Cube("front", Point(1, 1), 4)
+        // hardcode for speed
+        points.forEach { p ->
+            assertEquals(p.second, cRear.rotateCW(p.first), "Fail ${p.first} -> ${p.second}")
+        }
+
+
+        points.forEach { p ->
+            var rotated = p.first
+            repeat(4) { rotated = cRear.rotateCW(rotated) }
+            assertEquals(p.first, rotated)
+        }
+    }
+    @Test
+    fun testTeleportOnTestRunData() {
+        val pointsMove = listOf(
+            Point(5, 11) to Point(7, 14),
+        )
+        val pointsRotate = listOf(
+            Point(5, 11) to Point(7, 10),
+        )
+
+        val ctBottom = Teleport.Cube("bottom", Point(1, 2), 4)
+
+        pointsRotate.forEach { p ->
+            assertEquals(p.second, ctBottom.rotateCW(p.first),"Fail ${p.first} -> ${p.second}")
+        }
+
+        val teleport = TestTeleport()
+
+        pointsMove.forEach { (from, to) ->
+            val tp = teleport.findTeleport(from, Direction.Name.Right)
+            assertEquals(to, tp.op(from), "Fail $from -> $to")
+        }
+    }
+
 }
