@@ -14,7 +14,7 @@ data class TeleportData(
 object Teleport {
 
     fun findTeleport(nextPoint: Point, name: Direction.Name): TeleportData =
-        teleportForPart2.find { it.checkPoint(nextPoint) && it.direction == name }
+        teleportForTest.find { it.checkPoint(nextPoint) && it.direction == name }
             ?: error("Bad teleport for $nextPoint")
 
     fun call(vararg func: (Point) -> Point): (Point) -> Point = {
@@ -81,11 +81,11 @@ object Teleport {
      * hardcoded for test
      */
     private val ctTop = Cube("top", Point(1, 0))
-    private val ctRear = Cube("rear", Point(0, 3))
+    private val ctRear = Cube("rear", Point(0, 2))
     private val ctFront = Cube("front", Point(1, 1))
-    private val ctBottom = Cube("bottom", Point(1, 3))
-    private val ctBack = Cube("back", Point(2, 4))
-    private val ctLeft = Cube("left", Point(2, 3))
+    private val ctBottom = Cube("bottom", Point(1, 2))
+    private val ctBack = Cube("back", Point(2, 3))
+    private val ctLeft = Cube("left", Point(2, 2))
 
 
     private const val cubeSize = 4
@@ -104,12 +104,89 @@ object Teleport {
             ctRear::left,
             Direction.Name.Left
         ),
-         TeleportData(
+        TeleportData(
             3,
-            call(ctLeft::rotate180, ctLeft.shiftX(2), ctLeft.shiftY(2)),
+            call(ctRear::rotate180, ctRear.shiftX(2), ctRear.shiftY(2)),
+            listOf(CounterClockwise, CounterClockwise),
+            ctRear::right,
+            Direction.Name.Right
+        ),
+        TeleportData(
+            4,
+            call(ctBottom::rotateCW, ctBottom.shiftY(1)),
+            listOf(Clockwise),
+            ctBottom::right,
+            Direction.Name.Right
+        ),
+        TeleportData(
+            5,
+            call(ctBack::rotateCounterCW, ctBack.shiftX(-1)),
             listOf(CounterClockwise),
+            ctBack::top,
+            Direction.Name.Up
+        ),
+        TeleportData(
+            6,
+            call(ctBack::rotate180, ctBack.shiftX(-2)),
+            listOf(CounterClockwise, CounterClockwise),
+            ctBack::right,
+            Direction.Name.Right
+        ),
+        TeleportData(
+            7,
+            call(ctBack::rotateCounterCW, ctBack.shiftX(-4), ctBack.shiftY(-1)),
+            listOf(CounterClockwise),
+            ctBack::bottom,
+            Direction.Name.Down
+        ),
+        TeleportData(
+            8,
+            call(ctLeft::rotate180, ctLeft.shiftY(-2)),
+            listOf(CounterClockwise, CounterClockwise),
+            ctLeft::bottom,
+            Direction.Name.Down
+        ),
+        TeleportData(
+            9,
+            call(ctLeft::rotateCW, ctLeft.shiftY(-1)),
+            listOf(Clockwise),
             ctLeft::left,
             Direction.Name.Left
+        ),
+        TeleportData(
+            10,
+            call(ctFront::rotateCounterCW, ctBack.shiftX(1)),
+            listOf(CounterClockwise),
+            ctBack::bottom,
+            Direction.Name.Down
+        ),
+        TeleportData(
+            11,
+            call(ctFront::rotateCW, ctBack.shiftX(-1)),
+            listOf(Clockwise),
+            ctFront::top,
+            Direction.Name.Up
+        ),
+        TeleportData(
+            12,
+            call(ctTop::rotate180, ctTop.shiftX(+2), ctTop.shiftY(+2)),
+            listOf(Clockwise, Clockwise),
+            ctBack::bottom,
+            Direction.Name.Down
+        ),
+        TeleportData(
+            13,
+            call(ctTop::rotateCW, ctTop.shiftX(+2), ctTop.shiftY(+4)),
+            listOf(Clockwise),
+            ctBack::left,
+            Direction.Name.Left
+        ),
+        TeleportData(
+            14,
+            call(ctTop::rotate180, ctTop.shiftX(-2), ctTop.shiftY(+3)),
+            listOf(Clockwise, Clockwise),
+            ctBack::top,
+            Direction.Name.Up
         ),
     )
 

@@ -100,7 +100,7 @@ class Monkey(private val field: MonkeyField, val isCube: Boolean = false) {
 
 
         if (field.get(nextPoint) == FieldCell.OuterWall) {
-            if (point.x in setOf(100, 199, 149, 49) && point.y in setOf(50, 0, 99)) {
+            if (point == Point(5, 11)) {
                 println("ops")
             }
             val teleportData = Teleport.findTeleport(point, direction.name)

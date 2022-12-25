@@ -23,7 +23,7 @@ class MonkeyMapTest {
         assertEquals(12049, result)
     }
 
-    @Disabled
+//    @Disabled
     @Test
     fun testSolvePart2() {
         val result = MonkeyMap.part2(input.split("\n"))
