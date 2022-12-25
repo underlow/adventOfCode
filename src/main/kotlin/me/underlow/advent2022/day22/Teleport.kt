@@ -110,7 +110,7 @@ object Teleport {
             call(ctLeft::rotate180, ctLeft.shiftX(2), ctLeft.shiftY(2)),
             listOf(CounterClockwise),
             ctLeft::left,
-            Direction.Name.Leftk
+            Direction.Name.Left
         ),
     )
 
