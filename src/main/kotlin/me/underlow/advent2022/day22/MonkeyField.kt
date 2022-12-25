@@ -1,7 +1,6 @@
 package me.underlow.advent2022.day22
 
 import me.underlow.advent2022.Point
-import me.underlow.advent2022.day22.Teleport.findTeleport
 
 enum class FieldCell(val c: Char) {
     OuterWall(' '), Wall('#'), Empty('.');
@@ -30,13 +29,10 @@ class MonkeyField(input: Array<Array<Char>>) {
     }
 
     operator fun get(x: Int, y: Int) = map[x][y]
-    operator fun get(p: Point) = get(p.x, p.y)
-    operator fun set(x: Int, y: Int, c: Char) {
-        map[x][y] = FieldCell.fromString(c)
-    }
-
-    operator fun set(x: Int, y: Int, c: FieldCell) {
-        map[x][y] = c
+    operator fun get(p: Point): FieldCell {
+        if (p.x !in 0 until sizeX || p.y !in 0 until sizeY)
+            return FieldCell.OuterWall
+        return get(p.x, p.y)
     }
 
     fun findStart(): Point {
@@ -46,54 +42,12 @@ class MonkeyField(input: Array<Array<Char>>) {
         error("Cannot find start")
     }
 
-    // find next point (either requested step or wrap around tha map) or null if move is impossble
-    fun nextPossibleStep(point: Point, direction: Point): Point? {
-        fun step(p: Point, d: Point) =
-            Point((sizeX + p.x + d.x) % sizeX, (sizeY + p.y + d.y) % sizeY)
+    fun step(p: Point, d: Point) =
+        Point((sizeX + p.x + d.x) % sizeX, (sizeY + p.y + d.y) % sizeY)
 
-        var nextPoint = step(point, direction)
+    fun step2(p: Point, d: Point) =
+        Point(p.x + d.x, p.y + d.y)
 
-        while (get(nextPoint) == FieldCell.OuterWall)
-            nextPoint = step(nextPoint, direction)
-
-        require(get(nextPoint) != FieldCell.OuterWall) {
-            "We got outside of the field"
-        }
-
-        if (get(nextPoint) == FieldCell.Wall)
-            return null // cannot move
-        // can move
-        return nextPoint
-    }
-
-    // part 2
-    fun nextPossibleStepOnCube(point: Point, direction: Point): Pair<Point, List<MonkeyOp>>? {
-        fun step(p: Point, d: Point) =
-            Point((sizeX + p.x + d.x) % sizeX, (sizeY + p.y + d.y) % sizeY)
-
-        var nextPoint = step(point, direction)
-
-        if (get(nextPoint) == FieldCell.OuterWall) {
-            val teleportData = findTeleport(point)
-            if (teleportData.id == 13) {
-                println()
-            }
-            val retPoint = teleportData.op(point)
-            require(get(retPoint) != FieldCell.OuterWall) {
-                "We got outside of the field"
-            }
-            return retPoint to teleportData.rotation
-        }
-
-        require(get(nextPoint) != FieldCell.OuterWall) {
-            "We got outside of the field"
-        }
-
-        if (get(nextPoint) == FieldCell.Wall)
-            return null // cannot move
-        // can move
-        return nextPoint to emptyList()
-    }
 }
 
 

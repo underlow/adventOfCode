@@ -15,12 +15,12 @@ object MonkeyMap {
 
         val field = MonkeyField(input)
         val path = MonkeyPath(list.last().trim())
-        val monkey = Monkey(field)
+        val monkey = Monkey(field, isCube = false, Task2Teleport())
         val (x, y, facingCode) = monkey.followPath(path)
         return (x + 1) * 1000 + (y + 1) * 4 + facingCode
     }
 
-    fun part2(list: List<String>): Int {
+    fun part2(list: List<String>, task2Teleport: Teleport): Int {
         val input = list
             .subList(0, list.size - 1)
             .filter { it.isNotEmpty() }
@@ -28,7 +28,7 @@ object MonkeyMap {
 
         val field = MonkeyField(input)
         val path = MonkeyPath(list.last().trim())
-        val monkey = Monkey(field, isCube = true)
+        val monkey = Monkey(field, isCube = true, task2Teleport)
         val (x, y, facingCode) = monkey.followPath(path)
         return (x + 1) * 1000 + (y + 1) * 4 + facingCode
     }
@@ -38,13 +38,14 @@ object MonkeyMap {
 fun main() {
     val input = getResourceAsLines("/22 - MonkeyMap.txt")
     val res1 = MonkeyMap.part1(input)
-    val res2 = MonkeyMap.part2(input)
+    val res2 = MonkeyMap.part2(input, Task2Teleport())
 
     checkResult(res1, 65368)
-//    checkResult(res2, 0)
+    checkResult(res2, 156166)
 
     println(res1)
     println(res2)
+
 }
 
 
