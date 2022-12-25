@@ -1,7 +1,7 @@
 package me.underlow.advent2022.day22
 
 import me.underlow.advent2022.Point
-import javax.print.attribute.standard.DocumentName
+import sun.jvm.hotspot.oops.CellTypeState.bottom
 
 data class TeleportData(
     val id: Int,
@@ -38,7 +38,7 @@ object Teleport {
             val deltaY = p.y - (coord.y * size)
 
             val nX = coord.x * size + deltaY
-            val nY = (coord.y + 1) * size -1 - deltaX
+            val nY = (coord.y + 1) * size - 1 - deltaX
 
             return Point(nX, nY)
 //            return Point(coord.x * size + p.y - coord.y * size, (coord.y + 1) * size - p.x + coord.x * size)
@@ -78,8 +78,45 @@ object Teleport {
 
     }
 
+    /**
+     * hardcoded for test
+     */
+    private val ctTop = Cube("top", Point(1, 0))
+    private val ctRear = Cube("rear", Point(0, 3))
+    private val ctFront = Cube("front", Point(1, 1))
+    private val ctBottom = Cube("bottom", Point(1, 3))
+    private val ctBack = Cube("back", Point(2, 4))
+    private val ctLeft = Cube("left", Point(2, 3))
+
+
+    private const val cubeSize = 4
+    private val teleportForTest = listOf(
+        TeleportData(
+            1,
+            call(ctRear::rotate180, ctRear.shiftX(-2)),
+            listOf(CounterClockwise, CounterClockwise),
+            ctRear::top,
+            Direction.Name.Up
+        ),
+        TeleportData(
+            2,
+            call(ctRear::rotateCounterCW, ctRear.shiftX(-1)),
+            listOf(CounterClockwise),
+            ctRear::left,
+            Direction.Name.Left
+        ),
+         TeleportData(
+            3,
+            call(ctLeft::rotate180, ctLeft.shiftX(2), ctLeft.shiftY(2)),
+            listOf(CounterClockwise),
+            ctLeft::left,
+            Direction.Name.Leftk
+        ),
+    )
+
+
     private val cTop = Cube("top", Point(3, 0))
-    private val cRear = Cube("right", Point(2, 0))
+    private val cRear = Cube("rear", Point(2, 0))
     private val cFront = Cube("front", Point(2, 1))
     private val cBottom = Cube("bottom", Point(1, 1))
     private val cBack = Cube("back", Point(0, 1))
@@ -88,7 +125,7 @@ object Teleport {
     /**
      * this is hardcoded data for task2. won't work on other cube shapes
      */
-    private const val cubeSize = 50
+//    private const val cubeSize = 50
     private val teleportForPart2 = listOf(
         // top side
         TeleportData(
