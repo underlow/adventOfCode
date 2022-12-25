@@ -8,7 +8,7 @@ class TeleportDataTest {
     @Test
     fun testTeleport() {
         val points = listOf(
-            Point(150, 0) to Point(-1 , 50),
+            Point(150, 0) to Point(-1, 50),
             Point(199, 0) to Point(-1, 99),
             Point(199, 49) to Point(150, 99),
             Point(0, 51) to Point(151, -1),
@@ -16,10 +16,10 @@ class TeleportDataTest {
             Point(100, 0) to Point(49, 49),
             Point(101, 0) to Point(48, 49),
         )
-
+        val teleport = Task2Teleport()
 
         points.forEach { (from, to) ->
-            val tp = Teleport.findTeleport(from, Direction.Name.Right)
+            val tp = teleport.findTeleport(from, Direction.Name.Right)
             assertEquals(to, tp.op(from), "Fail $from -> $to")
         }
     }
@@ -28,10 +28,11 @@ class TeleportDataTest {
     fun testCubeTransform() {
         val points = listOf(
             Point(102, 1) to Point(101, 47),
+            Point(102, 47) to Point(148, 48),
             Point(100, 0) to Point(100, 49),
 //            Point(101, 0) to Point(48, 50),
         )
-        val cRear = Teleport.Cube("right", Point(2, 0))
+        val cRear = Teleport.Cube("right", Point(2, 0), 50)
         // hardcode for speed
         points.forEach { p ->
             assertEquals(p.second, cRear.rotateCW(p.first))

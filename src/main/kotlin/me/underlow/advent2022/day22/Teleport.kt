@@ -11,23 +11,18 @@ data class TeleportData(
 )
 
 
-object Teleport {
+interface Teleport {
+    val teleportData: List<TeleportData>
+    val cubeSize: Int
 
     fun findTeleport(nextPoint: Point, name: Direction.Name): TeleportData =
-        teleportForTest.find { it.checkPoint(nextPoint) && it.direction == name }
+        teleportData.find { it.checkPoint(nextPoint) && it.direction == name }
             ?: error("Bad teleport for $nextPoint")
 
-    fun call(vararg func: (Point) -> Point): (Point) -> Point = {
-        var p = it
-        for (f in func) {
-            p = f(p)
-        }
-        p
-    }
 
     // coord - coordinates in plane filled with square tiles.
     // cube at (50, 50) should have coords (1,1)
-    data class Cube(val id: String, val coord: Point, val size: Int = cubeSize) {
+    data class Cube(val id: String, val coord: Point, val size: Int) {
         // rotate clockwise mapping point to a new location
 //        fun rotate(): (Point) -> Point {
 //            return { Point(coord.x * size + it.y - coord.y * size, (coord.y + 1) * size - it.x + coord.x * size) }
@@ -36,7 +31,7 @@ object Teleport {
             val deltaX = p.x - (coord.x * size)
             val deltaY = p.y - (coord.y * size)
 
-            val nX = coord.x * size + deltaY
+            val nX = coord.x * size + deltaY + 1
             val nY = (coord.y + 1) * size - 1 - deltaX
 
             return Point(nX, nY)
@@ -76,20 +71,23 @@ object Teleport {
                     p.y in (coord.y * size until (coord.y + 1) * size)
 
     }
+}
+
+class TestTeleport : Teleport {
+    override val cubeSize = 4
 
     /**
      * hardcoded for test
      */
-    private val ctTop = Cube("top", Point(1, 0))
-    private val ctRear = Cube("rear", Point(0, 2))
-    private val ctFront = Cube("front", Point(1, 1))
-    private val ctBottom = Cube("bottom", Point(1, 2))
-    private val ctBack = Cube("back", Point(2, 3))
-    private val ctLeft = Cube("left", Point(2, 2))
+    private val ctTop = Teleport.Cube("top", Point(1, 0), cubeSize)
+    private val ctRear = Teleport.Cube("rear", Point(0, 2), cubeSize)
+    private val ctFront = Teleport.Cube("front", Point(1, 1), cubeSize)
+    private val ctBottom = Teleport.Cube("bottom", Point(1, 2), cubeSize)
+    private val ctBack = Teleport.Cube("back", Point(2, 3), cubeSize)
+    private val ctLeft = Teleport.Cube("left", Point(2, 2), cubeSize)
 
 
-    private const val cubeSize = 4
-    private val teleportForTest = listOf(
+    override val teleportData = listOf(
         TeleportData(
             1,
             call(ctRear::rotate180, ctRear.shiftX(-2)),
@@ -190,19 +188,33 @@ object Teleport {
         ),
     )
 
+}
 
-    private val cTop = Cube("top", Point(3, 0))
-    private val cRear = Cube("rear", Point(2, 0))
-    private val cFront = Cube("front", Point(2, 1))
-    private val cBottom = Cube("bottom", Point(1, 1))
-    private val cBack = Cube("back", Point(0, 1))
-    private val cLeft = Cube("left", Point(0, 2))
+private fun call(vararg func: (Point) -> Point): (Point) -> Point = {
+    var p = it
+    for (f in func) {
+        p = f(p)
+    }
+    p
+}
+
+
+class Task2Teleport : Teleport {
+
+    override val cubeSize = 50
+
+    private val cTop = Teleport.Cube("top", Point(3, 0), cubeSize)
+    private val cRear = Teleport.Cube("rear", Point(2, 0), cubeSize)
+    private val cFront = Teleport.Cube("front", Point(2, 1), cubeSize)
+    private val cBottom = Teleport.Cube("bottom", Point(1, 1), cubeSize)
+    private val cBack = Teleport.Cube("back", Point(0, 1), cubeSize)
+    private val cLeft = Teleport.Cube("left", Point(0, 2), cubeSize)
 
     /**
      * this is hardcoded data for task2. won't work on other cube shapes
      */
 //    private const val cubeSize = 50
-    private val teleportForPart2 = listOf(
+    override val teleportData = listOf(
         // top side
         TeleportData(
             1,

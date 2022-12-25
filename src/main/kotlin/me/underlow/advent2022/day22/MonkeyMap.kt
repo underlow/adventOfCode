@@ -15,7 +15,7 @@ object MonkeyMap {
 
         val field = MonkeyField(input)
         val path = MonkeyPath(list.last().trim())
-        val monkey = Monkey(field)
+        val monkey = Monkey(field, isCube = false, Task2Teleport())
         val (x, y, facingCode) = monkey.followPath(path)
         return (x + 1) * 1000 + (y + 1) * 4 + facingCode
     }
@@ -28,7 +28,7 @@ object MonkeyMap {
 
         val field = MonkeyField(input)
         val path = MonkeyPath(list.last().trim())
-        val monkey = Monkey(field, isCube = true)
+        val monkey = Monkey(field, isCube = true, Task2Teleport())
         val (x, y, facingCode) = monkey.followPath(path)
         return (x + 1) * 1000 + (y + 1) * 4 + facingCode
     }
