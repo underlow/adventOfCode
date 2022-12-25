@@ -41,11 +41,11 @@ fun main() {
     val res2 = MonkeyMap.part2(input, Task2Teleport())
 
     checkResult(res1, 65368)
-//    checkResult(res2, 0)
-    check(res2 != 81377)
+    checkResult(res2, 156166)
 
     println(res1)
     println(res2)
+
 }
 
 
