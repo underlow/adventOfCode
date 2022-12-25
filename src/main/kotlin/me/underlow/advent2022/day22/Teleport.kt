@@ -233,7 +233,7 @@ class Task2Teleport : Teleport {
         TeleportData(
             3,
             call(cTop::rotateCounterCW, cTop.shiftY(1)),
-            listOf(Clockwise),
+            listOf(CounterClockwise),
             cTop::right,
             Direction.Name.Right
         ),
@@ -271,14 +271,14 @@ class Task2Teleport : Teleport {
         TeleportData(
             8,
             call(cFront::rotateCW, cFront.shiftX(1)),
-            listOf(CounterClockwise, CounterClockwise),
+            listOf(Clockwise),
             cFront::bottom,
             Direction.Name.Down
         ),
         TeleportData(
             9,
             call(cFront::rotate180, cFront.shiftX(-2), cFront.shiftY(2)),
-            listOf(Clockwise),
+            listOf(Clockwise, Clockwise),
             cFront::right,
             Direction.Name.Right
         ),
@@ -316,7 +316,7 @@ class Task2Teleport : Teleport {
         TeleportData(
             14,
             call(cLeft::rotateCW, cLeft.shiftX(1)),
-            listOf(CounterClockwise),
+            listOf(Clockwise),
             cLeft::bottom,
             Direction.Name.Down
         ),

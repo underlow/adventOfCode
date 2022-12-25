@@ -67,7 +67,6 @@ class Monkey(private val field: MonkeyField, val isCube: Boolean = false, val te
         var step = path.nextMove()
 
         while (step != null) {
-            println("Current position: $position dir: ${direction.name}")
             applyOp(step)
             step = path.nextMove()
         }
@@ -97,10 +96,6 @@ class Monkey(private val field: MonkeyField, val isCube: Boolean = false, val te
     private fun nextPossibleStepOnCube(point: Point, direction: Direction): Point? {
 
         var nextPoint = field.step2(point, direction.current)
-        if (point == Point(x=10, y=10)) {
-            println("ops")
-        }
-
 
         if (field.get(nextPoint) == FieldCell.OuterWall) {
 
@@ -121,8 +116,9 @@ class Monkey(private val field: MonkeyField, val isCube: Boolean = false, val te
                 }
             }
 
-            while (field[nextPoint] == FieldCell.OuterWall)
+            while (field[nextPoint] == FieldCell.OuterWall) {
                 nextPoint = field.step2(nextPoint, newDirection.current)
+            }
 
             require(field[nextPoint] != FieldCell.OuterWall) {
                 "We got outside of the field"
@@ -130,9 +126,9 @@ class Monkey(private val field: MonkeyField, val isCube: Boolean = false, val te
 
             if (field[nextPoint] == FieldCell.Wall)
                 return null // cannot move
+
             // can move
             teleportData.rotation.forEach { r -> applyOp(r) }
-            println("Teleport to $nextPoint / ${newDirection.name}")
             return nextPoint
         }
 
