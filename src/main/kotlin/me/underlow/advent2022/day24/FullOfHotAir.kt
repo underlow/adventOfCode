@@ -7,23 +7,23 @@ import me.underlow.advent2022.getResourceAsLines
 
 object FullOfHotAir {
 
-    fun part1(list: List<String>): Long {
-        val directions = parseInput(list)
-        return 0
-    }
+    fun part1(list: List<String>): String {
+        val directions = list.map { AirNumber.fromString(it) }
 
-    private fun parseInput(list: List<String>): Any {
-        TODO("Not yet implemented")
+        val foldIndexed = directions.foldIndexed(AirNumber.fromString("0")) { idx, total, item ->
+            total + item
+        }
+        return foldIndexed.to5thString()
     }
 
     fun part2(list: List<String>): Long {
-        val directions = parseInput(list)
+        val directions = list.map { AirNumber.fromString(it) }
         return 0
     }
 }
 
 fun main() {
-    val input = getResourceAsLines("/")
+    val input = getResourceAsLines("/24 - FullOfHotAir.txt")
     val res1 = FullOfHotAir.part1(input)
     val res2 = FullOfHotAir.part2(input)
 
