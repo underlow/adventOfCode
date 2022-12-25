@@ -1,6 +1,7 @@
-package me.underlow.advent2022.day24
+package me.underlow.advent2022.day25
 
 import me.underlow.advent2022.checkResult
+import me.underlow.advent2022.day24.AirNumber
 import me.underlow.advent2022.getResourceAsLines
 
 // https://adventofcode.com/2022/day/25
@@ -25,12 +26,9 @@ object FullOfHotAir {
 fun main() {
     val input = getResourceAsLines("/24 - FullOfHotAir.txt")
     val res1 = FullOfHotAir.part1(input)
-    val res2 = FullOfHotAir.part2(input)
 
-    checkResult(res1, 0)
-    checkResult(res2, 0)
+    checkResult(res1, "2-0-0=1-0=2====20=-2")
 
     println(res1)
-    println(res2)
 }
 

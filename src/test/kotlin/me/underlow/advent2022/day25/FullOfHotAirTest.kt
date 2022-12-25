@@ -1,4 +1,4 @@
-package me.underlow.advent2022.day24
+package me.underlow.advent2022.day25
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -9,13 +9,6 @@ class FullOfHotAirTest {
         val result = FullOfHotAir.part1(input.split("\n"))
         assertEquals("2=-1=0", result)
     }
-
-    @Test
-    fun testPart2() {
-        val result = FullOfHotAir.part1(input.split("\n"))
-        assertEquals(0, result)
-    }
-
 }
 
 private val input = """
