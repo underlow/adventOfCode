@@ -19,7 +19,7 @@ class TeleportDataTest {
 
 
         points.forEach { (from, to) ->
-            val tp = Teleport.findTeleport(from, direction.name)
+            val tp = Teleport.findTeleport(from, Direction.Name.Right)
             assertEquals(to, tp.op(from), "Fail $from -> $to")
         }
     }
