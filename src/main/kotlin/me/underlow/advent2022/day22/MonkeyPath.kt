@@ -17,7 +17,7 @@ class Direction(start: Int = 1) {
         Point(0, -1),  // go left
     )
     private val names = listOf("up", "right", "down", "left")
-    private var currentDirection = 1
+    private var currentDirection = start
 
     fun rotateCounterClockwise() {
         currentDirection = (directions.size + currentDirection - 1) % (directions.size)
@@ -96,8 +96,8 @@ class Monkey(private val field: MonkeyField, val isCube: Boolean = false, val te
     // part 2
     private fun nextPossibleStepOnCube(point: Point, direction: Direction): Point? {
 
-        var nextPoint = field.step(point, direction.current)
-        if (point == Point(x=5, y=10)) {
+        var nextPoint = field.step2(point, direction.current)
+        if (point == Point(x=10, y=10)) {
             println("ops")
         }
 
@@ -105,9 +105,9 @@ class Monkey(private val field: MonkeyField, val isCube: Boolean = false, val te
         if (field.get(nextPoint) == FieldCell.OuterWall) {
 
             val teleportData = teleport.findTeleport(point, direction.name)
-            val retPoint = teleportData.op(point)
+            nextPoint = teleportData.op(point)
 
-            require(field.get(retPoint) == FieldCell.OuterWall) {
+            require(field.get(nextPoint) == FieldCell.OuterWall) {
                 "We have not got outside of the field"
             }
 
@@ -122,7 +122,7 @@ class Monkey(private val field: MonkeyField, val isCube: Boolean = false, val te
             }
 
             while (field[nextPoint] == FieldCell.OuterWall)
-                nextPoint = field.step(nextPoint, newDirection.current)
+                nextPoint = field.step2(nextPoint, newDirection.current)
 
             require(field[nextPoint] != FieldCell.OuterWall) {
                 "We got outside of the field"

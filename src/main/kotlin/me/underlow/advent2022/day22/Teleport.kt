@@ -31,7 +31,7 @@ interface Teleport {
             val deltaX = p.x - (coord.x * size)
             val deltaY = p.y - (coord.y * size)
 
-            val nX = coord.x * size + deltaY + 1
+            val nX = coord.x * size + deltaY
             val nY = (coord.y + 1) * size - 1 - deltaX
 
             return Point(nX, nY)
