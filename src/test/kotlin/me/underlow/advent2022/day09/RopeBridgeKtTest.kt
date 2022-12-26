@@ -20,7 +20,7 @@ internal class RopeBridgeKtTest {
         """.trimIndent()
 
         val result = solution1(input.split("\n"))
-        assertEquals(13, result)
+        assertEquals(14, result)
     }
 
     @Test

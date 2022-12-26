@@ -3,6 +3,7 @@ package me.underlow.advent2022.day07
 import me.underlow.advent2022.checkResult
 import me.underlow.advent2022.getResourceAsLines
 
+
 // https://adventofcode.com/2022/day/7
 
 fun main() {
@@ -26,7 +27,6 @@ fun main() {
 
     checkResult(totalSum, 1783610)
     checkResult(sortedBy[0].size, 4370655)
-
 }
 
 fun FilesystemItem.calculateSizes(): Int {

@@ -1,8 +1,7 @@
 package me.underlow.advent2022.day07
 
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
 
 internal class NoSpaceLeftOnDeviceKtTest {
 
@@ -15,7 +14,7 @@ internal class NoSpaceLeftOnDeviceKtTest {
     }
 
     @Test
-    fun processCommand(){
+    fun processCommand() {
         val tree = splitToCommandTokens(s.split("\n"))
         val fs = processCommands(tree)
 
@@ -23,15 +22,15 @@ internal class NoSpaceLeftOnDeviceKtTest {
 
     }
 
-   @Test
-    fun testCase1(){
+    @Test
+    fun testCase1() {
         val tree = splitToCommandTokens(s.split("\n"))
         val fs = processCommands(tree)
-       fs.calculateSizes()
+        fs.calculateSizes()
 
-       val total = fs.searchRequired(mutableSetOf())
+        val total = fs.searchRequired(mutableSetOf())
 
-       val totalSum = total.sumOf { it.size }
+        val totalSum = total.filter { it.size < 100000 }.sumOf { it.size }
 
         assertEquals(95437, totalSum)
 
