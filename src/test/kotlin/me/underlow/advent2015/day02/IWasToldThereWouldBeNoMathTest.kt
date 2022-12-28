@@ -14,7 +14,7 @@ class IWasToldThereWouldBeNoMathTest {
     @Test
     fun testPart2() {
         val result = PerfectlySphericalHousesInAVacuum.part2(input)
-        assertEquals(0, result)
+        assertEquals(11, result)
     }
 }
 

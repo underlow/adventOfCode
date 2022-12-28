@@ -27,7 +27,23 @@ object PerfectlySphericalHousesInAVacuum {
     }
 
     fun part2(list: String): Int {
-        return 0
+        val santas = arrayOf(Point(0, 0), Point(0, 0))
+        val visited = mutableSetOf<Point>().apply { add(santas[0]) }
+        var c = 0
+        list.forEach {
+            val currentSanta = santas[c]
+            val np = when (it) {
+                '>' -> currentSanta.copy(y = currentSanta.y + 1)
+                '<' -> currentSanta.copy(y = currentSanta.y - 1)
+                '^' -> currentSanta.copy(x = currentSanta.x + 1)
+                'v' -> currentSanta.copy(x = currentSanta.x - 1)
+                else -> error("Incorrect input")
+            }
+            santas[c] = np
+            c = (c + 1) % 2
+            visited.add(np)
+        }
+        return visited.size
     }
 }
 
@@ -37,7 +53,7 @@ fun main() {
     val res1 = PerfectlySphericalHousesInAVacuum.part1(input)
     val res2 = PerfectlySphericalHousesInAVacuum.part2(input)
 
-    checkResult(res1, 0)
+    checkResult(res1, 2081)
     checkResult(res2, 0)
 
     println(res1)
