@@ -6,7 +6,6 @@ import me.underlow.advent2015.day05.DoesntHeHaveInternElvesForThis.part2
 import me.underlow.parametrizedTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DynamicTest
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
 
 class DoesntHeHaveInternElvesForThisTest {
@@ -28,10 +27,19 @@ class DoesntHeHaveInternElvesForThisTest {
         }
     }
 
-    @Test
-    fun testPart2() {
-        val result = part2("ugknbfddgicrmopn".split("\n"))
-        assertEquals(0, result)
+    @TestFactory
+    fun testPart2(): List<DynamicTest> {
+        val data = listOf(
+            TestData(1, "qjhvhtzxzqqjkmpb"),
+            TestData(1, "xxyxx"),
+            TestData(0, "uurcxstgmygtbstg"),
+            TestData(0, "ieodomkazucvgmuy"),
+        )
+
+        return data.parametrizedTest {
+            val result = part2(listOf(it.actual))
+            assertEquals(it.expected, result)
+        }
     }
 }
 
