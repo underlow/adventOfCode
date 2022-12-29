@@ -7,19 +7,13 @@ import org.junit.jupiter.api.Test
 class TheIdealStockingStufferTest {
     @Test
     fun testPart1() {
-        val result = part1(input1)
+        val result = part1(input1, "00000")
         assertEquals(609043, result)
     }
-
-    fun testPart11() {
-        val result = part1(input1)
-        assertEquals(1048970, result)
-    }
-
     @Test
-    fun testPart2() {
-        val result = part1("")
-        assertEquals(0, result)
+    fun testPart11() {
+        val result = part1(input2, "00000")
+        assertEquals(1048970, result)
     }
 }
 
