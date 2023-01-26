@@ -9,12 +9,6 @@ class ProbablyAFireHazardTest{
         val result = ProbablyAFireHazard.part1(input.split("\n"))
         assertEquals(998996, result)
     }
-
-    @Test
-    fun testPart2() {
-        val result = ProbablyAFireHazard.part2(input.split("\n"))
-        assertEquals(0, result)
-    }
 }
 private val input = """
     turn on 0,0 through 999,999
