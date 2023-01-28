@@ -1,4 +1,4 @@
-package me.underlow.advent2015.day04
+package me.underlow.advent2015
 
 import me.underlow.advent2022.checkResult
 import java.math.BigInteger
@@ -18,7 +18,6 @@ object TheIdealStockingStuffer {
             }
             res++
         }
-        return 0
     }
 
     fun md5(input: String): String {

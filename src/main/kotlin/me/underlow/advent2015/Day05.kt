@@ -1,7 +1,6 @@
-package me.underlow.advent2015.day05
+package me.underlow.advent2015
 
 import me.underlow.advent2022.checkResult
-import me.underlow.advent2022.getResourceAsLines
 import kotlin.math.abs
 
 object DoesntHeHaveInternElvesForThis {
@@ -72,7 +71,7 @@ object DoesntHeHaveInternElvesForThis {
 
 
 fun main() {
-    val input = getResourceAsLines("/2015/05 - DoesntHeHaveInternElvesForThis.txt")
+    val input = readInput("$pathPrefix/day05.txt")
     val res1 = DoesntHeHaveInternElvesForThis.part1(input)
     val res2 = DoesntHeHaveInternElvesForThis.part2(input)
 

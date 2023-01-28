@@ -1,7 +1,6 @@
-package me.underlow.advent2015.day01
+package me.underlow.advent2015
 
 import me.underlow.advent2022.checkResult
-import me.underlow.advent2022.getResourceAsString
 
 object NotQuiteLisp {
 
@@ -20,7 +19,7 @@ object NotQuiteLisp {
 
 
 fun main() {
-    val input = getResourceAsString("/2015/01 - NotQuiteLisp.txt")
+    val input = readInputAsString("$pathPrefix/day01.txt")
     val res1 = NotQuiteLisp.part1(input)
     val res2 = NotQuiteLisp.part2(input)
 

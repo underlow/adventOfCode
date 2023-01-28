@@ -1,7 +1,7 @@
-package me.underlow.advent2015.day06
+package me.underlow.advent2015
 
 import me.underlow.advent2022.checkResult
-import me.underlow.advent2022.getResourceAsLines
+import java.io.File
 
 object ProbablyAFireHazard {
 
@@ -122,7 +122,7 @@ object ProbablyAFireHazard {
 
 
 fun main() {
-    val input = getResourceAsLines("/2015/06 - ProbablyAFireHazard.txt")
+    val input = readInput("$pathPrefix/day06.txt")
     val res1 = ProbablyAFireHazard.part1(input)
     val res2 = ProbablyAFireHazard.part2(input)
 
@@ -132,3 +132,7 @@ fun main() {
     println(res1)
     println(res2)
 }
+
+fun readInput(filename: String) = File(filename).readLines()
+fun readInputAsString(filename: String) = File(filename).readText().trim()
+const val pathPrefix = "src/main/kotlin/me/underlow/advent2015"

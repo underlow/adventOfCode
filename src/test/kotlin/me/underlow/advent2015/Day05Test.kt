@@ -1,14 +1,14 @@
-package me.underlow.advent2015.day05
+package me.underlow.advent2015
 
 import me.underlow.TestData
-import me.underlow.advent2015.day05.DoesntHeHaveInternElvesForThis.part1
-import me.underlow.advent2015.day05.DoesntHeHaveInternElvesForThis.part2
+import me.underlow.advent2015.DoesntHeHaveInternElvesForThis.part1
+import me.underlow.advent2015.DoesntHeHaveInternElvesForThis.part2
 import me.underlow.parametrizedTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.TestFactory
 
-class DoesntHeHaveInternElvesForThisTest {
+class Day05Test {
     @TestFactory
     fun testPart1(): List<DynamicTest> {
         val data = listOf(

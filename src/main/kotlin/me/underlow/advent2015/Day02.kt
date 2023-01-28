@@ -1,7 +1,6 @@
-package me.underlow.advent2015.day02
+package me.underlow.advent2015
 
 import me.underlow.advent2022.checkResult
-import me.underlow.advent2022.getResourceAsLines
 
 object IWasToldThereWouldBeNoMath {
 
@@ -23,7 +22,7 @@ object IWasToldThereWouldBeNoMath {
 
 
 fun main() {
-    val input = getResourceAsLines("/2015/02 - IWasToldThereWouldBeNoMath.txt")
+    val input = readInput("$pathPrefix/day02.txt")
     val res1 = IWasToldThereWouldBeNoMath.part1(input) //1959856 1466916
     val res2 = IWasToldThereWouldBeNoMath.part2(input)
 

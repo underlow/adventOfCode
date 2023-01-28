@@ -1,10 +1,9 @@
-package me.underlow.advent2015.day02
+package me.underlow.advent2015
 
-import me.underlow.advent2015.day03.PerfectlySphericalHousesInAVacuum
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class IWasToldThereWouldBeNoMathTest {
+class Day02Test {
     @Test
     fun testPart1() {
         val result = PerfectlySphericalHousesInAVacuum.part1(input)

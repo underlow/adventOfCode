@@ -1,9 +1,9 @@
-package me.underlow.advent2015.day06
+package me.underlow.advent2015
 
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class ProbablyAFireHazardTest{
+class Day06Test {
     @Test
     fun testPart1() {
         val result = ProbablyAFireHazard.part1(input.split("\n"))
