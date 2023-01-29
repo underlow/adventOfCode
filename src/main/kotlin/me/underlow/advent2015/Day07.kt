@@ -15,25 +15,26 @@ object SomeAssemblyRequired {
     data class LShift(val node: Value, val shift: Int) : Operation
     data class RShift(val node: Value, val shift: Int) : Operation
     data class Not(val operand: Value) : Operation
-    data class NodeLink(val node: String) : Operation
+    data class NodeLink(val node: Value) : Operation
 
     data class Node(val name: String, var input: UInt?, val op: Operation?)
 
-    fun wireGraph(graph: List<Node>, finalNode: String): UShort {
+    private fun wireGraph(graph: List<Node>, finalNode: String): UShort {
         val aNode = graph.find { it.name == finalNode }!!
+
+        fun Value.value(): UInt? {
+            return when (this) {
+                is Link -> graph.find { it.name == this.node }?.input
+                is Number -> this.value
+            }
+        }
+
         while (aNode.input == null) {
             graph.forEach { n ->
-                val op = n.op
-                when (op) {
+                when (val op = n.op) {
                     is And -> {
-                        val l = when (op.left) {
-                            is Link -> graph.find { it.name == op.left.node }?.input
-                            is Number -> op.left.value
-                        }
-                        val r = when (op.right) {
-                            is Link -> graph.find { it.name == op.right.node }?.input
-                            is Number -> op.right.value
-                        }
+                        val l = op.left.value()
+                        val r = op.right.value()
 
                         if (l != null && r != null) {
                             n.input = l and r
@@ -41,11 +42,7 @@ object SomeAssemblyRequired {
                     }
 
                     is LShift -> {
-                        val node = when (op.node) {
-                            is Link -> graph.find { it.name == op.node.node }?.input
-                            is Number -> op.node.value
-                        }
-
+                        val node = op.node.value()
 
                         if (node != null) {
                             n.input = node shl op.shift
@@ -53,11 +50,7 @@ object SomeAssemblyRequired {
                     }
 
                     is Not -> {
-                        val node = when (op.operand) {
-                            is Link -> graph.find { it.name == op.operand.node }?.input
-                            is Number -> op.operand.value
-                        }
-
+                        val node = op.operand.value()
 
                         if (node != null) {
                             n.input = node.inv()
@@ -65,24 +58,16 @@ object SomeAssemblyRequired {
                     }
 
                     is Or -> {
-                        val l = when (op.left) {
-                            is Link -> graph.find { it.name == op.left.node }?.input
-                            is Number -> op.left.value
-                        }
-                        val r = when (op.right) {
-                            is Link -> graph.find { it.name == op.right.node }?.input
-                            is Number -> op.right.value
-                        }
+                        val l = op.left.value()
+                        val r = op.right.value()
+
                         if (l != null && r != null) {
                             n.input = l or r
                         }
                     }
 
                     is RShift -> {
-                        val node = when (op.node) {
-                            is Link -> graph.find { it.name == op.node.node }?.input
-                            is Number -> op.node.value
-                        }
+                        val node = op.node.value()
 
                         if (node != null) {
                             n.input = node shr op.shift
@@ -90,7 +75,8 @@ object SomeAssemblyRequired {
                     }
 
                     is NodeLink -> {
-                        val number = graph.find { it.name == op.node }?.input
+                        val number = op.node.value()
+
                         if (number != null) {
                             n.input = number
                         }
@@ -153,11 +139,7 @@ object SomeAssemblyRequired {
                 )
 
                 else -> {
-                    if (split[0].toIntOrNull() != null)
-                        Node(split[2], split[0].toUInt(), null)
-                    else
-                        Node(split[2], null, NodeLink(split[0]))
-
+                    Node(split[2], null, NodeLink(parseValue(split[0])))
                 }
             }
         }
@@ -175,9 +157,10 @@ fun main() {
     val res1 = SomeAssemblyRequired.part1(input, "a")
     val res2 = SomeAssemblyRequired.part2(input, "a", res1)
 
+    println(res1)
+    println(res2)
+
     checkResult(res1, 956u)
     checkResult(res2, 40149u)
 
-    println(res1)
-    println(res2)
 }
