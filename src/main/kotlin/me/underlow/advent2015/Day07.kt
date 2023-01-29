@@ -17,7 +17,7 @@ object SomeAssemblyRequired {
     data class Not(val operand: Value) : Operation
     data class NodeLink(val node: Value) : Operation
 
-    data class Node(val name: String, var input: UInt?, val op: Operation?)
+    data class Node(val name: String, var input: UInt?, var op: Operation?)
 
     private fun wireGraph(graph: List<Node>, finalNode: String): UShort {
         val aNode = graph.find { it.name == finalNode }!!
@@ -98,6 +98,7 @@ object SomeAssemblyRequired {
     fun part2(list: List<String>, s: String, part1Result: UShort): UShort {
         val graph = parseInput(list)
         graph.find { it.name == "b" }!!.input = part1Result.toUInt()
+        graph.find { it.name == "b" }!!.op = null
         return wireGraph(graph, s)
     }
 
