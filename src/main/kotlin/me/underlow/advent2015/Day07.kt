@@ -19,8 +19,7 @@ object SomeAssemblyRequired {
 
     data class Node(val name: String, var input: UInt?, val op: Operation?)
 
-    fun part1(list: List<String>, finalNode: String): UShort {
-        val graph = parseInput(list)
+    fun wireGraph(graph: List<Node>, finalNode: String): UShort {
         val aNode = graph.find { it.name == finalNode }!!
         while (aNode.input == null) {
             graph.forEach { n ->
@@ -104,9 +103,16 @@ object SomeAssemblyRequired {
         return aNode.input!!.toUShort()
     }
 
-    fun part2(list: List<String>): Int {
-        val directions = parseInput(list)
-        return 0
+
+    fun part1(list: List<String>, finalNode: String): UShort {
+        val graph = parseInput(list)
+        return wireGraph(graph, finalNode)
+    }
+
+    fun part2(list: List<String>, s: String, part1Result: UShort): UShort {
+        val graph = parseInput(list)
+        graph.find { it.name == "b" }!!.input = part1Result.toUInt()
+        return wireGraph(graph, s)
     }
 
     /**
@@ -167,10 +173,10 @@ object SomeAssemblyRequired {
 fun main() {
     val input = readInput("$pathPrefix/day07.txt")
     val res1 = SomeAssemblyRequired.part1(input, "a")
-    val res2 = SomeAssemblyRequired.part2(input)
+    val res2 = SomeAssemblyRequired.part2(input, "a", res1)
 
-    checkResult(res1, 956)
-    checkResult(res2, 0)
+    checkResult(res1, 956u)
+    checkResult(res2, 40149u)
 
     println(res1)
     println(res2)
