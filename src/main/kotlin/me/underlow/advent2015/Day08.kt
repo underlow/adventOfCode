@@ -5,15 +5,30 @@ import me.underlow.advent2022.checkResult
 object Matchsticks {
 
     fun part1(list: List<String>): Int {
-        val numberInCode = list.map { it.length + 2 }.sum()
-        val numberEscaped = list.map { it.unescape().length }.sum()
+        val numberInCode = list.sumOf { it.length }
+        val numberEscaped = list.sumOf { it.unescape().length - 2 }
         return numberInCode - numberEscaped
     }
 
     fun part2(list: List<String>): Int {
-        return 0
+        val numberInCode = list.sumOf { it.length }
+        val numberAfterEscaping = list.sumOf { it.escape().length + 2 }
+        return numberAfterEscaping - numberInCode
     }
 
+}
+
+private fun String.escape(): String {
+    val buildString = buildString {
+        this@escape.forEach {
+            when (it) {
+                '\\' -> append("\\\\")
+                '\"' -> append("\\\"")
+                else -> append(it)
+            }
+        }
+    }
+    return buildString
 }
 
 private fun String.unescape(): String {
@@ -31,7 +46,7 @@ fun main() {
     val res2 = Matchsticks.part2(input)
 
     checkResult(res1, 1333)
-    checkResult(res2, 0)
+    checkResult(res2, 2046)
 
     println(res1)
     println(res2)
