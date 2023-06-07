@@ -14,8 +14,4 @@ class Day10Test {
         assertEquals("312211", ElvesLookElvesSay.gameRound("111221"))
     }
 
-    @Test
-    fun testPart2() {
-        assertEquals("1", ElvesLookElvesSay.gameRound("1"))
-    }
 }
