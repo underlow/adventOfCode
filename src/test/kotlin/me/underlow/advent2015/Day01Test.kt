@@ -3,7 +3,7 @@ package me.underlow.advent2015
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class AllInASingleNightTest {
+class Day01Test {
     @Test
     fun testPart1() {
         val result = AllInASingleNight.part1(input.split("\n"))
