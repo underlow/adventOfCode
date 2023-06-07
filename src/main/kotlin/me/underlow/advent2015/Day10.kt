@@ -13,7 +13,11 @@ object ElvesLookElvesSay {
     }
 
     fun part2(input: String): Int {
-        return 0
+        var result = input
+        repeat(50) {
+            result = gameRound(result)
+        }
+        return result.length
     }
 
     fun gameRound(input: String): String {
@@ -44,7 +48,7 @@ object ElvesLookElvesSay {
 
 fun main() {
     val res1 = ElvesLookElvesSay.part1("3113322113")
-    val res2 = ElvesLookElvesSay.part2("input")
+    val res2 = ElvesLookElvesSay.part2("3113322113")
 
     checkResult(res1, 329356)
     checkResult(res2, 0)
