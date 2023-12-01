@@ -14,8 +14,37 @@ object Trebuchet {
     }
 
     fun part2(list: List<String>): Int {
-        val directions = parseInput(list)
-        return 0
+        val words = mapOf(
+            "one" to "1",
+            "two" to "2",
+            "three" to "3",
+            "four" to "4",
+            "five" to "5",
+            "six" to "6",
+            "seven" to "7",
+            "eight" to "8",
+            "nine" to "9"
+        )
+
+        return list.map { s ->
+            var w = ""
+            var i = 0
+            while (i < s.length) {
+                if (s[i].isDigit())
+                    w += s[i]
+                else
+                    words.forEach { (word, num) ->
+                        if (s.substring(i until s.length).startsWith(word))
+                            w += num
+                    }
+                i++
+            }
+
+            return@map w
+        }.map { s ->
+            val numbers = s.filter { it.isDigit() }
+            return@map numbers.first().digitToInt() * 10 + numbers.last().digitToInt()
+        }.sum()
     }
 
     private fun parseInput(list: List<String>): Any {
@@ -30,7 +59,7 @@ fun main() {
     val res2 = Trebuchet.part2(input)
 
     checkResult(res1, 54916)
-    checkResult(res2, 0)
+    checkResult(res2, 54728)
 
     println(res1)
     println(res2)
