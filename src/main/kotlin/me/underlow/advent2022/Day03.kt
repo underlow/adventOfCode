@@ -51,7 +51,7 @@ object RucksackReorganizationInput {
 }
 
 fun main() {
-    val strings = readInput("${pathPrefix}/day03.txt")
+    val strings = readInput("${pathPrefix22}/day03.txt")
 
     val total = RucksackReorganizationInput.part1(strings)
 

@@ -181,7 +181,7 @@ object BoilingBouldersInput {
 }
 
 fun main() {
-    val input = readInput("${pathPrefix}/day18.txt")
+    val input = readInput("${pathPrefix22}/day18.txt")
     val res1 = BoilingBouldersInput.solvePart1(input)
     val res2 = BoilingBouldersInput.solvePart2(input)
 

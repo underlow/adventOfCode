@@ -15,7 +15,7 @@ object FullOfHotAir {
 }
 
 fun main() {
-    val input = readInput("${pathPrefix}/day25.txt")
+    val input = readInput("${pathPrefix22}/day25.txt")
     val res1 = FullOfHotAir.part1(input)
 
     checkResult(res1, "2-0-0=1-0=2====20=-2")

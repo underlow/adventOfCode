@@ -285,7 +285,7 @@ object PyroclasticFlowInput {
 }
 
 fun main() {
-    val input = readInputAsString("${pathPrefix}/day17.txt")
+    val input = readInputAsString("${pathPrefix22}/day17.txt")
     val res1 = PyroclasticFlowInput.solvePart1(input, 2022)
     val res2 = PyroclasticFlowInput.solvePart1(input, 1000000000000L)
 

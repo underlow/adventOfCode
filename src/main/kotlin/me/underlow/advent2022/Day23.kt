@@ -207,7 +207,7 @@ val proposals = listOf(
 )
 
 fun main() {
-    val input = readInput("${pathPrefix}/day23.txt")
+    val input = readInput("${pathPrefix22}/day23.txt")
     val res1 = UnstableDiffusion.part1(input)
     val res2 = UnstableDiffusion.part2(input)
 

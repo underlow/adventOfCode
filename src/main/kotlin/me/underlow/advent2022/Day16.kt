@@ -191,7 +191,7 @@ object ProboscideaVolcaniumInput {
 }
 
 fun main() {
-    val input = readInput("${pathPrefix}/day16.txt")
+    val input = readInput("${pathPrefix22}/day16.txt")
     val result = ProboscideaVolcaniumInput.solution1(input)
     println(result)
 

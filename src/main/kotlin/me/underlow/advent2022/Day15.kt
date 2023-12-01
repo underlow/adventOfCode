@@ -170,7 +170,7 @@ object BeaconExclusionZoneInput {
 }
 
 fun main() {
-    val input = readInput("${pathPrefix}/day15.txt")
+    val input = readInput("${pathPrefix22}/day15.txt")
 
     val s1 = BeaconExclusionZoneInput.solution1(input, 2000000)
     val s2 = BeaconExclusionZoneInput.solution2(input, 0..4000000, 0..4000000)

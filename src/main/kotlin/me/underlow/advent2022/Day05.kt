@@ -105,7 +105,7 @@ object SupplyStacksInput {
 }
 
 fun main() {
-    val input = readInputAsString("${pathPrefix}/day05.txt")
+    val input = readInputAsString("${pathPrefix22}/day05.txt")
 
     val sum1 = calculate11(input)
     val sum2 = calculate22(input)

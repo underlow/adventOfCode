@@ -275,7 +275,7 @@ object RegolithReservoirInput {
 }
 
 fun main() {
-    val input = readInput("${pathPrefix}/day14.txt")
+    val input = readInput("${pathPrefix22}/day14.txt")
     val solution1 = RegolithReservoirInput.solution1(input)
     val solution2 = RegolithReservoirInput.solution2(input)
     println("solution1: $solution1")

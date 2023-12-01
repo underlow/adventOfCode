@@ -7,7 +7,7 @@ import me.underlow.advent2022.NoSpaceLeftOnDevice.searchRequired
 // https://adventofcode.com/2022/day/7
 
 fun main() {
-    val commands = readInput("${pathPrefix}/day07.txt")
+    val commands = readInput("${pathPrefix22}/day07.txt")
     // split to command + result for list
     val tokens = NoSpaceLeftOnDevice.splitToCommandTokens(commands)
 

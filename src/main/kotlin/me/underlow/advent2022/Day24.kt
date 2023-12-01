@@ -281,7 +281,7 @@ class BlizzardField(input: Array<Array<Char>>) {
 
 
 fun main() {
-    val input = readInput("${pathPrefix}/day24.txt")
+    val input = readInput("${pathPrefix22}/day24.txt")
     val res1 = BlizzardBasin.part1(input)
     val res2 = BlizzardBasin.part2(input)
 

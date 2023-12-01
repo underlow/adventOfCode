@@ -26,7 +26,7 @@ object CalorieCounting {
 }
 
 fun main() {
-    val elfCaloriesList = CalorieCounting.parseList(readInputAsString("$pathPrefix/day01.txt"))
+    val elfCaloriesList = CalorieCounting.parseList(readInputAsString("$pathPrefix22/day01.txt"))
 
     val res1 = findMostCalories(elfCaloriesList)
     checkResult(res1, 69501)
@@ -40,4 +40,4 @@ fun main() {
 
 fun readInput(filename: String) = File(filename).readLines()
 fun readInputAsString(filename: String) = File(filename).readText().trim()
-const val pathPrefix = "src/main/kotlin/me/underlow/advent2022"
+const val pathPrefix22 = "src/main/kotlin/me/underlow/advent2022"

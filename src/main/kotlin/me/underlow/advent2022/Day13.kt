@@ -153,7 +153,7 @@ object DistressSignalInput {
 }
 
 fun main() {
-    val input = readInput("${pathPrefix}/day13.txt")
+    val input = readInput("${pathPrefix22}/day13.txt")
     val s1 = DistressSignalInput.solution1(input)
 
     val s2 = DistressSignalInput.solution2(input)

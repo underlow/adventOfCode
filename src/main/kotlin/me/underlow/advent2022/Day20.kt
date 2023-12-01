@@ -156,7 +156,7 @@ object GrovePositioningSystem {
 }
 
 fun main() {
-    val input = readInput("${pathPrefix}/day20.txt")
+    val input = readInput("${pathPrefix22}/day20.txt")
     val res1 = GrovePositioningSystem.solvePart1(input)
     val res2 = GrovePositioningSystem.solvePart2(input, 811589153)
 

@@ -139,7 +139,7 @@ object RopeBridgeInput {
     }
 }
 fun main() {
-    val input = readInput("${pathPrefix}/day09.txt")
+    val input = readInput("${pathPrefix22}/day09.txt")
     val result = RopeBridgeInput.solution1(input)
     val result2 = RopeBridgeInput.solution2(input)
 

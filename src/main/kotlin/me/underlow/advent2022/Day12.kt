@@ -142,7 +142,7 @@ object HillClimbingAlgorithmInput {
     }
 }
 fun main() {
-    val input = readInput("${pathPrefix}/day12.txt")
+    val input = readInput("${pathPrefix22}/day12.txt")
     val result = HillClimbingAlgorithmInput.solution1(input)
     val result2 = HillClimbingAlgorithmInput.solution2(input)
 

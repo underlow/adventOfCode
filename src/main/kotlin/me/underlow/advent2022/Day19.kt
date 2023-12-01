@@ -227,7 +227,7 @@ object NotEnoughMinerals {
 }
 
 fun main() {
-    val input = readInput("${pathPrefix}/day19.txt")
+    val input = readInput("${pathPrefix22}/day19.txt")
     val res1 = NotEnoughMinerals.part1(input)
     val res2 = NotEnoughMinerals.part2(input)
 

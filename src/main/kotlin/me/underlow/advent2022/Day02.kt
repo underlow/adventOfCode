@@ -1,7 +1,7 @@
 package me.underlow.advent2022.d_02
 
 import me.underlow.advent2022.checkResult
-import me.underlow.advent2022.pathPrefix
+import me.underlow.advent2022.pathPrefix22
 import me.underlow.advent2022.readInput
 
 // https://adventofcode.com/2022/day/2
@@ -83,7 +83,7 @@ object RockPaperScissors {
 }
 
 fun main() {
-    val rounds = readInput("$pathPrefix/day02.txt")
+    val rounds = readInput("$pathPrefix22/day02.txt")
     val result1 = rounds.map { RockPaperScissors.Round.fromStringToSimpleRound(it) }.map { it.calculateRound() }.sum()
     val result2 = rounds.map { RockPaperScissors.Round.fromStringToSecondRound(it) }.map { it.calculateRound() }.sum()
 

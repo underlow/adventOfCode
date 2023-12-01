@@ -150,7 +150,7 @@ object TreetopTreeHouseInput {
 }
 
 fun main() {
-    val input = readInput("${pathPrefix}/day08.txt")
+    val input = readInput("${pathPrefix22}/day08.txt")
     val count = TreetopTreeHouseInput.solution1(input)
     val views = TreetopTreeHouseInput.solution2(input)
 

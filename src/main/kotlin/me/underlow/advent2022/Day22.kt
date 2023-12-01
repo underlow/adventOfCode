@@ -589,7 +589,7 @@ object MonkeyMap {
 }
 
 fun main() {
-    val input = readInput("${pathPrefix}/day22.txt")
+    val input = readInput("${pathPrefix22}/day22.txt")
     val res1 = MonkeyMap.part1(input)
     val res2 = MonkeyMap.part2(input, MonkeyMap.Task2Teleport())
 

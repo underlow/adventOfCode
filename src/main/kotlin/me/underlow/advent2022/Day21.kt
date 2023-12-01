@@ -137,7 +137,7 @@ object MonkeyMath {
 
 
 fun main() {
-    val input = readInput("${pathPrefix}/day21.txt")
+    val input = readInput("${pathPrefix22}/day21.txt")
     val res1 = MonkeyMath.solvePart1(input)
     val res2 = MonkeyMath.solvePart2(input)
 

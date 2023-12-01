@@ -44,7 +44,7 @@ object CampCleanupInput {
     }
 }
 fun main() {
-    val input = readInput("${pathPrefix}/day04.txt")
+    val input = readInput("${pathPrefix22}/day04.txt")
 
     val sum1 = CampCleanupInput.part1(input)
     val sum2 = CampCleanupInput.part2(input)

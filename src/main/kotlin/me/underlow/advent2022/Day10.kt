@@ -2,7 +2,7 @@ package me.underlow.advent2022.d_10
 
 import me.underlow.advent2022.checkResult
 import me.underlow.advent2022.d_10.CathodeRayTubeInput.dumpArray
-import me.underlow.advent2022.pathPrefix
+import me.underlow.advent2022.pathPrefix22
 import me.underlow.advent2022.readInput
 
 object CathodeRayTubeInput {
@@ -104,7 +104,7 @@ object CathodeRayTubeInput {
 }
 
 fun main() {
-    val input = readInput("$pathPrefix/day10.txt")
+    val input = readInput("$pathPrefix22/day10.txt")
     val result = CathodeRayTubeInput.solution1(input)
     val result2 = CathodeRayTubeInput.solution2(input)
 
