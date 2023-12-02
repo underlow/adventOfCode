@@ -13,7 +13,7 @@ class Day02Test {
     @Test
     fun testPart2() {
         val result = CubeConundrum.part2(input.split("\n"))
-        assertEquals(0, result)
+        assertEquals(2286, result)
     }
 }
 

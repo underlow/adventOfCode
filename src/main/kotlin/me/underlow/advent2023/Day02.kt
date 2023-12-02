@@ -2,10 +2,20 @@ package me.underlow.advent2023
 
 import me.underlow.advent2022.checkResult
 import me.underlow.advent2022.readInput
+import kotlin.math.max
 
 object CubeConundrum {
     //Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
-    data class Game(val id: Int, val rounds: List<GameRound>)
+    data class Game(val id: Int, val rounds: List<GameRound>) {
+        fun selectMinimumPossible(): GameRound {
+            var max = GameRound(0, 0, 0)
+            for (round in rounds) {
+                max = GameRound(max(round.red, max.red), max(round.green, max.green), max(round.blue, max.blue))
+            }
+            return max
+        }
+    }
+
     data class GameRound(val red: Int, val green: Int, val blue: Int)
     data class Restriction(val red: Int, val green: Int, val blue: Int) {
         fun isGamePossible(game: Game): Boolean =
@@ -27,8 +37,9 @@ object CubeConundrum {
     }
 
     fun part2(list: List<String>): Int {
-        val directions = parseInput(list)
-        return 0
+        val games = parseInput(list)
+
+        return games.map { it.selectMinimumPossible() }.map { it.blue * it.red * it.green }.sum()
     }
 
     private fun parseInput(list: List<String>): List<Game> {
@@ -64,7 +75,7 @@ fun main() {
     val res1 = CubeConundrum.part1(input)
     val res2 = CubeConundrum.part2(input)
 
-    checkResult(res1, 0)
+    checkResult(res1, 2268)
     checkResult(res2, 0)
 
     println(res1)
