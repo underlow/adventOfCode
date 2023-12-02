@@ -26,14 +26,14 @@ object CubeConundrum {
     }
 
     //        only 12 red cubes, 13 green cubes, and 14 blue cubes?
-    val part1Restriction = Restriction(12, 13, 14)
+    private val part1Restriction = Restriction(12, 13, 14)
 
 
     fun part1(list: List<String>): Int {
         val games = parseInput(list)
         return games.filter {
             part1Restriction.isGamePossible(it)
-        }.map { it.id }.sum()
+        }.sumOf { it.id }
     }
 
     fun part2(list: List<String>): Int {
