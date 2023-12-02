@@ -9,8 +9,8 @@ object CubeConundrum {
     data class GameRound(val red: Int, val green: Int, val blue: Int)
     data class Restriction(val red: Int, val green: Int, val blue: Int) {
         fun isGamePossible(game: Game): Boolean =
-            game.rounds.any {
-                return@any it.blue <= this.blue && it.green <= this.green && it.red <= this.red
+            game.rounds.all {
+                return@all it.blue <= this.blue && it.green <= this.green && it.red <= this.red
             }
 
     }
@@ -21,7 +21,9 @@ object CubeConundrum {
 
     fun part1(list: List<String>): Int {
         val games = parseInput(list)
-        return 0
+        return games.filter {
+            part1Restriction.isGamePossible(it)
+        }.map { it.id }.sum()
     }
 
     fun part2(list: List<String>): Int {
@@ -46,7 +48,14 @@ private fun String.toGame(): CubeConundrum.Game {
 }
 
 private fun String.toGameRound(): CubeConundrum.GameRound {
-    return CubeConundrum.GameRound(0, 0, 0)
+    val regexGreen = "(\\d+) green".toRegex()
+    val regexRed = "(\\d+) red".toRegex()
+    val regexBlue = "(\\d+) blue".toRegex()
+    val green = regexGreen.find(this)?.value?.filter { it.isDigit() }?.toInt() ?: 0
+    val red = regexRed.find(this)?.value?.filter { it.isDigit() }?.toInt() ?: 0
+    val blue = regexBlue.find(this)?.value?.filter { it.isDigit() }?.toInt() ?: 0
+
+    return CubeConundrum.GameRound(red, green, blue)
 }
 
 
