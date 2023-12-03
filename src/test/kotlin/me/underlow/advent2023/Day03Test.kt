@@ -38,7 +38,7 @@ class GearRatiosTest {
     @Test
     fun testPart2() {
         val result = GearRatios.part2(input.split("\n"))
-        assertEquals(0, result)
+        assertEquals(467835, result)
     }
 }
 

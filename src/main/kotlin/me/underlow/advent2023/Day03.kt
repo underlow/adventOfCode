@@ -6,7 +6,7 @@ import me.underlow.advent2022.readInput
 object GearRatios {
     data class Data(val numbers: List<Number>, val symbols: List<Symbol>)
 
-    data class Symbol(val line: Int, val col: Int)
+    data class Symbol(val char: Char, val line: Int, val col: Int)
     data class Number(val value: Int, val line: Int, val colStart: Int, val colEnd: Int) {
 
         init {
@@ -17,6 +17,12 @@ object GearRatios {
             val adjacentLinesSymbols = symbols.filter { it.line in this.line - 1..this.line + 1 }
             val adjacentSymbols = adjacentLinesSymbols.filter { it.col in this.colStart - 1..this.colEnd + 1 }
             return adjacentSymbols.isNotEmpty()
+        }
+
+        fun getAdjacentSymbol(symbols: List<Symbol>): List<Symbol> {
+            val adjacentLinesSymbols = symbols.filter { it.line in this.line - 1..this.line + 1 }
+            val adjacentSymbols = adjacentLinesSymbols.filter { it.col in this.colStart - 1..this.colEnd + 1 }
+            return adjacentSymbols
         }
     }
 
@@ -37,8 +43,18 @@ object GearRatios {
     }
 
     fun part2(list: List<String>): Int {
-        val directions = parseInput(list)
-        return 0
+        val (numbers, symbols) = parseInput(list)
+
+        val gears = symbols.filter { it.char == '*' }
+
+        val adS =
+            numbers.map { s -> s.getAdjacentSymbol(gears).map { s to it } }.flatten().map { it.second to it.first }
+
+        val adM = adS.groupBy { it.first }.filter { it.value.size == 2 }
+
+        val adMS = adM.map { it.value[0].second.value * it.value[1].second.value }.sum()
+
+        return adMS
     }
 
     private fun parseInput(list: List<String>): Data {
@@ -63,7 +79,7 @@ object GearRatios {
                 }
                 // symbol
                 if (!col.isDigit()) {
-                    symbols.add(Symbol(lineIdx, colIdx))
+                    symbols.add(Symbol(col, lineIdx, colIdx))
                     // end number
                     if (nEnd == colIdx - 1 && nStart != -1) {
                         val num = line.substring(nStart, nEnd + 1).toInt()
@@ -101,7 +117,7 @@ fun main() {
     val res1 = GearRatios.part1(input)
     val res2 = GearRatios.part2(input)
 
-    checkResult(res1, 0) // !536667 too low
+    checkResult(res1, 539433)
     checkResult(res2, 0)
 
     println(res1)
