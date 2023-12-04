@@ -13,7 +13,7 @@ class ScratchcardsTest {
     @Test
     fun testPart2() {
         val result = Scratchcards.part2(input.split("\n"))
-        assertEquals(0, result)
+        assertEquals(30, result)
     }
 }
 
