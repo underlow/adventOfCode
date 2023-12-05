@@ -44,8 +44,7 @@ object Fertilizer {
     fun part1(list: List<String>): Long {
         val almanac = parseInput(list)
         return almanac.seeds.map { seed ->
-//            print("$seed")
-            val l = with(almanac) {
+            with(almanac) {
                 humidityToLocation[
                     temperatureToHumidity[
                         lightToTemperature[
@@ -55,8 +54,6 @@ object Fertilizer {
                                         seedToSoil[
                                             seed]]]]]]]
             }
-//            println()
-            l
         }.min()
     }
 
@@ -171,6 +168,6 @@ fun main() {
     println("part 2: $res2")
 
     checkResult(res1, 331445006)
-    checkResult(res2, 0) // 331445006 high
+    checkResult(res2, 6472060) // 331445006 high
 
 }
