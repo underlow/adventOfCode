@@ -2,32 +2,50 @@ package me.underlow.advent2023
 
 import me.underlow.advent2022.checkResult
 import me.underlow.advent2022.readInput
+import kotlin.math.min
 
 object Fertilizer {
     data class Range(val dest: Long, val source: Long, val count: Long)
 
-    // fuck performance
+    // binary search
     class RangeMap {
         private val ranges = mutableListOf<Range>()
         fun addRange(dest: Long, source: Long, count: Long) {
             ranges.add(Range(dest, source, count))
+            ranges.sortBy { it.source }
         }
 
         operator fun get(from: Long): Long {
-            for (range in ranges) {
-                if (from in range.source until range.source + range.count) {
-                    return from - range.source + range.dest
-                }
+            val range = ranges.binarySearch {
+                if (from < it.source)
+                    return@binarySearch 1
+
+                if (from >= it.source + it.count)
+                    return@binarySearch -1
+
+                return@binarySearch 0
+
             }
 
-            return from
+            if (range < 0) {
+//                print(" -> $from")
+                return from
+            }
+
+            if (from in ranges[range].source until ranges[range].source + ranges[range].count) {
+//                print(" -> ${from - ranges[range].source + ranges[range].dest}")
+                return from - ranges[range].source + ranges[range].dest
+            } else {
+                error("Oops")
+            }
         }
     }
 
     fun part1(list: List<String>): Long {
         val almanac = parseInput(list)
         return almanac.seeds.map { seed ->
-            with(almanac) {
+//            print("$seed")
+            val l = with(almanac) {
                 humidityToLocation[
                     temperatureToHumidity[
                         lightToTemperature[
@@ -37,12 +55,40 @@ object Fertilizer {
                                         seedToSoil[
                                             seed]]]]]]]
             }
+//            println()
+            l
         }.min()
     }
 
-    fun part2(list: List<String>): Int {
-        val directions = parseInput(list)
-        return 0
+    fun part2(list: List<String>): Long {
+        val almanac = parseInput(list)
+
+        var min = Long.MAX_VALUE
+
+        for (i in 0 until almanac.seeds.size step 2) {
+            val from = almanac.seeds[i]
+            val count = almanac.seeds[i + 1]
+
+            println("Processing $i pair from ${almanac.seeds.size}: $from $count")
+
+            for (j in from until (from + count)) {
+                val location = with(almanac) {
+                    humidityToLocation[
+                        temperatureToHumidity[
+                            lightToTemperature[
+                                waterToLight[
+                                    fertilizerToWater[
+                                        soilToFertilizer[
+                                            seedToSoil[
+                                                j]]]]]]]
+                }
+
+                min = min(min, location)
+            }
+        }
+
+
+        return min
     }
 
     data class Almanac(
@@ -120,9 +166,11 @@ fun main() {
     val res1 = Fertilizer.part1(input)
     val res2 = Fertilizer.part2(input)
 
-    checkResult(res1, 0)
-    checkResult(res2, 0)
 
-    println(res1)
-    println(res2)
+    println("part 1: $res1")
+    println("part 2: $res2")
+
+    checkResult(res1, 331445006)
+    checkResult(res2, 0) // 331445006 high
+
 }
