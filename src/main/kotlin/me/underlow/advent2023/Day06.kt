@@ -4,7 +4,7 @@ import me.underlow.advent2022.checkResult
 
 object WaitForIt {
 
-    data class Race(val time: Int, val distance: Int) {
+    data class Race(val time: Long, val distance: Long) {
         fun waysToWin(): Int {
             var c = 0
             for (i in 0..time) {
@@ -23,8 +23,10 @@ object WaitForIt {
     }
 
     fun part2(list: List<String>): Int {
-        val directions = parseInput(list)
-        return 0
+        val races = parseInput2(list)
+
+        return races.map { it.waysToWin() }.reduce { acc, i -> acc * i }
+
     }
 
     private fun parseInput(list: List<String>): List<Race> {
@@ -32,13 +34,21 @@ object WaitForIt {
             .split(" ")
             .map { it.trim() }
             .filter { it.isNotBlank() }
-            .map { it.toInt() }
+            .map { it.toLong() }
         val distances = list[1].substring(10, list[1].length)
             .split(" ")
             .map { it.trim() }
             .filter { it.isNotBlank() }
-            .map { it.toInt() }
+            .map { it.toLong() }
         return (0 until times.size).map { Race(times[it], distances[it]) }
+    }
+
+    private fun parseInput2(list: List<String>): List<Race> {
+        val times = list[0].substring(5, list[0].length)
+            .filter { it.isDigit() }.toLong()
+        val distances = list[1].substring(10, list[1].length)
+            .filter { it.isDigit() }.toLong()
+        return listOf(Race(times, distances))
     }
 }
 

@@ -13,7 +13,7 @@ class Day06Test {
     @Test
     fun testPart2() {
         val result = WaitForIt.part2(input.split("\n"))
-        assertEquals(0, result)
+        assertEquals(71503, result)
     }
 }
 
