@@ -53,35 +53,19 @@ object CamelCards {
 
     data class Hand(val cards: List<CardType>, val bid: Int) {
         fun handType(): HandType {
-            return when {
-                cards.toSet().size == 1 -> return HandType.Five
-                cards.toSet().size == 5 -> return HandType.HighCard
-                else -> {
-                    val grouped = cards.groupBy { it }.mapValues { it.value.size }
-                    val valuesSet = grouped.values.toSet()
-                    return when {
-                        grouped.keys.size == 2 && valuesSet == setOf(1, 4) -> HandType.Four
-                        grouped.keys.size == 2 && valuesSet == setOf(2, 3) -> HandType.Fullhouse
-                        grouped.keys.size == 3 && grouped.values.toList().sorted() == listOf(1, 1, 3) -> HandType.Three
-                        grouped.keys.size == 3 && grouped.values.toList().sorted() == listOf(
-                            1,
-                            2,
-                            2
-                        ) -> HandType.TwoPairs
 
-                        grouped.keys.size == 4 && grouped.values.toList().sorted() == listOf(
-                            1,
-                            1,
-                            1,
-                            2
-                        ) -> HandType.Pair
-
-                        else -> error("Oops")
-                    }
-                }
+            val grouped = cards.groupBy { it }.mapValues { it.value.size }
+            val valuesSet = grouped.values.toList().sorted()
+            return when (valuesSet) {
+                listOf(5) -> HandType.Five
+                listOf(1, 4) -> HandType.Four
+                listOf(2, 3) -> HandType.Fullhouse
+                listOf(1, 1, 3) -> HandType.Three
+                listOf(1, 2, 2) -> HandType.TwoPairs
+                listOf(1, 1, 1, 2) -> HandType.Pair
+                listOf(1, 1, 1, 1, 1) -> HandType.HighCard
+                else -> error("Oops")
             }
-
-
         }
     }
 
@@ -109,8 +93,29 @@ object CamelCards {
     }
 
     fun part2(list: List<String>): Int {
-        val directions = parseInput(list)
-        return 0
+        val hands = parseInput(list)
+
+        val sortedHands = hands.sortedWith(Comparator { o1, o2 ->
+            val t1 = o1.handType()
+            val t2 = o2.handType()
+
+            if (t1 != t2) return@Comparator t1.rank.compareTo(t2.rank)
+
+            for (i in o1.cards.indices) {
+                val o1c = o1.cards[i]
+                val o2c = o2.cards[i]
+
+                val o1r = if (o1c == CardType.J) 0 else o1c.order
+                val o2r = if (o2c == CardType.J) 0 else o2c.order
+
+                if (o1c != o2c)
+                    return@Comparator o1r.compareTo(o2r)
+            }
+
+            error("Oops")
+        })
+
+        return sortedHands.mapIndexed { index, hand -> (index + 1) * hand.bid }.sum()
     }
 
     private fun parseInput(list: List<String>): List<Hand> {
@@ -132,6 +137,6 @@ fun main() {
     println("part 1: $res1")
     println("part 2: $res2")
 
-    checkResult(res1, 0)
+    checkResult(res1, 250120186)
     checkResult(res2, 0)
 }
