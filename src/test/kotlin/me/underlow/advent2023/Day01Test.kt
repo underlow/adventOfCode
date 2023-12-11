@@ -3,7 +3,7 @@ package me.underlow.advent2023
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class Test {
+class Day01Test {
     @Test
     fun testPart1() {
         val result = Trebuchet.part1(input1.split("\n"))
