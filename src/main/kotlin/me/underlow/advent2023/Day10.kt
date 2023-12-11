@@ -133,6 +133,6 @@ fun main() {
     println("part 1: $res1")
     println("part 2: $res2")
 
-    checkResult(res1, 0)
+    checkResult(res1, 6773)
     checkResult(res2, 0)
 }
