@@ -13,7 +13,7 @@ class MirageMaintenanceTest {
     @Test
     fun testPart2() {
         val result = MirageMaintenance.part2(input.split("\n"))
-        assertEquals(0, result)
+        assertEquals(2, result)
     }
 }
 
