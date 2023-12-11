@@ -2,6 +2,8 @@ package me.underlow.advent2023
 
 import me.underlow.advent2022.checkResult
 import me.underlow.advent2022.readInput
+import java.util.*
+
 
 object HauntedWasteland {
 
@@ -32,12 +34,33 @@ object HauntedWasteland {
         return count
     }
 
-    fun part2(list: List<String>): Int {
-        val directions = parseInput(list)
+    fun part2(list: List<String>): Long {
+        val input = parseInput(list)
+        var c = mutableSetOf<Long>()
+//        var count = 0L
+        input.nodes.filterValues { it.name.endsWith('A') }.values.toList().forEach { node ->
+            println()
+            print(node)
+            var count = 0
+            var current = node
+            val finish = node
 
+            do {
+                val turn = input.route[count % input.route.length]
+                when (turn) {
+                    'L' -> current = current.left!!
+                    'R' -> current = current.right!!
+                }
+                count++
 
+                if (current.name.endsWith("Z"))
+                    print(" $count")
+            } while (!current.name.endsWith("Z"))
+            print(" $count")
+            c.add(count.toLong())
 
-        return 0
+        }
+        return lcm(c.toList())
     }
 
     private fun parseInput(list: List<String>): Input {
@@ -65,6 +88,22 @@ object HauntedWasteland {
 
         return Input(route, map)
     }
+
+    private fun gcd(x: Long, y: Long): Long {
+        return if (y == 0L) x else gcd(y, x % y)
+    }
+
+    fun gcd(vararg numbers: Long): Long {
+        return Arrays.stream(numbers).reduce(
+            0
+        ) { x: Long, y: Long -> gcd(x, y) }
+    }
+
+    fun lcm(numbers: List<Long>): Long {
+        return Arrays.stream(numbers.toTypedArray()).reduce(
+            1
+        ) { x: Long, y: Long -> x * (y / gcd(x, y)) }
+    }
 }
 
 
@@ -77,5 +116,5 @@ fun main() {
     println("part 2: $res2")
 
     checkResult(res1, 18157)
-    checkResult(res2, 0)
+    checkResult(res2, 14299763833181L)
 }
