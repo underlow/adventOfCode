@@ -6,14 +6,20 @@ import org.junit.jupiter.api.Test
 class CosmicExpansionTest {
     @Test
     fun testPart1() {
-        val result = CosmicExpansion.part1(input.split("\n"))
+        val result = CosmicExpansion.part1(input.split("\n"), 2)
         assertEquals(374, result)
     }
 
     @Test
     fun testPart2() {
-        val result = CosmicExpansion.part2(input.split("\n"))
-        assertEquals(0, result)
+        val result = CosmicExpansion.part1(input.split("\n"), 10)
+        assertEquals(1030, result)
+    }
+
+    @Test
+    fun testPart22() {
+        val result = CosmicExpansion.part1(input.split("\n"), 100)
+        assertEquals(8410, result)
     }
 }
 
