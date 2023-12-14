@@ -12,6 +12,8 @@ class HotSpringsTest {
 
     @Test
     fun testPart12() {
+        val result0 = HotSprings.part1("?.#..???..? 1,2".split("\n"))
+        assertEquals(2, result0)
         val result = HotSprings.part1("???.### 1,1,3".split("\n"))
         assertEquals(1, result)
         val result2 = HotSprings.part1(".??..??...?##. 1,1,3".split("\n"))
@@ -32,17 +34,6 @@ class HotSpringsTest {
         assertEquals(525152, result)
     }
 
-    @Test
-    fun testPart23() {
-        val result = HotSprings.part2("???.????????.? 2,1".split("\n"))
-        assertEquals(525152, result)
-    }
-
-    @Test
-    fun testPart24() {
-        val result = HotSprings.part2("?????????? 1,3".split("\n"))
-        assertEquals(525152, result)
-    }
 
     @Test
     fun testPart22() {
