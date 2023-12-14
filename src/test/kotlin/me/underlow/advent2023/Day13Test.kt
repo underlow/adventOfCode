@@ -31,7 +31,13 @@ class PointofIncidenceTest {
     @Test
     fun testPart2() {
         val result = PointofIncidence.part2(input.split("\n"))
-        assertEquals(0, result)
+        assertEquals(400, result)
+    }
+
+    @Test
+    fun testPart22() {
+        val result = PointofIncidence.part2(input2.split("\n"))
+        assertEquals(1300, result)
     }
 }
 
@@ -51,4 +57,24 @@ private val input = """
     #####.##.
     ..##..###
     #....#..#
+""".trimIndent()
+
+private val input2 = """
+#..#..#.###
+###....####
+##..##.#.#.
+##..##.#.#.
+###....####
+#..#..#.###
+##.##..##.#
+#...#.....#
+...##.###.#
+####.#.##..
+.#.###.#...
+####..#...#
+#.#.#####..
+#.#.#####..
+####..#....
+.#.###.#...
+####.#.##..
 """.trimIndent()

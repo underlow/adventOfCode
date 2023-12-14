@@ -8,11 +8,18 @@ object PointofIncidence {
 
     fun part1(list: List<String>): Int {
         val mirrors = parseInput(list)
-        return mirrors.map { calc1(it) }.sum()
+        return mirrors.map {
+            val (mirrorColumns, mirrorRows) = calc1(it)
+            println("pc: $mirrorColumns pr: $mirrorRows")
+            val column = mirrorColumns.firstOrNull() ?: 0
+            val row = mirrorRows.firstOrNull() ?: 0
+
+            return@map column + 100 * row
+        }.sum()
 
     }
 
-    fun calc1(mirror: Array<Array<Cell>>): Int {
+    fun calc1(mirror: Array<Array<Cell>>): Pair<List<Int>, List<Int>> {
         // number of mirrors in columns
         val colCounts = columnCounts(mirror)
 
@@ -24,13 +31,7 @@ object PointofIncidence {
         val mirrorColumns = possibleColumns.filter { columnMirror(it, mirror) }
         val mirrorRows = possibleRows.filter { rowMirror(it, mirror) }
 
-
-
-        println("pc: $possibleColumns pr: $possibleRows")
-        val column = mirrorColumns.firstOrNull() ?: 0
-        val row = mirrorRows.firstOrNull() ?: 0
-
-        return column + 100 * row
+        return mirrorColumns to mirrorRows
     }
 
     fun columnMirror(center: Int, mirror: Array<Array<Cell>>): Boolean {
@@ -129,8 +130,35 @@ object PointofIncidence {
     }
 
     fun part2(list: List<String>): Int {
-        val directions = parseInput(list)
-        return 0
+        val mirrors = parseInput(list)
+        return mirrors.mapIndexed { idx, mirror ->
+            val initial = calc1(mirror)
+            val newValues = mutableSetOf<Pair<List<Int>, List<Int>>>()
+            for (i in mirror.indices) {
+                for (j in mirror[0].indices) {
+                    val save = mirror[i][j]
+                    mirror[i][j] = if (mirror[i][j] == Cell.Mirror) Cell.Field else Cell.Mirror
+                    val changed = calc1(mirror)
+                    mirror[i][j] = save
+                    if (changed != initial && changed != emptyList<Int>() to emptyList<Int>()) {
+                        println("NEW: $initial -> $changed")
+                        val f = if (changed.first == initial.first) 0 else changed.first
+                        val s = if (changed.second == initial.second) 0 else changed.second
+
+                        newValues.add(changed.first.minus(initial.first) to changed.second.minus(initial.second))
+                    }
+                }
+
+            }
+
+            require(newValues.size == 1) {
+                "Oops for $idx"
+            }
+
+
+            return@mapIndexed (newValues.first().first.firstOrNull()
+                ?: 0) + 100 * (newValues.first().second.firstOrNull() ?: 0)
+        }.sum()
     }
 
     fun parseInput(list: List<String>): List<Array<Array<Cell>>> {
@@ -163,5 +191,5 @@ fun main() {
     println("part 2: $res2")
 
     checkResult(res1, 33195)
-    checkResult(res2, 0)
+    checkResult(res2, 31836)
 }
