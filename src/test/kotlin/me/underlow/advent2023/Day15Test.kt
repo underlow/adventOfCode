@@ -13,7 +13,7 @@ class LensLibraryTest {
     @Test
     fun testPart2() {
         val result = LensLibrary.part2(input.split("\n"))
-        assertEquals(0, result)
+        assertEquals(145, result)
     }
 }
 
