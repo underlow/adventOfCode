@@ -5,22 +5,22 @@ import me.underlow.advent2022.readInput
 
 object TheFloorWillBeLava {
     enum class Dir { Up, Down, Left, Right }
-    data class Beam(val id: Int, val row: Int, val col: Int, val dir: Dir) {
+    data class Beam(val row: Int, val col: Int, val dir: Dir) {
         fun move(dir: Dir): Beam {
             return when (dir) {
-                Dir.Up -> Beam(id = id, row = row - 1, col = col, dir = dir)
-                Dir.Down -> Beam(id = id, row = row + 1, col = col, dir = dir)
-                Dir.Left -> Beam(id = id, row = row, col = col - 1, dir = dir)
-                Dir.Right -> Beam(id = id, row = row, col = col + 1, dir = dir)
+                Dir.Up -> Beam(row = row - 1, col = col, dir = dir)
+                Dir.Down -> Beam(row = row + 1, col = col, dir = dir)
+                Dir.Left -> Beam(row = row, col = col - 1, dir = dir)
+                Dir.Right -> Beam(row = row, col = col + 1, dir = dir)
             }
         }
 
         fun split(dir: Dir): Beam {
             return when (dir) {
-                Dir.Up -> Beam(id = id + 1, row = row - 1, col = col, dir = dir)
-                Dir.Down -> Beam(id = id + 1, row = row + 1, col = col, dir = dir)
-                Dir.Left -> Beam(id = id + 1, row = row, col = col - 1, dir = dir)
-                Dir.Right -> Beam(id = id + 1, row = row, col = col + 1, dir = dir)
+                Dir.Up -> Beam(row = row - 1, col = col, dir = dir)
+                Dir.Down -> Beam(row = row + 1, col = col, dir = dir)
+                Dir.Left -> Beam(row = row, col = col - 1, dir = dir)
+                Dir.Right -> Beam(row = row, col = col + 1, dir = dir)
             }
         }
     }
@@ -78,7 +78,7 @@ object TheFloorWillBeLava {
 
     fun part1(list: List<String>): Int {
         val field = parseInput(list)
-        val beams = mutableListOf(Beam(1, 0, 0, Dir.Right))
+        val beams = mutableListOf(Beam(0, 0, Dir.Right))
 
         while (beams.isNotEmpty()) {
             val beam = beams.first()
@@ -94,8 +94,39 @@ object TheFloorWillBeLava {
     }
 
     fun part2(list: List<String>): Int {
-        val directions = parseInput(list)
-        return 0
+        val field = parseInput(list)
+
+        val starting =
+            (0 until field[0].size).map {
+                listOf(
+                    Beam(0, it, Dir.Down),
+                    Beam(field.size - 1, it, Dir.Up),
+                )
+            }.flatten() +
+                    (0 until field.size).map {
+                        listOf(
+                            Beam(it, 0, Dir.Left),
+                            Beam(it, field[0].size - 1, Dir.Left),
+                        )
+                    }.flatten()
+
+        val max = starting.map { beam ->
+            val f = parseInput(list)
+            val beams = mutableListOf(beam)
+            while (beams.isNotEmpty()) {
+                val beam = beams.first()
+                beams.removeAt(0)
+                val newBeams = f.makeMove(beam)
+                beams.addAll(newBeams)
+//            field.dump()
+            }
+
+            return@map f.sumOf {
+                it.count { it.visited.isNotEmpty() }
+            }
+        }
+
+        return max.max()
     }
 
     private fun parseInput(list: List<String>): Array<Array<Cell>> =
@@ -131,5 +162,5 @@ fun main() {
     println("part 2: $res2")
 
     checkResult(res1, 6994)
-    checkResult(res2, 0)
+    checkResult(res2, 7488)
 }
