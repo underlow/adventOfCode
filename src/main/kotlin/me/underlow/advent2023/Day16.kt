@@ -1,10 +1,10 @@
 package me.underlow.advent2023
 
+import me.underlow.Dir
 import me.underlow.advent2022.checkResult
 import me.underlow.advent2022.readInput
 
 object TheFloorWillBeLava {
-    enum class Dir { Up, Down, Left, Right }
     data class Beam(val row: Int, val col: Int, val dir: Dir) {
         fun move(dir: Dir): Beam {
             return when (dir) {

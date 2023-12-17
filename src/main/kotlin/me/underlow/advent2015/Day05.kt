@@ -1,6 +1,7 @@
 package me.underlow.advent2015
 
 import me.underlow.advent2022.checkResult
+import me.underlow.advent2022.readInput
 import kotlin.math.abs
 
 object DoesntHeHaveInternElvesForThis {

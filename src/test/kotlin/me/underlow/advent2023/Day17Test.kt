@@ -11,6 +11,12 @@ class ClumsyCrucibleTest {
     }
 
     @Test
+    fun testPart11() {
+        val result = ClumsyCrucible.part1(input12.split("\n"))
+        assertEquals(102, result)
+    }
+
+    @Test
     fun testPart2() {
         val result = ClumsyCrucible.part2(input.split("\n"))
         assertEquals(0, result)
@@ -31,4 +37,8 @@ private val input = """
     1224686865563
     2546548887735
     4322674655533
+""".trimIndent()
+private val input12 = """
+    241343
+    321545
 """.trimIndent()
