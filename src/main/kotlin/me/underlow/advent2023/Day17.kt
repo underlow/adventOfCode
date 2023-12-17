@@ -25,7 +25,7 @@ object ClumsyCrucible {
     data class VisitedKey(val dir: Dir, val steps: Int)
     data class Cell(
         val heat: Int, val accMinHeat: MutableMap<VisitedKey, Int> = mutableMapOf(),
-        val path: MutableMap<Dir, Beam> = mutableMapOf()
+//        val path: MutableMap<Dir, Beam> = mutableMapOf()
     ) {
         init {
             accMinHeat[VisitedKey(Dir.Up, 1)] = Int.MAX_VALUE
@@ -52,53 +52,10 @@ object ClumsyCrucible {
             .filter {
                 // point where we go
                 val accHeat = this[it.point.row][it.point.col].heat + it.accHeat
-                return@filter this[it.point.row][it.point.col].accMinHeat[VisitedKey(it.dir, it.steps)]!! >= accHeat
-            }.map {
-                val accHeat = this[it.point.row][it.point.col].heat + it.accHeat
-                this[it.point.row][it.point.col].accMinHeat[VisitedKey(it.dir, it.steps)] = accHeat
-                this[it.point.row][it.point.col].path[it.dir] = it
-                return@map it.copy(accHeat = accHeat)
-            }.toList()
-
-        return beams
-    }
-
-    private fun Array<Array<Cell>>.makeMoveWeak(beam: Beam): List<Beam> {
-        if (beam.point == Point(this.size - 1, this[0].size - 1))
-            return emptyList()
-
-        val beams = beam.nextMove().asSequence()
-            .filter { it.dir == Dir.Down || it.dir == Dir.Right }
-            .filter { it.point.col in 0 until this[0].size && it.point.row in 0 until size }
-            .filter {
-                // point where we go
-                val accHeat = this[it.point.row][it.point.col].heat + it.accHeat
                 return@filter this[it.point.row][it.point.col].accMinHeat[VisitedKey(it.dir, it.steps)]!! > accHeat
             }.map {
                 val accHeat = this[it.point.row][it.point.col].heat + it.accHeat
                 this[it.point.row][it.point.col].accMinHeat[VisitedKey(it.dir, it.steps)] = accHeat
-                this[it.point.row][it.point.col].path[it.dir] = it
-                return@map it.copy(accHeat = accHeat)
-            }.toList()
-
-        return beams
-    }
-
-    private fun Array<Array<Cell>>.makeMoveWeak2(beam: Beam): List<Beam> {
-        if (beam.point == Point(this.size - 1, this[0].size - 1))
-            return emptyList()
-
-        val beams = beam.nextMove().asSequence()
-            .filter { it.dir == Dir.Down || it.dir == Dir.Right || it.dir == Dir.Left }
-            .filter { it.point.col in 0 until this[0].size && it.point.row in 0 until size }
-            .filter {
-                // point where we go
-                val accHeat = this[it.point.row][it.point.col].heat + it.accHeat
-                return@filter this[it.point.row][it.point.col].accMinHeat[VisitedKey(it.dir, it.steps)]!! > accHeat
-            }.map {
-                val accHeat = this[it.point.row][it.point.col].heat + it.accHeat
-                this[it.point.row][it.point.col].accMinHeat[VisitedKey(it.dir, it.steps)] = accHeat
-                this[it.point.row][it.point.col].path[it.dir] = it
                 return@map it.copy(accHeat = accHeat)
             }.toList()
 
@@ -107,6 +64,7 @@ object ClumsyCrucible {
 
     fun part1(list: List<String>): Int {
         val field = parseInput(list)
+
         val beams = mutableListOf<Beam>().also {
             it.add(Beam(Point(0, 0), Dir.Right, 1, 0))
         }
@@ -123,45 +81,17 @@ object ClumsyCrucible {
         while (beams.isNotEmpty()) {
             val beam = beams.last()
             beams.removeAt(beams.size - 1)
-            val newBeams = field.makeMoveWeak(beam)
-            beams.addAll(newBeams.filter { it.accHeat < minPath }.sortedBy { it.point.col * it.point.row })
-        }
-        println("First")
-        beams.add(Beam(Point(0, 0), Dir.Right, 1, 0))
-        minPath = min(minPath, field[field.size - 1][field[0].size - 1].accMinHeat.map { it.value }.min())
-        println(minPath)
-        while (beams.isNotEmpty()) {
-            val beam = beams.last()
-            beams.removeAt(beams.size - 1)
-            val newBeams = field.makeMoveWeak2(beam)
-
-            val f = newBeams.filter { it.point == Point(field.size - 1, field[0].size - 1) }
-            if (f.isNotEmpty()) {
-                minPath = min(minPath, f.minOf { it.accHeat })
-                println("New min: $minPath")
-
-            }
-
-            beams.addAll(newBeams.filter { it.accHeat < minPath }.sortedBy { it.point.col * it.point.row })
-        }
-        println("Second")
-
-        beams.add(Beam(Point(0, 0), Dir.Right, 1, 0))
-        minPath = min(minPath, field[field.size - 1][field[0].size - 1].accMinHeat.map { it.value }.min())
-        println(minPath)
-        while (beams.isNotEmpty()) {
-            val beam = beams.last()
-            beams.removeAt(beams.size - 1)
             val newBeams = field.makeMove(beam)
 
             val f = newBeams.filter { it.point == Point(field.size - 1, field[0].size - 1) }
             if (f.isNotEmpty()) {
                 minPath = min(minPath, f.minOf { it.accHeat })
                 println("New min: $minPath")
-
             }
 
-            beams.addAll(newBeams.filter { it.accHeat < minPath }.sortedBy { it.point.col * it.point.row })
+            beams.addAll(newBeams.filter { it.accHeat < minPath })
+
+            beams.sortBy { it.point.col * it.point.row }
         }
 
         return field[field.size - 1][field[0].size - 1].accMinHeat.map { it.value }.min()
@@ -185,6 +115,6 @@ fun main() {
     println("part 1: $res1")
     println("part 2: $res2")
 
-    checkResult(res1, 0) // 999 high
+    checkResult(res1, 684) // 999 high
     checkResult(res2, 0)
 }
