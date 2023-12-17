@@ -1,6 +1,7 @@
 package me.underlow.advent2015
 
 import me.underlow.advent2022.checkResult
+import me.underlow.advent2022.readInput
 import java.io.File
 
 object ProbablyAFireHazard {
@@ -133,6 +134,5 @@ fun main() {
     println(res2)
 }
 
-fun readInput(filename: String) = File(filename).readLines()
 fun readInputAsString(filename: String) = File(filename).readText().trim()
 const val pathPrefix = "src/main/kotlin/me/underlow/advent2015"
