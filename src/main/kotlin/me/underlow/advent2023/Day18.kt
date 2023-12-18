@@ -4,16 +4,17 @@ import me.underlow.Dir
 import me.underlow.Point
 import me.underlow.advent2022.checkResult
 import me.underlow.advent2022.readInput
+import kotlin.math.abs
 
 object LavaductLagoon {
 
-    data class Command(val dir: Dir, val steps: Long, val color: String)
+    data class Command(val dir: Dir, val steps: Int, val color: String)
     data class Hole(val point: Point, val color: String)
 
     fun part1(list: List<String>): Long {
         val commands = parseInput(list)
 
-        return calc(commands)
+        return calc2(commands)
     }
 
     private fun calc(commands: List<Command>): Long {
@@ -76,16 +77,44 @@ object LavaductLagoon {
         return width * height - empty.size.toLong()
     }
 
+
+    private fun calc2(commands: List<Command>): Long {
+        // all polygon points
+        val polygon = mutableListOf<Point>()
+        polygon.add(Point(0, 0))
+
+        var current = Point(0, 0)
+        var perimeter = 0
+        for (i in 0 until commands.size) {
+            current = current.move(commands[i].dir, commands[i].steps)
+            polygon.add(current)
+            perimeter += commands[i].steps
+        }
+
+        polygon.removeAt(polygon.size - 1)
+
+        val s1 = (0 until polygon.size - 1).map { polygon[it].row.toLong() * polygon[it + 1].col.toLong() }
+            .map { it.toLong() }.sum()
+        val s2 = (0 until polygon.size - 1).map { polygon[it + 1].row.toLong() * polygon[it].col.toLong() }
+            .map { it.toLong() }.sum()
+        val p1 = polygon[polygon.size - 1].row.toLong() * polygon[0].col.toLong()
+        val p2 = polygon[polygon.size - 1].col.toLong() * polygon[0].row.toLong()
+
+        val r = abs(s1 + p1 - s2 - p2)
+
+        return r / 2 + perimeter / 2 + 1
+    }
+
     fun part2(list: List<String>): Long {
         val commands = parseInput2(list)
 
-        return calc(commands)
+        return calc2(commands)
     }
 
     private fun parseInput(list: List<String>): List<Command> {
         return list.map {
             val s = it.split(" ")
-            return@map Command(s[0].toDir(), s[1].toLong(), s[2])
+            return@map Command(s[0].toDir(), s[1].toInt(), s[2])
         }
     }
 
@@ -93,7 +122,7 @@ object LavaductLagoon {
         return list.map {
             val s = it.split(" ")
             val color = s[2].substring(1, s[2].length - 1)
-            val distance = color.substring(1, 6).toLong(radix = 16)
+            val distance = color.substring(1, 6).toInt(radix = 16)
             val dir = when (color.last()) {
                 '0' -> Dir.Right
                 '1' -> Dir.Down
@@ -128,5 +157,5 @@ fun main() {
     println("part 2: $res2")
 
     checkResult(res1, 35991)
-    checkResult(res2, 0)
+    checkResult(res2, 54058824661845)
 }

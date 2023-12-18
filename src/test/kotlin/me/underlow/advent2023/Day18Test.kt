@@ -11,6 +11,12 @@ class LavaductLagoonTest {
     }
 
     @Test
+    fun testPart12() {
+        val result = LavaductLagoon.part1(input1.split("\n"))
+        assertEquals(21, result)
+    }
+
+    @Test
     fun testPart2() {
         val result = LavaductLagoon.part2(input.split("\n"))
         assertEquals(952408144115, result)
@@ -32,4 +38,11 @@ private val input = """
     U 3 (#a77fa3)
     L 2 (#015232)
     U 2 (#7a21e3)
+""".trimIndent()
+
+private val input1 = """
+    R 6 (#70c710)
+    D 2 (#70c710)
+    L 6 (#70c710)
+    U 2 (#70c710)
 """.trimIndent()

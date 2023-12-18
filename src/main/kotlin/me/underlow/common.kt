@@ -29,4 +29,19 @@ data class Point(val row: Int, val col: Int) {
         }
     }
 
+    fun move(dir: Dir, steps: Int): Point {
+        return when (dir) {
+            Dir.Up -> Point(row = row - steps, col = col)
+            Dir.Down -> Point(row = row + steps, col = col)
+            Dir.Left -> Point(row = row, col = col - steps)
+            Dir.Right -> Point(row = row, col = col + steps)
+        }
+    }
+
+    operator fun plus(other: Point) = Point(row + other.row, col + other.col)
+
+    companion object {
+        val ZERO = Point(0, 0)
+    }
+
 }
