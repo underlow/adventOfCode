@@ -13,7 +13,7 @@ class LavaductLagoonTest {
     @Test
     fun testPart2() {
         val result = LavaductLagoon.part2(input.split("\n"))
-        assertEquals(0, result)
+        assertEquals(952408144115, result)
     }
 }
 
