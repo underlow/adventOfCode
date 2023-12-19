@@ -2,87 +2,146 @@ package me.underlow.advent2023
 
 import me.underlow.advent2022.checkResult
 import me.underlow.advent2022.readInputAsString
+import java.math.BigInteger
 
 object Aplenty {
 
     data class Workflow(val name: String, val rules: List<Rule>) {
-        fun apply(parts: List<Part>): String {
+        fun apply(parts: List<Part>): List<Pair<String, List<Part>>> {
+            val pairs = mutableListOf<Pair<String, List<Part>>>()
+            var rest = listOf<Part>(*parts.toTypedArray())
             for (rule in rules) {
-                val a = rule.apply(parts)
-                if (a.isNotEmpty())
-                    return a
+                val a = rule.apply(rest)
+
+                rest = a.filter { it.first == "" }.firstOrNull()?.second ?: emptyList()
+                pairs.addAll(a.filter { it.first != "" })
+
+                if (rest.isEmpty())
+                    return pairs
             }
-            error("Oops")
+            return pairs
         }
     }
 
     interface Rule {
-        fun apply(parts: List<Part>): String
+        fun apply(parts: List<Part>): List<Pair<String, List<Part>>>
     }
 
     data class IfRule(val symbol: String, val c: Char, val i: Int, val dir: String) : Rule {
-        fun compareNum(n: Int): Boolean {
-            if (c == '>' && n > i) return true
-            if (c == '<' && n < i) return true
-            return false
-        }
-
-
-        override fun apply(parts: List<Part>): String {
+        override fun apply(parts: List<Part>): List<Pair<String, List<Part>>> {
             for (part in parts) {
-                if (part.name == symbol && compareNum(part.rating))
-                    return dir
+                if (part.name == symbol) {
+                    val restOfPartList = parts - part
+                    if (i in part.rating) {
+                        val newPartLow = part.copy(rating = part.rating.first..i)
+                        val newPartUp = part.copy(rating = i..part.rating.last)
+                        if (c == '<') {
+                            return listOf(
+                                dir to (restOfPartList + newPartLow),
+                                "" to (restOfPartList + newPartUp)
+                            )
+                        } else {
+                            return listOf(
+                                "" to (restOfPartList + newPartLow),
+                                dir to (restOfPartList + newPartUp)
+                            )
+                        }
+                    } else {
+                        if (c == '<' && i < part.rating.first) {
+                            return listOf("" to (parts))
+                        }
+                        if (c == '<' && i >= part.rating.last) {
+                            return listOf(dir to (parts))
+                        }
+                        if (c == '>' && i < part.rating.first) {
+                            return listOf(dir to (parts))
+                        }
+                        if (c == '>' && i >= part.rating.last) {
+                            return listOf("" to (parts))
+                        }
+                    }
+                }
+
+
             }
-            return ""
+
+            return error("oops")
         }
     }
 
     data class Pass(val to: String) : Rule {
-        override fun apply(parts: List<Part>): String = to
+        override fun apply(parts: List<Part>): List<Pair<String, List<Part>>> = listOf(to to parts)
     }
 
     object Accept : Rule {
-        override fun apply(parts: List<Part>): String = "A"
+        override fun apply(parts: List<Part>): List<Pair<String, List<Part>>> = listOf("A" to parts)
     }
 
     object Reject : Rule {
-        override fun apply(parts: List<Part>): String = "R"
+        override fun apply(parts: List<Part>): List<Pair<String, List<Part>>> = listOf("R" to parts)
     }
 
-    data class Part(val name: String, val rating: Int)
+    data class Part(val name: String, val rating: IntRange)
 
 
-    fun part1(list: String): Int {
+    fun part1(list: String): BigInteger {
         val (workflows, parts) = parseInput(list)
+        val accepted = calc(workflows, parts)
+
+        return accepted.map { it.map { it.rating.first }.sum() }.sum().toBigInteger()
+    }
+
+    private fun calc(workflows: List<Workflow>, parts: List<List<Part>>): MutableList<List<Part>> {
+
         val accepted = mutableListOf<List<Part>>()
-
+        val start = workflows.find { it.name == "in" }!!
+        val queue = mutableListOf<Pair<Workflow, List<Part>>>()
         for (part in parts) {
-
-
-            val start = workflows.find { it.name == "in" }!!
-            var current = start
-            var cont = true
-            while (cont) {
-                val res = current.apply(part)
-                if (res == "A") {
-                    accepted.add(part)
-                    cont = false
-                    continue
-                }
-                if (res == "R") {
-                    cont = false
-                    continue
-                }
-                current = workflows.find { it.name == res }!!
-            }
+            queue.add(start to part)
         }
 
-        return accepted.map { it.map { it.rating }.sum() }.sum()
+        while (queue.isNotEmpty()) {
+            val part = queue.last()
+            queue.removeAt(queue.lastIndex)
+
+            val result = part.first.apply(part.second)
+            for (res in result) {
+                if (res.first == "A") {
+                    accepted.add(part.second)
+//                        cont = false
+                    continue
+                }
+                if (res.first == "R") {
+//                        cont = false
+                    continue
+                }
+                val current = workflows.find { it.name == res.first }!!
+                queue.add(current to res.second)
+//                }
+            }
+        }
+        return accepted
     }
 
-    fun part2(list: String): Int {
-        val directions = parseInput(list)
-        return 0
+    fun part2(list: String): BigInteger {
+        val (workflows, _) = parseInput(list)
+        val parts = listOf(
+            listOf(
+                Part("x", 1..4000),
+                Part("m", 1..4000),
+                Part("a", 1..4000),
+                Part("s", 1..4000),
+            )
+        )
+        val accepted = calc(workflows, parts)
+
+        val map = accepted
+            .map {
+                val reduce =
+                    it.map { BigInteger.valueOf(it.rating.count().toLong()) }.reduce { acc, unit -> acc.multiply(unit) }
+                reduce
+            }
+        return map.reduce { acc, unit -> acc.add(unit) }
     }
 
     private fun parseInput(list: String): Pair<List<Workflow>, List<List<Part>>> {
@@ -105,7 +164,7 @@ object Aplenty {
     private fun parsePart(it: String): Part {
         val n = it.substring(0, it.indexOf('='))
         val i = it.substring(it.indexOf('=') + 1).toInt()
-        return Part(n, i)
+        return Part(n, i..i)
     }
 
     private fun parseWorkflow(line: String): Workflow {
@@ -152,6 +211,6 @@ fun main() {
     println("part 1: $res1")
     println("part 2: $res2")
 
-    checkResult(res1, 0)
+    checkResult(res1, 406934)
     checkResult(res2, 0)
 }

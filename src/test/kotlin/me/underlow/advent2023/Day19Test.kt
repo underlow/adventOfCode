@@ -2,18 +2,19 @@ package me.underlow.advent2023
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import java.math.BigInteger
 
 class AplentyTest {
     @Test
     fun testPart1() {
         val result = Aplenty.part1(input)
-        assertEquals(19114, result)
+        assertEquals(BigInteger.valueOf(19114), result)
     }
 
     @Test
     fun testPart2() {
         val result = Aplenty.part2(input)
-        assertEquals(0, result)
+        assertEquals(BigInteger.valueOf(167409079868000), result)
     }
 }
 
