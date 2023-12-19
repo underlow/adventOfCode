@@ -16,6 +16,10 @@ object Aplenty {
                 rest = a.filter { it.first == "" }.firstOrNull()?.second ?: emptyList()
                 pairs.addAll(a.filter { it.first != "" })
 
+                if (a.filter { it.first != "" }.size > 1) {
+                    println("dfger")
+                }
+
                 if (rest.isEmpty())
                     return pairs
             }
@@ -111,7 +115,9 @@ object Aplenty {
                 queue.add(current to res.second)
             }
         }
-        println(accepted.map { it.joinToString() }.joinToString("\n"))
+        println(accepted.sortedBy { it.first().rating.first }
+            .map { it.joinToString { "Part(name=${it.name}, rating=${it.rating.first.toString()})" } }
+            .joinToString("\n"))
         return accepted
     }
 
@@ -198,11 +204,11 @@ object Aplenty {
 fun main() {
     val input = readInputAsString("$pathPrefix23/day19.txt")
     val res1 = Aplenty.part1(input)
-    val res2 = Aplenty.part2(input)
+//    val res2 = Aplenty.part2(input)
 
     println("part 1: $res1")
-    println("part 2: $res2")
+//    println("part 2: $res2")
 
     checkResult(res1, 406934)
-    checkResult(res2, 0)
+//    checkResult(res2, 0)
 }
