@@ -6,13 +6,13 @@ import org.junit.jupiter.api.Test
 class AplentyTest {
     @Test
     fun testPart1() {
-        val result = Aplenty.part1(input.split("\n"))
+        val result = Aplenty.part1(input)
         assertEquals(19114, result)
     }
 
     @Test
     fun testPart2() {
-        val result = Aplenty.part2(input.split("\n"))
+        val result = Aplenty.part2(input)
         assertEquals(0, result)
     }
 }
