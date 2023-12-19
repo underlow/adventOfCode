@@ -41,10 +41,10 @@ object Aplenty {
                             val newPartLow = part.copy(rating = part.rating.first..(i - 1))
                             val newPartUp = part.copy(rating = i..part.rating.last)
                             if (i == part.rating.first)
-                                return listOf(
-
-                                    "" to (restOfPartList + newPartUp)
-                                )
+                                return listOf("" to (restOfPartList + newPartUp))
+                            if (i == part.rating.last) {
+                                println()
+                            }
                             return listOf(
                                 dir to (restOfPartList + newPartLow),
                                 "" to (restOfPartList + newPartUp)
@@ -53,9 +53,10 @@ object Aplenty {
                             val newPartLow = part.copy(rating = part.rating.first..i)
                             val newPartUp = part.copy(rating = (i + 1)..part.rating.last)
                             if (i == part.rating.last) {
-                                return listOf(
-                                    "" to (restOfPartList + newPartLow),
-                                )
+                                return listOf("" to (restOfPartList + newPartLow))
+                            }
+                            if (i == part.rating.first) {
+                                println()
                             }
                             return listOf(
                                 "" to (restOfPartList + newPartLow),
@@ -115,7 +116,7 @@ object Aplenty {
             val result = part.first.apply(part.second)
             for (res in result) {
                 if (res.first == "A") {
-                    accepted.add(part.second)
+                    accepted.add(res.second)
                     continue
                 }
                 if (res.first == "R") {
@@ -125,9 +126,7 @@ object Aplenty {
                 queue.add(current to res.second)
             }
         }
-        println(accepted.sortedBy { it.first().rating.first }
-            .map { it.joinToString { "Part(name=${it.name}, rating=${it.rating.first.toString()})" } }
-            .joinToString("\n"))
+
         return accepted
     }
 
@@ -145,8 +144,10 @@ object Aplenty {
 
         val map = accepted
             .map {
+                val map = it.map { BigInteger.valueOf(it.rating.count().toLong()) }
                 val reduce =
-                    it.map { BigInteger.valueOf(it.rating.count().toLong()) }.reduce { acc, unit -> acc.multiply(unit) }
+                    map
+                        .reduce { acc, unit -> acc.multiply(unit) }
                 reduce
             }
         return map.reduce { acc, unit -> acc.add(unit) }
@@ -220,5 +221,5 @@ fun main() {
     println("part 2: $res2")
 
     checkResult(res1, BigInteger.valueOf(406934))
-    checkResult(res2, 0) // 399931924904867 high
+    checkResult(res2, BigInteger.valueOf(131192538505367))
 }
