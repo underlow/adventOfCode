@@ -33,14 +33,16 @@ object Aplenty {
                 if (part.name == symbol) {
                     val restOfPartList = parts - part
                     if (i in part.rating) {
-                        val newPartLow = part.copy(rating = part.rating.first..i)
-                        val newPartUp = part.copy(rating = i..part.rating.last)
                         if (c == '<') {
+                            val newPartLow = part.copy(rating = part.rating.first..(i - 1))
+                            val newPartUp = part.copy(rating = i..part.rating.last)
                             return listOf(
                                 dir to (restOfPartList + newPartLow),
                                 "" to (restOfPartList + newPartUp)
                             )
-                        } else {
+                        } else { // c == '>'
+                            val newPartLow = part.copy(rating = part.rating.first..i)
+                            val newPartUp = part.copy(rating = (i + 1)..part.rating.last)
                             return listOf(
                                 "" to (restOfPartList + newPartLow),
                                 dir to (restOfPartList + newPartUp)
@@ -50,13 +52,13 @@ object Aplenty {
                         if (c == '<' && i < part.rating.first) {
                             return listOf("" to (parts))
                         }
-                        if (c == '<' && i >= part.rating.last) {
+                        if (c == '<' && i > part.rating.last) {
                             return listOf(dir to (parts))
                         }
                         if (c == '>' && i < part.rating.first) {
                             return listOf(dir to (parts))
                         }
-                        if (c == '>' && i >= part.rating.last) {
+                        if (c == '>' && i > part.rating.last) {
                             return listOf("" to (parts))
                         }
                     }
@@ -71,14 +73,6 @@ object Aplenty {
 
     data class Pass(val to: String) : Rule {
         override fun apply(parts: List<Part>): List<Pair<String, List<Part>>> = listOf(to to parts)
-    }
-
-    object Accept : Rule {
-        override fun apply(parts: List<Part>): List<Pair<String, List<Part>>> = listOf("A" to parts)
-    }
-
-    object Reject : Rule {
-        override fun apply(parts: List<Part>): List<Pair<String, List<Part>>> = listOf("R" to parts)
     }
 
     data class Part(val name: String, val rating: IntRange)
@@ -108,18 +102,16 @@ object Aplenty {
             for (res in result) {
                 if (res.first == "A") {
                     accepted.add(part.second)
-//                        cont = false
                     continue
                 }
                 if (res.first == "R") {
-//                        cont = false
                     continue
                 }
                 val current = workflows.find { it.name == res.first }!!
                 queue.add(current to res.second)
-//                }
             }
         }
+        println(accepted.map { it.joinToString() }.joinToString("\n"))
         return accepted
     }
 
