@@ -40,6 +40,11 @@ object Aplenty {
                         if (c == '<') {
                             val newPartLow = part.copy(rating = part.rating.first..(i - 1))
                             val newPartUp = part.copy(rating = i..part.rating.last)
+                            if (i == part.rating.first)
+                                return listOf(
+
+                                    "" to (restOfPartList + newPartUp)
+                                )
                             return listOf(
                                 dir to (restOfPartList + newPartLow),
                                 "" to (restOfPartList + newPartUp)
@@ -47,6 +52,11 @@ object Aplenty {
                         } else { // c == '>'
                             val newPartLow = part.copy(rating = part.rating.first..i)
                             val newPartUp = part.copy(rating = (i + 1)..part.rating.last)
+                            if (i == part.rating.last) {
+                                return listOf(
+                                    "" to (restOfPartList + newPartLow),
+                                )
+                            }
                             return listOf(
                                 "" to (restOfPartList + newPartLow),
                                 dir to (restOfPartList + newPartUp)
@@ -204,11 +214,11 @@ object Aplenty {
 fun main() {
     val input = readInputAsString("$pathPrefix23/day19.txt")
     val res1 = Aplenty.part1(input)
-//    val res2 = Aplenty.part2(input)
+    val res2 = Aplenty.part2(input)
 
     println("part 1: $res1")
-//    println("part 2: $res2")
+    println("part 2: $res2")
 
-    checkResult(res1, 406934)
-//    checkResult(res2, 0)
+    checkResult(res1, BigInteger.valueOf(406934))
+    checkResult(res2, 0) // 399931924904867 high
 }
