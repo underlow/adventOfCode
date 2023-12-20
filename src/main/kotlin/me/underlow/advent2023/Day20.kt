@@ -107,8 +107,115 @@ object PulsePropagation {
     }
 
     fun part2(list: List<String>): Int {
-        val directions = parseInput(list)
-        return 0
+        val group1 = listOf(
+            "%jl",
+            "%js",
+            "&hq",
+            "%gl",
+            "%mc",
+            "%xt",
+            "%ss",
+            "%mz",
+            "%sp",
+            "%gh",
+            "%rg",
+            "%zq",
+            "%qj",
+            "&jd",
+            "broadcaster"
+        ) //jd
+
+
+        val group2 = listOf(
+            "%rp",
+            "%fh",
+            "%jn",
+            "%tn",
+            "&bc",
+            "&fv",
+            "%rn",
+            "%pm",
+            "%tt",
+            "%xg",
+            "%xm",
+            "%xn",
+            "%mv",
+            "%pp",
+            "broadcaster",
+        ) // fv
+        val group3 = listOf(
+            "%rt",
+            "%kk",
+            "%ld",
+            "%nv",
+            "%fx",
+            "%kh",
+            "%ck",
+            "&hl",
+            "%ct",
+            "%rd",
+            "%zz",
+            "%kc",
+            "%kl",
+            "&lm",
+            "broadcaster",
+        ) // lm
+        val group4 = listOf(
+            "&ql",
+            "%jr",
+            "%xs",
+            "%mg",
+            "%lt",
+            "%cp",
+            "%ln",
+            "%rr",
+            "%rl",
+            "%vh",
+            "%dp",
+            "%hh",
+            "%vb",
+            "broadcaster",
+        ) // vm
+
+        val list1 = list.filter {
+            it.substring(0, it.indexOf(" ")) in group4
+        }
+        val modules = parseInput(list1)
+
+
+        // fill conjunction
+        val allConjunctionNodes = modules.filterIsInstance(Conjunction::class.java)
+        for (allConjunctionNode in allConjunctionNodes) {
+            val inputs = modules.filter { it.destination.contains(allConjunctionNode.name) }
+            allConjunctionNode.inputs.putAll(inputs.map { it.name to PulseLevel.Low }.toMap())
+        }
+        var btn = 0
+        var cont = true
+
+        while (cont) {
+            val pulseQueue = LinkedList<Pulse>()
+            pulseQueue.add(Pulse(PulseLevel.Low, "broadcaster", "button"))
+            btn++
+
+            while (pulseQueue.isNotEmpty()) {
+                val p = pulseQueue.first
+                pulseQueue.removeAt(0)
+                val dest = modules.filter { it.name == p.destination }.firstOrNull()
+                if (dest == null) {
+                    continue //????
+                }
+
+                val process = dest.process(p)
+
+                if (process.any { it.level == PulseLevel.Low && it.destination.contains("vm") }) {
+                    cont = false
+                }
+
+                pulseQueue.addAll(process)
+            }
+//            println(modules.filterIsInstance<FlipFlop>().filter { it.name !in setOf("%js", "%jl") }.joinToString("") { "${if (it.state == ModuleState.Off) "0" else "1"} " })
+        }
+        return btn
     }
 
     private fun parseInput(list: List<String>): List<Module> {
@@ -144,6 +251,9 @@ fun main() {
     println("part 1: $res1")
     println("part 2: $res2")
 
+    // part 2 really depends on the input, input is divided into groups (see pics) that works independently
+    // answer is when all output modules of the group is on in the same time, each cycle sends 1 to it's exit node once in a cycle
+    // numbers for all groups are: 3907, 3911, 3929, 4057. answer is 3907 * 3911 * 3929 * 4057
     checkResult(res1, 825896364)
-    checkResult(res2, 0)
+    checkResult(res2, 243566897206981)
 }
