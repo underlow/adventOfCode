@@ -45,3 +45,17 @@ data class Point(val row: Int, val col: Int) {
     }
 
 }
+
+fun List<String>.parseToMap(): Array<Array<Char>> =
+    map { it.toCharArray().map { it }.toTypedArray() }.toTypedArray()
+
+fun Array<Array<Char>>.findFirst(c: Char): Point {
+    for (i in this.indices) {
+        for (j in this[0].indices) {
+            if (this[i][j] == c)
+                return Point(i, j)
+        }
+    }
+    error("Char $c hasn't found")
+
+}
