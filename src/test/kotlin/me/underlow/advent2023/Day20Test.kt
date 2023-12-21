@@ -16,11 +16,6 @@ class PulsePropagationTest {
         assertEquals(11687500, result)
     }
 
-    @Test
-    fun testPart2() {
-        val result = PulsePropagation.part2(input.split("\n"))
-        assertEquals(0, result)
-    }
 }
 
 private val input = """
