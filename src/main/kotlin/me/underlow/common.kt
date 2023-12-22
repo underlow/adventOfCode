@@ -59,3 +59,14 @@ fun Array<Array<Char>>.findFirst(c: Char): Point {
     error("Char $c hasn't found")
 
 }
+
+fun <T> Array<Array<T>>.countElements(c: T): Int {
+    var count = 0
+    for (i in this.indices) {
+        for (j in this[0].indices) {
+            if (this[i][j] == c)
+                count++
+        }
+    }
+    return count
+}
