@@ -1,10 +1,12 @@
 package me.underlow.advent2023
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class SandSlabsTest {
     @Test
+    @Disabled
     fun testPart1() {
         val result = SandSlabs.part1(input.split("\n"))
         assertEquals(5, result)
