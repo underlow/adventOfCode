@@ -101,8 +101,31 @@ object CeresSearch {
     }
 
     fun part2(list: List<String>): Int {
-        val directions = parseInput(list)
-        return 0
+        val field = parseInput(list)
+
+        var count = 0
+
+        for (i in field.indices) {
+            for (j in field[0].indices) {
+                if (findXMAS(field, i, j)) count++
+            }
+        }
+
+
+
+        return count
+    }
+
+    private fun findXMAS(field: Array<Array<Char>>, i: Int, j: Int): Boolean {
+        if (field.getValue(i, j) != 'A') return false
+
+        val c1 = field.getValue(i - 1, j - 1)
+        val d1 = field.getValue(i + 1, j + 1)
+
+        val c2 = field.getValue(i - 1, j + 1)
+        val d2 = field.getValue(i + 1, j - 1)
+
+        return (setOf(c1, d1) == setOf('S', 'M')) && (setOf(c2, d2) == setOf('S', 'M'))
     }
 
     private fun parseInput(list: List<String>): Array<Array<Char>> {
@@ -117,7 +140,7 @@ fun main() {
     val res2 = CeresSearch.part2(input)
 
     checkResult(res1, 2534)
-    checkResult(res2, 0)
+    checkResult(res2, 1866)
 
     println(res1)
     println(res2)
