@@ -8,7 +8,6 @@ object PrintQueue {
         val (rules, lists) = parseInput(list)
 
         val mapLower = mutableMapOf<Int, MutableSet<Int>>()
-//        val mapUpper = mutableMapOf<Int, List<Int>>()
 
         rules.forEach { (n1, n2) ->
             mapLower.getOrPut(n1) { mutableSetOf() }.add(n2)
