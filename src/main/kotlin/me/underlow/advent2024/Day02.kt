@@ -12,8 +12,9 @@ object RedNosedReports {
     }
 
     fun part2(list: List<String>): Int {
-        val directions = parseInput(list)
-        return 0
+        val levels = parseInput(list)
+
+        return levels.count { it.isErrorSafe() || it.isSafe() }
     }
 
     private fun parseInput(list: List<String>): List<List<Int>> {
@@ -34,6 +35,17 @@ private fun List<Int>.isSafe(): Boolean {
             return false
     }
     return true
+}
+
+private fun List<Int>.isSkipSafe(idx: Int): Boolean {
+    val arr = this.map { it }.filterIndexed { index, i -> index != idx }
+    return arr.isSafe()
+}
+
+private fun List<Int>.isErrorSafe(): Boolean {
+    val any = (0..this.size).map { this.isSkipSafe(it) }.any { it }
+    println("$this: is error safe: $any ")
+    return any
 }
 
 

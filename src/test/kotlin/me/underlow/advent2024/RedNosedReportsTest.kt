@@ -11,7 +11,7 @@ class RedNosedReportsTest {
     @Test
     fun testPart2() {
         val result = RedNosedReports.part2(input.split("\n"))
-        assertEquals(0, result)
+        assertEquals(4, result)
     }
 }
 
