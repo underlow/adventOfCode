@@ -6,70 +6,96 @@ typealias Field = Array<Array<Char>>
 
 object CeresSearch {
 
-    data class Point(val x: Int, val y: Int) {
-        fun findNeighbours(): List<Point> {
-            return listOf(
-                Point(x - 1, y),
-                Point(x + 1, y),
-                Point(x, y - 1),
-                Point(x, y + 1),
-                Point(x - 1, y - 1),
-                Point(x + 1, y + 1),
-                Point(x - 1, y + 1),
-                Point(x + 1, y - 1),
+    data class Point(val x: Int, val y: Int, val char: Char) {
+
+    }
+
+    data class T2(val p: List<Point>)
+
+    fun allOptions(p: Point, field: Field): List<T2> {
+        val l = listOf(
+            listOf(
+                p.copy(char = field.getValue(p.x, p.y)),
+                Point(p.x + 1, p.y, field.getValue(p.x + 1, p.y)),
+                Point(p.x + 2, p.y, field.getValue(p.x + 2, p.y)),
+                Point(p.x + 3, p.y, field.getValue(p.x + 3, p.y))
+            ),
+            listOf(
+                p.copy(char = field.getValue(p.x, p.y)),
+                Point(p.x - 1, p.y, field.getValue(p.x - 1, p.y)),
+                Point(p.x - 2, p.y, field.getValue(p.x - 2, p.y)),
+                Point(p.x - 3, p.y, field.getValue(p.x - 3, p.y))
+            ),
+            listOf(
+                p.copy(char = field.getValue(p.x, p.y)),
+                Point(p.x, p.y - 1, field.getValue(p.x, p.y - 1)),
+                Point(p.x, p.y - 2, field.getValue(p.x, p.y - 2)),
+                Point(p.x, p.y - 3, field.getValue(p.x, p.y - 3))
+            ),
+            listOf(
+                p.copy(char = field.getValue(p.x, p.y)),
+                Point(p.x, p.y + 1, field.getValue(p.x, p.y + 1)),
+                Point(p.x, p.y + 2, field.getValue(p.x, p.y + 2)),
+                Point(p.x, p.y + 3, field.getValue(p.x, p.y + 3))
+            ),
+            listOf(
+                p.copy(char = field.getValue(p.x, p.y)),
+                Point(p.x + 1, p.y + 1, field.getValue(p.x + 1, p.y + 1)),
+                Point(p.x + 2, p.y + 2, field.getValue(p.x + 2, p.y + 3)),
+                Point(p.x + 3, p.y + 3, field.getValue(p.x + 3, p.y + 3))
+            ),
+            listOf(
+                p.copy(char = field.getValue(p.x, p.y)),
+                Point(p.x - 1, p.y + 1, field.getValue(p.x - 1, p.y + 1)),
+                Point(p.x - 2, p.y + 2, field.getValue(p.x - 2, p.y + 2)),
+                Point(p.x - 3, p.y + 3, field.getValue(p.x - 3, p.y + 3))
+            ),
+            listOf(
+                p.copy(char = field.getValue(p.x, p.y)),
+                Point(p.x - 1, p.y - 1, field.getValue(p.x - 1, p.y - 1)),
+                Point(p.x - 2, p.y - 2, field.getValue(p.x - 2, p.y - 2)),
+                Point(p.x - 3, p.y - 3, field.getValue(p.x - 3, p.y - 3))
+            ),
+            listOf(
+                p.copy(char = field.getValue(p.x, p.y)),
+                Point(p.x + 1, p.y - 1, field.getValue(p.x + 1, p.y - 1)),
+                Point(p.x + 2, p.y - 2, field.getValue(p.x + 2, p.y - 2)),
+                Point(p.x + 3, p.y - 3, field.getValue(p.x + 3, p.y - 3))
+            ),
+
+
             )
-        }
 
-        fun validNeighbours(mX: Int, mY: Int) = findNeighbours().filter { it.x in (0 until mX) && it.y in (0 until mY) }
+        return l.filter { it.all { it.x in (0 until field.size) && it.y in (0 until field[0].size) } }.map { T2(it) }
     }
 
-    data class Task(val step: Int, val point: Point, val visited: List<Point>, val l: List<Char>) {
-        fun isFinal(field: Field): Boolean {
-            return step == 4
-        }
-
-        fun next(field: Field): List<Task> {
-            val n = this.point.validNeighbours(field.size, field[0].size)
-
-            val n2 = n.filter {
-                when (step) {
-                    1 -> return@filter field[it.x][it.y] == 'M'
-                    2 -> return@filter field[it.x][it.y] == 'A'
-                    3 -> return@filter field[it.x][it.y] == 'S'
-                    else -> false
-                }
-            }
-
-            val n3 = n2.filter { it !in visited }
-
-            return n3.map { Task(step = this.step + 1, it, this.visited + it, this.l + field[it.x][it.y]) }
-        }
-
-    }
+    private fun Field.getValue(x: Int, y: Int) =
+        if (x in (0 until size) && y in (0 until this[0].size)) this[x][y] else '!'
 
     // XMAS
     fun part1(list: List<String>): Int {
         val field = parseInput(list)
-        val tasks = mutableListOf<Task>()
+        val tasks = mutableListOf<T2>()
 
         var count = 0
 
         for (i in field.indices)
             for (j in field[0].indices) {
                 if (field[i][j] == 'X')
-                    tasks += Task(1, Point(i, j), listOf(Point(i, j)), listOf(field[i][j]))
+                    tasks += allOptions(Point(i, j, ' '), field)
             }
 
         while (tasks.isNotEmpty()) {
             val t = tasks.removeLast()
-            if (t.isFinal(field)) {
+
+            if (field[t.p[0].x][t.p[0].y] == 'X' &&
+                field[t.p[1].x][t.p[1].y] == 'M' &&
+                field[t.p[2].x][t.p[2].y] == 'A' &&
+                field[t.p[3].x][t.p[3].y] == 'S'
+            ) {
+                println("Fount $t --- ${field[t.p[0].x][t.p[0].y]}${field[t.p[1].x][t.p[1].y]}${field[t.p[2].x][t.p[2].y]}${field[t.p[3].x][t.p[3].y]}")
                 count++
-                println("Find word: $t")
-                continue
             }
-
-            tasks += t.next(field)
-
         }
         return count
     }
@@ -90,7 +116,7 @@ fun main() {
     val res1 = CeresSearch.part1(input)
     val res2 = CeresSearch.part2(input)
 
-    checkResult(res1, 0)
+    checkResult(res1, 2534)
     checkResult(res2, 0)
 
     println(res1)
