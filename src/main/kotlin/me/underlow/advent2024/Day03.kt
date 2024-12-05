@@ -46,9 +46,37 @@ object MullItOver {
 
     }
 
-    fun part2(list: List<String>): Int {
-        val directions = parseInput(list)
-        return 0
+    fun part2(list: List<String>): Long {
+        val string = parseInput(list)
+
+        var sum = 0L
+        var startIdx = 0
+        var enable = true
+        do {
+            if (string.substring(startIdx).startsWith("do()")) {
+                enable = true
+            }
+            if (string.substring(startIdx).startsWith("don't()")) {
+                enable = false
+            }
+
+            if (string.substring(startIdx).startsWith("mul(")) {
+                println("Found mul( at index $startIdx")
+                val suffix = string.substring(startIdx)
+                val substring = suffix.substring(
+                    3,
+                    suffix.indexOfFirst { it == ')' } + 1)
+                println("Checking $substring substring")
+                val parseParentheses = parseParentheses(substring)
+                println("found $parseParentheses value")
+                sum += if (enable) parseParentheses else 0
+            }
+
+
+            startIdx++
+
+        } while (startIdx < string.length)
+        return sum
     }
 
     private fun parseInput(list: List<String>): String {
