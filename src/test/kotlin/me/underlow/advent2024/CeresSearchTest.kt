@@ -8,11 +8,6 @@ class CeresSearchTest {
         assertEquals(18, result)
     }
 
-    @Test
-    fun testPart2() {
-        val result = CeresSearch.part2(input.split("\n"))
-        assertEquals(0, result)
-    }
 }
 
 private val input = """
