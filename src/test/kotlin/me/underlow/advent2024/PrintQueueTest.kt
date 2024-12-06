@@ -11,7 +11,7 @@ class PrintQueueTest {
     @Test
     fun testPart2() {
         val result = PrintQueue.part2(input)
-        assertEquals(0, result)
+        assertEquals(123, result)
     }
 }
 
