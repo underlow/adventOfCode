@@ -17,7 +17,7 @@ class BridgeRepairTest {
     @Test
     fun testPart2() {
         val result = BridgeRepair.part2(input.split("\n"))
-        assertEquals(0, result)
+        assertEquals(11387, result)
     }
 }
 

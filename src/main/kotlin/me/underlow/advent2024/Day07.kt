@@ -12,9 +12,12 @@ object BridgeRepair {
         return good.sumOf { it.result }
     }
 
-    fun part2(list: List<String>): Int {
-        val directions = parseInput(list)
-        return 0
+    fun part2(list: List<String>): Long {
+        val eqs = parseInput(list)
+
+        val good = eqs.filter { it.isValid2() }
+
+        return good.sumOf { it.result }
     }
 
     private fun parseInput(list: List<String>): List<Eq> {
@@ -27,7 +30,7 @@ object BridgeRepair {
     }
 
     enum class Op(val op: String) {
-        Plus("+"), Multiply("*")
+        Plus("+"), Multiply("*"), Concat("||")
     }
 
     data class Eq(val result: Long, val numbers: List<Long>)
@@ -82,6 +85,61 @@ object BridgeRepair {
         return false
     }
 
+    private fun Eq.isValid2(): Boolean {
+        val tasks = mutableListOf<Task>()
+        tasks += Task(this, this.numbers[0], this.numbers.subList(1, this.numbers.size), listOf())
+//        tasks += Task(this, 0L, this.numbers.subList(1, this.numbers.size), listOf())
+
+        while (tasks.isNotEmpty()) {
+            val t = tasks.removeLast()
+
+            // check if it is expected result
+
+            if (t.result == this.result && t.restNumbers.isEmpty()) {
+                println("GOOD: ${this.result}, $numbers, ${t.op}, ___ ${pr(numbers, t.op)} ")
+
+                if (validate(numbers, t.op) != this.result) {
+                    println("OOOPS")
+                }
+
+                return true
+            }
+
+            if (t.result > this.result)
+                continue
+
+            if (t.restNumbers.isEmpty())
+                continue
+
+
+            val restList = if (t.restNumbers.size == 1) emptyList() else t.restNumbers.subList(1, t.restNumbers.size)
+            val t1 =
+                Task(
+                    this,
+                    t.result + t.restNumbers[0],
+                    restList,
+                    t.op + Op.Plus
+                )
+            val t2 = Task(
+                this,
+                t.result * t.restNumbers[0],
+                restList,
+                t.op + Op.Multiply
+            )
+            val t3 = Task(
+                this,
+                (t.result.toString() + t.restNumbers[0].toString()).toLong(),
+                restList,
+                t.op + Op.Concat
+            )
+
+            tasks += t1
+            tasks += t2
+            tasks += t3
+        }
+        return false
+    }
+
     fun pr(numbers: List<Long>, op: List<Op>): String {
         return buildString {
             for (i in numbers.indices) {
@@ -114,8 +172,8 @@ fun main() {
     val res1 = BridgeRepair.part1(input)
     val res2 = BridgeRepair.part2(input)
 
-    checkResult(res1, 0) // 6083020304082 high
-    checkResult(res2, 0)
+    checkResult(res1, 6083020304036) // 6083020304082 high
+    checkResult(res2, 59002246504791)
 
     println(res1)
     println(res2)
