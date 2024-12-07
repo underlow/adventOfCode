@@ -44,7 +44,7 @@ object BridgeRepair {
 
             // check if it is expected result
 
-            if (t.result == this.result) {
+            if (t.result == this.result && t.restNumbers.isEmpty()) {
                 println("GOOD: ${this.result}, $numbers, ${t.op}, ___ ${pr(numbers, t.op)} ")
 
                 if (validate(numbers, t.op) != this.result) {

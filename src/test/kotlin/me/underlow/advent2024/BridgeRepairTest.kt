@@ -9,6 +9,12 @@ class BridgeRepairTest {
     }
 
     @Test
+    fun testPart12() {
+        val result = BridgeRepair.part1(input2.split("\n"))
+        assertEquals(2, result)
+    }
+
+    @Test
     fun testPart2() {
         val result = BridgeRepair.part2(input.split("\n"))
         assertEquals(0, result)
@@ -25,4 +31,9 @@ private val input = """
 192: 17 8 14
 21037: 9 7 18 13
 292: 11 6 16 20
+""".trimIndent()
+
+private val input2 = """
+2: 2 2
+2: 2 1 
 """.trimIndent()
