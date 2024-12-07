@@ -48,11 +48,11 @@ object BridgeRepair {
             // check if it is expected result
 
             if (t.result == this.result && t.restNumbers.isEmpty()) {
-                println("GOOD: ${this.result}, $numbers, ${t.op}, ___ ${pr(numbers, t.op)} ")
+//                println("GOOD: ${this.result}, $numbers, ${t.op}, ___ ${pr(numbers, t.op)} ")
 
-                if (validate(numbers, t.op) != this.result) {
-                    println("OOOPS")
-                }
+//                if (validate(numbers, t.op) != this.result) {
+//                    println("OOOPS")
+//                }
 
                 return true
             }
@@ -96,11 +96,11 @@ object BridgeRepair {
             // check if it is expected result
 
             if (t.result == this.result && t.restNumbers.isEmpty()) {
-                println("GOOD: ${this.result}, $numbers, ${t.op}, ___ ${pr(numbers, t.op)} ")
+//                println("GOOD: ${this.result}, $numbers, ${t.op}, ___ ${pr(numbers, t.op)} ")
 
-                if (validate(numbers, t.op) != this.result) {
-                    println("OOOPS")
-                }
+//                if (validate(numbers, t.op) != this.result) {
+//                    println("OOOPS")
+//                }
 
                 return true
             }
