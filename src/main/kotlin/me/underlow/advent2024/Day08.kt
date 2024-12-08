@@ -24,7 +24,6 @@ object ResonantCollinearity {
             }
         }
 
-        var sum = 0
         val mS = mutableSetOf<Point>()
         // for each antenna char
         for (antenna in antennasMap) {
@@ -56,10 +55,6 @@ object ResonantCollinearity {
                             mS += p1.copy(col = minCol + colDif)
                         }
 
-                        sum += field.isPointInside(p1.copy(col = minCol - colDif)).toInt()
-                        sum += field.isPointInside(p1.copy(col = minCol + colDif)).toInt()
-
-//                        sum += 2
                         continue
                     }
 
@@ -79,10 +74,6 @@ object ResonantCollinearity {
                         }
 
 
-                        sum += field.isPointInside(p1.copy(row = minRow - rowDif)).toInt()
-                        sum += field.isPointInside(p1.copy(row = minRow + rowDif)).toInt()
-
-//                        sum += 2
                         continue
                     }
 
@@ -106,12 +97,6 @@ object ResonantCollinearity {
                             mS += p1.copy(row = maxRow + rowDif, col = minCol - colDif)
                         }
 
-
-                        sum += field.isPointInside(p1.copy(row = minRow - rowDif, col = maxCol + colDif)).toInt()
-                        sum += field.isPointInside(p1.copy(row = maxRow + rowDif, col = minCol - colDif)).toInt()
-
-
-//                        sum += 2
                         continue
                     }
 
@@ -133,15 +118,9 @@ object ResonantCollinearity {
                             mS += p1.copy(row = maxRow + rowDif, col = maxCol + colDif)
                         }
 
-                        sum += field.isPointInside(p1.copy(row = minRow - rowDif, col = minCol - colDif)).toInt()
-                        sum += field.isPointInside(p1.copy(row = maxRow + rowDif, col = maxCol + colDif)).toInt()
-
-
-//                        sum += 2
                         continue
                     }
 
-//                    val x1 = (p1.row + p2.row) - (p1.row - p2.row)
                 }
             }
 
@@ -158,7 +137,7 @@ object ResonantCollinearity {
         val field = parseInput(list)
 
         // just take a lot
-        val cycles = 100
+        val cycles = 50
 
         // map antenna(char) to list of coords
         val antennasMap: MutableMap<Char, List<Point>> = mutableMapOf()
@@ -190,6 +169,13 @@ object ResonantCollinearity {
 
                     println("Checking $p1(${field[p1.row][p1.col]}) $p2(${field[p2.row][p2.col]})")
 
+                    mS += p1
+                    mS += p2
+
+                    if (field[p1.row][p1.col] == 'm') {
+                        println()
+                    }
+
                     if (p1.row == p2.row) {
                         val minCol = min(p1.col, p2.col)
                         val maxCol = max(p1.col, p2.col)
@@ -206,8 +192,6 @@ object ResonantCollinearity {
                             }
 
                         }
-                        mS += p1
-                        mS += p2
                         continue
                     }
 
@@ -228,9 +212,6 @@ object ResonantCollinearity {
                             }
 
                         }
-                        mS += p1
-                        mS += p2
-
                         continue
                     }
 
@@ -268,9 +249,6 @@ object ResonantCollinearity {
                             }
 
                         }
-                        mS += p1
-                        mS += p2
-
                         continue
                     }
 
@@ -306,13 +284,9 @@ object ResonantCollinearity {
                             }
 
                         }
-                        mS += p1
-                        mS += p2
 
                         continue
                     }
-
-//                    val x1 = (p1.row + p2.row) - (p1.row - p2.row)
                 }
             }
 
@@ -329,11 +303,10 @@ object ResonantCollinearity {
         return list.parseToMap()
     }
 
-    fun <T> Array<Array<T>>.isPointInside(p: Point): Boolean {
+    private fun <T> Array<Array<T>>.isPointInside(p: Point): Boolean {
         return p.row in this.indices && p.col in this[0].indices
     }
 
-    fun Boolean.toInt() = if (this) 1 else 0
 }
 
 
