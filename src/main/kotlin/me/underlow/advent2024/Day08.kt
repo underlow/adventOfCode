@@ -196,7 +196,7 @@ object ResonantCollinearity {
                         val maxCol = max(p1.col, p2.col)
                         val colDif = maxCol - minCol
 
-                        for (step in 0 until cycles) {
+                        for (step in 1 until cycles) {
                             if (field.isPointInside(p1.copy(col = minCol - colDif * step))) {
                                 println("Point: ${p1.copy(col = minCol - colDif * step)}")
                                 mS += p1.copy(col = minCol - colDif * step)
@@ -218,7 +218,7 @@ object ResonantCollinearity {
                         val minRow = min(p1.row, p2.row)
                         val maxRow = max(p1.row, p2.row)
                         val rowDif = maxRow - minRow
-                        for (step in 0 until cycles) {
+                        for (step in 1 until cycles) {
 
                             if (field.isPointInside(p1.copy(row = minRow - rowDif * step))) {
                                 println("Point: ${p1.copy(row = minRow - rowDif * step)}")
@@ -249,7 +249,7 @@ object ResonantCollinearity {
                         val rowDif = maxRow - minRow
                         val colDif = maxCol - minCol
 
-                        for (step in 0 until cycles) {
+                        for (step in 1 until cycles) {
 
 
                             if (field.isPointInside(
@@ -301,7 +301,7 @@ object ResonantCollinearity {
 
                         val rowDif = maxRow - minRow
                         val colDif = maxCol - minCol
-                        for (step in 0 until cycles) {
+                        for (step in 1 until cycles) {
 
                             if (field.isPointInside(
                                     p1.copy(
@@ -374,7 +374,7 @@ fun main() {
     val res2 = ResonantCollinearity.part2(input)
 
     checkResult(res1, 259)//274, 537 high
-    checkResult(res2, 0)
+    checkResult(res2, 0) // 918 low
 
     println(res1)
     println(res2)
