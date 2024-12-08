@@ -173,7 +173,6 @@ object ResonantCollinearity {
             }
         }
 
-        var sum = 0
         val mS = mutableSetOf<Point>()
         // for each antenna char
         for (antenna in antennasMap) {
@@ -189,7 +188,7 @@ object ResonantCollinearity {
                     val p2 = antennas[j]
                     // there are just 4 cases:
 
-                    println("Checking $p1 $p2")
+                    println("Checking $p1(${field[p1.row][p1.col]}) $p2(${field[p2.row][p2.col]})")
 
                     if (p1.row == p2.row) {
                         val minCol = min(p1.col, p2.col)
@@ -206,8 +205,6 @@ object ResonantCollinearity {
                                 mS += p1.copy(col = minCol + colDif * step)
                             }
 
-                            sum += field.isPointInside(p1.copy(col = minCol - colDif * step)).toInt()
-                            sum += field.isPointInside(p1.copy(col = minCol + colDif * step)).toInt()
                         }
                         mS += p1
                         mS += p2
@@ -230,9 +227,6 @@ object ResonantCollinearity {
                                 mS += p1.copy(row = minRow + rowDif * step)
                             }
 
-
-                            sum += field.isPointInside(p1.copy(row = minRow - rowDif * step)).toInt()
-                            sum += field.isPointInside(p1.copy(row = minRow + rowDif * step)).toInt()
                         }
                         mS += p1
                         mS += p2
@@ -273,19 +267,6 @@ object ResonantCollinearity {
                                 mS += p1.copy(row = maxRow + rowDif * step, col = minCol - colDif * step)
                             }
 
-
-                            sum += field.isPointInside(
-                                p1.copy(
-                                    row = minRow - rowDif * step,
-                                    col = maxCol + colDif * step
-                                )
-                            ).toInt()
-                            sum += field.isPointInside(
-                                p1.copy(
-                                    row = maxRow + rowDif * step,
-                                    col = minCol - colDif * step
-                                )
-                            ).toInt()
                         }
                         mS += p1
                         mS += p2
@@ -324,18 +305,6 @@ object ResonantCollinearity {
                                 mS += p1.copy(row = maxRow + rowDif * step, col = maxCol + colDif * step)
                             }
 
-                            sum += field.isPointInside(
-                                p1.copy(
-                                    row = minRow - rowDif * step,
-                                    col = minCol - colDif * step
-                                )
-                            ).toInt()
-                            sum += field.isPointInside(
-                                p1.copy(
-                                    row = maxRow + rowDif * step,
-                                    col = maxCol + colDif * step
-                                )
-                            ).toInt()
                         }
                         mS += p1
                         mS += p2
