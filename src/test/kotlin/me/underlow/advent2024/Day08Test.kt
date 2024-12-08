@@ -1,3 +1,5 @@
+package me.underlow.advent2024
+import ResonantCollinearity
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
