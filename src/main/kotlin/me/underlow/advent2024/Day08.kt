@@ -182,13 +182,13 @@ object ResonantCollinearity {
                         val colDif = maxCol - minCol
 
                         for (step in 1 until cycles) {
-                            if (field.isPointInside(p1.copy(col = minCol - colDif * step))) {
-                                println("Point: ${p1.copy(col = minCol - colDif * step)}")
-                                mS += p1.copy(col = minCol - colDif * step)
+                            val newP1 = p1.copy(col = minCol - colDif * step)
+                            if (field.isPointInside(newP1)) {
+                                mS += newP1
                             }
-                            if (field.isPointInside(p1.copy(col = minCol + colDif * step))) {
-                                println("Point: ${p1.copy(col = minCol + colDif * step)}")
-                                mS += p1.copy(col = minCol + colDif * step)
+                            val newP2 = p1.copy(col = minCol + colDif * step)
+                            if (field.isPointInside(newP2)) {
+                                mS += newP2
                             }
 
                         }
@@ -201,14 +201,14 @@ object ResonantCollinearity {
                         val rowDif = maxRow - minRow
                         for (step in 1 until cycles) {
 
-                            if (field.isPointInside(p1.copy(row = minRow - rowDif * step))) {
-                                println("Point: ${p1.copy(row = minRow - rowDif * step)}")
-                                mS += p1.copy(row = minRow - rowDif * step)
+                            val newP1 = p1.copy(row = minRow - rowDif * step)
+                            if (field.isPointInside(newP1)) {
+                                mS += newP1
                             }
 
-                            if (field.isPointInside(p1.copy(row = minRow + rowDif * step))) {
-                                println("Point: ${p1.copy(row = minRow + rowDif * step)}")
-                                mS += p1.copy(row = minRow + rowDif * step)
+                            val newP2 = p1.copy(row = minRow + rowDif * step)
+                            if (field.isPointInside(newP2)) {
+                                mS += newP2
                             }
 
                         }
@@ -256,25 +256,16 @@ object ResonantCollinearity {
                         val colDif = maxCol - minCol
                         for (step in 1 until cycles) {
 
-                            if (field.isPointInside(
-                                    p1.copy(
-                                        row = minRow - rowDif * step,
-                                        col = minCol - colDif * step
-                                    )
-                                )
-                            ) {
-                                println("Point: ${p1.copy(row = minRow - rowDif * step, col = minCol - colDif * step)}")
-                                mS += p1.copy(row = minRow - rowDif * step, col = minCol - colDif * step)
+                            val newP1 = p1.copy(row = minRow - rowDif * step, col = minCol - colDif * step)
+                            if (field.isPointInside(newP1)) {
+                                mS += newP1
                             }
-                            if (field.isPointInside(
-                                    p1.copy(
-                                        row = maxRow + rowDif * step,
-                                        col = maxCol + colDif * step
-                                    )
-                                )
-                            ) {
-                                println("Point: ${p1.copy(row = maxRow + rowDif * step, col = maxCol + colDif * step)}")
-                                mS += p1.copy(row = maxRow + rowDif * step, col = maxCol + colDif * step)
+                            val newP2 = p1.copy(
+                                row = maxRow + rowDif * step,
+                                col = maxCol + colDif * step
+                            )
+                            if (field.isPointInside(newP2)) {
+                                mS += newP2
                             }
 
                         }
