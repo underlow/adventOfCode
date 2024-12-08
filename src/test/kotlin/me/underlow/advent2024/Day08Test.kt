@@ -13,7 +13,7 @@ class Day08Test {
     @Test
     fun testPart2() {
         val result = ResonantCollinearity.part2(input.split("\n"))
-        assertEquals(0, result)
+        assertEquals(34, result)
     }
 }
 
