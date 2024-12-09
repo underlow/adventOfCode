@@ -1,28 +1,26 @@
 package me.underlow.advent2024
 
 import me.underlow.advent2022.checkResult
-import me.underlow.advent2022.readInput
+import me.underlow.advent2022.readInputAsString
 
 object DiskFragmenter {
 
-    fun part1(list: List<String>): Int {
-        val directions = parseInput(list)
+    fun part1(disk: String): Int {
         return 0
     }
 
-    fun part2(list: List<String>): Int {
-        val directions = parseInput(list)
+    fun part2(list: String): Int {
         return 0
     }
 
-    private fun parseInput(list: List<String>): Any {
+    private fun parseInput(list: String): String {
         return 0
     }
 }
 
 
 fun main() {
-    val input = readInput("$pathPrefix24/day.txt")
+    val input = readInputAsString("$pathPrefix24/day.txt")
     val res1 = DiskFragmenter.part1(input)
     val res2 = DiskFragmenter.part2(input)
 
