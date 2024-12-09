@@ -6,13 +6,13 @@ import org.junit.jupiter.api.Test
 class DiskFragmenterTest {
     @Test
     fun testPart1() {
-        val result = DiskFragmenter.part1(input.split("\n"))
+        val result = DiskFragmenter.part1(input)
         assertEquals(1928, result)
     }
 
     @Test
     fun testPart2() {
-        val result = DiskFragmenter.part2(input.split("\n"))
+        val result = DiskFragmenter.part2(input)
         assertEquals(0, result)
     }
 }
