@@ -13,7 +13,7 @@ class DiskFragmenterTest {
     @Test
     fun testPart2() {
         val result = DiskFragmenter.part2(input)
-        assertEquals(0, result)
+        assertEquals(2858, result)
     }
 }
 
