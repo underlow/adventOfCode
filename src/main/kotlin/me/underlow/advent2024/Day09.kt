@@ -129,7 +129,7 @@ object DiskFragmenter {
 
     }
 
-    fun Char.asInt() = code - '0'.code
+    private fun Char.asInt() = code - '0'.code
 
 }
 
