@@ -133,7 +133,7 @@ fun main() {
     val res2 = HoofIt.part2(input)
 
     checkResult(res1, 709)
-    checkResult(res2, 0)
+    checkResult(res2, 1326)
 
     println(res1)
     println(res2)
