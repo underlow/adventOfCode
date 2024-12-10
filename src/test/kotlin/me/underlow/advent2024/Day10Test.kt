@@ -11,7 +11,7 @@ class HoofItTest {
     @Test
     fun testPart2() {
         val result = HoofIt.part2(input.split("\n"))
-        assertEquals(36, result)
+        assertEquals(81, result)
     }
 }
 
