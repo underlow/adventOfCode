@@ -38,6 +38,15 @@ data class Point(val row: Int, val col: Int) {
         }
     }
 
+    fun around(): List<Point> {
+        return listOf(
+            Point(row = row - 1, col = col),
+            Point(row = row + 1, col = col),
+            Point(row = row, col = col - 1),
+            Point(row = row, col = col + 1)
+        )
+    }
+
     operator fun plus(other: Point) = Point(row + other.row, col + other.col)
 
     companion object {
@@ -70,3 +79,10 @@ fun <T> Array<Array<T>>.countElements(c: T): Int {
     }
     return count
 }
+
+fun <T> Array<Array<T>>.isPointInside(p: Point): Boolean {
+    return p.row in this.indices && p.col in this[0].indices
+}
+
+// '5' -> 5 as int
+fun Char.asInt() = code - '0'.code
