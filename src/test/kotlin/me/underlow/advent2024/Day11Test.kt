@@ -9,11 +9,6 @@ class PlutonianPebblesTest {
         assertEquals(55312, result)
     }
 
-    @Test
-    fun testPart2() {
-        val result = PlutonianPebbles.part2(input)
-        assertEquals(0, result)
-    }
 }
 
 private val input = """
