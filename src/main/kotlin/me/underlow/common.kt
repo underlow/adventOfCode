@@ -1,5 +1,8 @@
 package me.underlow
 
+import kotlin.time.ExperimentalTime
+import kotlin.time.measureTime
+
 enum class Dir {
     Up, Down, Left, Right;
 
@@ -86,3 +89,12 @@ fun <T> Array<Array<T>>.isPointInside(p: Point): Boolean {
 
 // '5' -> 5 as int
 fun Char.asInt() = code - '0'.code
+
+@OptIn(ExperimentalTime::class)
+inline fun speed(block: () -> Unit) {
+    val t = measureTime {
+        block()
+    }
+    println("Execution time: $t")
+
+}

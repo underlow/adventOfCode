@@ -2,6 +2,7 @@ package me.underlow.advent2024
 
 import me.underlow.advent2022.checkResult
 import me.underlow.advent2022.readInput
+import me.underlow.speed
 import java.math.BigInteger
 
 object PlutonianPebbles {
@@ -45,11 +46,11 @@ object PlutonianPebbles {
     fun part12(list: String): Long {
         val stones = parseInput(list)
 
-        return stones.sumOf { it.blink(25) }
+        return stones.sumOf { it.blink(25) }.toLong()
 
     }
 
-    fun part2(list: String): Long {
+    fun part2(list: String): BigInteger {
         val stones = parseInput(list)
 
         return stones.sumOf { it.blink(75) }
@@ -60,11 +61,22 @@ object PlutonianPebbles {
     }
 }
 
-private fun BigInteger.blink(step: Int): Long {
-    if (step == 0) return 1
+
+// map source number -> (blinks -> result)
+private val mem = mutableMapOf<BigInteger, MutableMap<Int, BigInteger>>()
+
+private fun BigInteger.blink(step: Int): BigInteger {
+    if (mem[this]?.get(step) != null) {
+        return mem[this]?.get(step)!!
+    }
+
+    if (step == 0) return BigInteger.ONE
 
     if (this == BigInteger.ZERO) {
-        return (this + BigInteger.ONE).blink(step - 1)
+        val blink = (this + BigInteger.ONE).blink(step - 1)
+        mem.getOrPut(this) { mutableMapOf() }[step] = blink
+
+        return blink
     }
 
     if (this.toString().length % 2 == 0) {
@@ -72,23 +84,34 @@ private fun BigInteger.blink(step: Int): Long {
         val s1 = s.substring(0, s.length / 2)
         val s2 = s.substring(s.length / 2)
 
-        return s1.toBigInteger().blink(step - 1) + s2.toBigInteger().blink(step - 1)
+        val blink = s1.toBigInteger().blink(step - 1) + s2.toBigInteger().blink(step - 1)
+        mem.getOrPut(this) { mutableMapOf() }[step] = blink
+
+        return blink
     }
 
-    return (this * BigInteger.valueOf(2024)).blink(step - 1)
+    val blink = (this * BigInteger.valueOf(2024)).blink(step - 1)
+    mem.getOrPut(this) { mutableMapOf() }[step] = blink
+    return blink
 }
 
 
 fun main() {
     val input = readInput("$pathPrefix24/day11.txt")
-    val res1 = PlutonianPebbles.part1("4 4841539 66 5279 49207 134 609568 0")
-    val res12 = PlutonianPebbles.part12("4 4841539 66 5279 49207 134 609568 0")
-    val res2 = PlutonianPebbles.part2("4 4841539 66 5279 49207 134 609568 0")
+    speed {
+        val res1 = PlutonianPebbles.part1("4 4841539 66 5279 49207 134 609568 0")
+        checkResult(res1, 212655)
+        println(res1)
+    }
 
-    checkResult(res1, 212655)
-    checkResult(res12, 212655)
-    checkResult(res2, 0)
-
-    println(res1)
-    println(res2)
+    speed {
+        val res12 = PlutonianPebbles.part12("4 4841539 66 5279 49207 134 609568 0")
+        checkResult(res12, 212655)
+        println(res12)
+    }
+    speed {
+        val res2 = PlutonianPebbles.part2("4 4841539 66 5279 49207 134 609568 0")
+        checkResult(res2, "253582809724830".toBigInteger()) // 32450231489345 low
+        println(res2)
+    }
 }
