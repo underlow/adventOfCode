@@ -6,7 +6,7 @@ import me.underlow.advent2022.readInput
 object PlutonianPebbles {
 
     fun part1(list: String): Int {
-        val directions = parseInput(list)
+        val stones = parseInput(list)
         return 0
     }
 
