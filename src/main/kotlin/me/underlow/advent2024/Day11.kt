@@ -5,17 +5,17 @@ import me.underlow.advent2022.readInput
 
 object PlutonianPebbles {
 
-    fun part1(list: List<String>): Int {
+    fun part1(list: String): Int {
         val directions = parseInput(list)
         return 0
     }
 
-    fun part2(list: List<String>): Int {
+    fun part2(list: String): Int {
         val directions = parseInput(list)
         return 0
     }
 
-    private fun parseInput(list: List<String>): Any {
+    private fun parseInput(list: String): Any {
         return 0
     }
 }
@@ -23,8 +23,8 @@ object PlutonianPebbles {
 
 fun main() {
     val input = readInput("$pathPrefix24/day11.txt")
-    val res1 = PlutonianPebbles.part1(input)
-    val res2 = PlutonianPebbles.part2(input)
+    val res1 = PlutonianPebbles.part1("4 4841539 66 5279 49207 134 609568 0")
+    val res2 = PlutonianPebbles.part2("4 4841539 66 5279 49207 134 609568 0")
 
     checkResult(res1, 0)
     checkResult(res2, 0)
