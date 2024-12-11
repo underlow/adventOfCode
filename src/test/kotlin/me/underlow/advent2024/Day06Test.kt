@@ -1,7 +1,7 @@
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class GuardGallivantTest {
+class Day06Test {
     @Test
     fun testPart1() {
         val result = GuardGallivant.part1(input.split("\n"))

@@ -1,7 +1,7 @@
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class PrintQueueTest {
+class day05Test {
     @Test
     fun testPart1() {
         val result = PrintQueue.part1(input)

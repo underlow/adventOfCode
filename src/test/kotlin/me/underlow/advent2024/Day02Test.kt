@@ -1,7 +1,7 @@
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class RedNosedReportsTest {
+class Day02Test {
     @Test
     fun testPart1() {
         val result = RedNosedReports.part1(input.split("\n"))

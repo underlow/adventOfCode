@@ -1,7 +1,7 @@
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class CeresSearchTest {
+class Day04Test {
     @Test
     fun testPart1() {
         val result = CeresSearch.part1(input.split("\n"))

@@ -1,7 +1,7 @@
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class MullItOverTest {
+class Day03Test {
     @Test
     fun testPart1() {
         val result = MullItOver.part1(input.split("\n"))
