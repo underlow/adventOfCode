@@ -15,7 +15,6 @@ object PlutonianPebbles {
 
         repeat(25) {
             var i = 0
-            println("Stones: $mList")
 
             while (i < mList.size) {
                 val current = mList[i]
@@ -46,12 +45,14 @@ object PlutonianPebbles {
     fun part12(list: String): Long {
         val stones = parseInput(list)
 
-        return stones.map { it.blink(25) }.sum()
+        return stones.sumOf { it.blink(25) }
 
     }
 
     fun part2(list: String): Long {
-        return 0
+        val stones = parseInput(list)
+
+        return stones.sumOf { it.blink(75) }
     }
 
     private fun parseInput(list: String): List<BigInteger> {
