@@ -26,8 +26,9 @@ object GardenGroups {
             for (j in charField[0].indices) {
                 if (field[i][j] != null)
                     continue
-
-                val groupPoints = findPoints(charField, i, j, setOf(Point(i, j)))
+//                println("Searching for : ${Point(i,j)}")
+                val visited = mutableSetOf(Point(i, i))
+                val groupPoints = findPoints(charField, i, j, visited)
                 groupPoints.forEach { p ->
                     field[p.row][p.col] =
                         Plant(
@@ -61,15 +62,16 @@ object GardenGroups {
         return s.sum()
     }
 
-    private fun findPoints(field: Array<Array<Char>>, i: Int, j: Int, visited: Set<Point>): Set<Point> {
+    private fun findPoints(field: Array<Array<Char>>, i: Int, j: Int, visited: MutableSet<Point>): Set<Point> {
         val c = field[i][j]
         val p = Point(i, j)
-
+        visited += p
         val candidates = p.around()
             .filter { field.isPointInside(it) }
             .filter { field[it.row][it.col] == c }
             .filter { it !in visited }
-        return (candidates + listOf(p) + candidates.map { findPoints(field, it.row, it.col, visited + it) }
+//        println("Candidates for $p: ${candidates.joinToString { it.toString() +" c: " + field[it.row][it.col] }}")
+        return (candidates + listOf(p) + candidates.map { findPoints(field, it.row, it.col, visited) }
             .flatten()).toSet()
     }
 
