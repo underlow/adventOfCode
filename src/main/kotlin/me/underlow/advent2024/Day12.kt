@@ -125,6 +125,50 @@ object GardenGroups {
         return fences
     }
 
+    fun fencesDown(charField: Array<Array<Char>>): Int {
+        var fences = 0
+        for (i in charField.indices) {
+            // go by line
+            var lastFence: Char = '0'
+            for (j in charField[0].indices) {
+
+                val p = Point(i, j)
+                val down = p.move(Dir.Down)
+                val left = p.move(Dir.Left)
+
+                val downSame = when {
+                    !charField.isPointInside(down) -> false
+                    else -> charField.get(down) == charField.get(p)
+                }
+                val leftSame = when {
+                    !charField.isPointInside(left) -> false
+                    else -> charField.get(left) == charField.get(p)
+                }
+
+
+                // not fence
+                if (downSame) {
+                    continue
+                }
+                // fence but a part of already counted fence
+                if (!downSame && leftSame && lastFence == charField.get(p)) {
+                    continue
+                }
+
+                // new fence in case left the same letter but not fence
+                if (lastFence != charField.get(p)) {
+                    fences++
+                    lastFence = charField.get(p)
+                }
+
+            }
+
+            println("Row: $i   Fences: $fences")
+
+        }
+        return fences
+    }
+
 }
 
 

@@ -28,6 +28,18 @@ class GardenGroupsTest {
         assertEquals(5, result)
     }
 
+    @Test
+    fun testFencesDown() {
+        val result = GardenGroups.fencesUp(inputFences.split("\n").parseToMap())
+        assertEquals(6, result)
+    }
+
+    @Test
+    fun testFencesDown2() {
+        val result = GardenGroups.fencesUp(inputFences2.split("\n").parseToMap())
+        assertEquals(5, result)
+    }
+
 }
 
 private val input = """
