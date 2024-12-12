@@ -52,7 +52,7 @@ object GardenGroups {
         return 0
     }
 
-    private fun extractGroups(charField: Array<Array<Char>>): MutableMap<Int, List<Plant>> {
+    fun extractGroups(charField: Array<Array<Char>>): MutableMap<Int, List<Plant>> {
         val field = Array<Array<Plant?>>(charField.size) {
             Array(charField[0].size) { null }
         }
@@ -64,7 +64,7 @@ object GardenGroups {
                     continue
                 //                println("Searching for : ${Point(i,j)}")
                 val visited = mutableSetOf(Point(i, i))
-                val groupPoints = findPoints(charField, i, j, visited)
+                val groupPoints = findPoints(charField, i, j, visited) + visited
                 groupPoints.forEach { p ->
                     field[p.row][p.col] =
                         Plant(

@@ -1,4 +1,3 @@
-import me.underlow.Point
 import me.underlow.advent2024.GardenGroups
 import me.underlow.advent2024.GardenGroups.extractGroups
 import me.underlow.parseToMap
@@ -27,10 +26,12 @@ class GardenGroupsTest {
     @Test
     fun testFencesUpForGroup() {
         val charField = inputFences.split("\n").parseToMap()
-        val grouped = extractGroups(charField, field)
+        val grouped = extractGroups(charField)
 
-        val result = GardenGroups.fencesUpForGroup(charField, setOf(Point(0, 0)))
-        assertEquals(6, result)
+        val result = GardenGroups.fencesUpForGroup(charField, grouped[0]!!.map { it.point }.toSet())
+        assertEquals(1, result)
+        val result2 = GardenGroups.fencesUpForGroup(charField, grouped[2]!!.map { it.point }.toSet())
+        assertEquals(2, result2)
     }
 
     @Test
