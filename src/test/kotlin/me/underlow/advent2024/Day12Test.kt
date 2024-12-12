@@ -1,4 +1,6 @@
+import me.underlow.Point
 import me.underlow.advent2024.GardenGroups
+import me.underlow.advent2024.GardenGroups.extractGroups
 import me.underlow.parseToMap
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -19,6 +21,15 @@ class GardenGroupsTest {
     @Test
     fun testFencesUp() {
         val result = GardenGroups.fencesUp(inputFences.split("\n").parseToMap())
+        assertEquals(6, result)
+    }
+
+    @Test
+    fun testFencesUpForGroup() {
+        val charField = inputFences.split("\n").parseToMap()
+        val grouped = extractGroups(charField, field)
+
+        val result = GardenGroups.fencesUpForGroup(charField, setOf(Point(0, 0)))
         assertEquals(6, result)
     }
 

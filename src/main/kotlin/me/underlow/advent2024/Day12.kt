@@ -7,51 +7,18 @@ import me.underlow.advent2022.readInput
 object GardenGroups {
 
     data class Plant(val point: Point, val char: Char, val groupId: Int, val fence: List<Point>) {
-        fun perimeter(field: Array<Array<Plant?>>) =
-            fence.count { !field.isPointInside(it) } + fence.count { field.isPointInside(it) && field[it.row][it.col]!!.char != this.char }
+        fun perimeter(field: Array<Array<Char>>) =
+            fence.count { !field.isPointInside(it) } + fence.count { field.isPointInside(it) && field[it.row][it.col] != this.char }
     }
 
 
     fun part1(list: List<String>): Int {
         val charField = list.parseToMap()
+        val grouped = extractGroups(charField)
 
-        val field = Array<Array<Plant?>>(charField.size) {
-            Array(charField[0].size) { null }
-        }
-        var gId = 0
-        // find out groups
-        for (i in charField.indices) {
-            for (j in charField[0].indices) {
-                if (field[i][j] != null)
-                    continue
-//                println("Searching for : ${Point(i,j)}")
-                val visited = mutableSetOf(Point(i, i))
-                val groupPoints = findPoints(charField, i, j, visited)
-                groupPoints.forEach { p ->
-                    field[p.row][p.col] =
-                        Plant(
-                            p,
-                            charField[p.row][p.col],
-                            gId,
-                            p.around()
-                        )
-                }
-                gId++
-
-            }
-        }
-
-        val grouped = mutableMapOf<Int, List<Plant>>()
-
-        for (i in field.indices) {
-            for (j in field[0].indices) {
-                val p = field[i][j]!!
-                grouped[p.groupId] = grouped.getOrElse(p.groupId) { emptyList() } + listOf(p)
-            }
-        }
 
         val s = grouped.entries.map { (k, points) ->
-            val perimeter = points.sumOf { it.perimeter(field) }
+            val perimeter = points.sumOf { it.perimeter(charField) }
             val area = points.size
             return@map perimeter * area
         }
@@ -76,9 +43,51 @@ object GardenGroups {
     fun part2(list: List<String>): Int {
         val charField = list.parseToMap()
 
+        val grouped = extractGroups(charField)
+
         var fences = fencesUp(charField)
+        var fences1 = fencesUpForGroup(charField, grouped[0]!!.map { it.point }.toSet())
+        fences = fencesDown(charField)
 
         return 0
+    }
+
+    private fun extractGroups(charField: Array<Array<Char>>): MutableMap<Int, List<Plant>> {
+        val field = Array<Array<Plant?>>(charField.size) {
+            Array(charField[0].size) { null }
+        }
+        var gId = 0
+        // find out groups
+        for (i in charField.indices) {
+            for (j in charField[0].indices) {
+                if (field[i][j] != null)
+                    continue
+                //                println("Searching for : ${Point(i,j)}")
+                val visited = mutableSetOf(Point(i, i))
+                val groupPoints = findPoints(charField, i, j, visited)
+                groupPoints.forEach { p ->
+                    field[p.row][p.col] =
+                        Plant(
+                            p,
+                            charField[p.row][p.col],
+                            gId,
+                            p.around()
+                        )
+                }
+                gId++
+
+            }
+        }
+
+        val grouped = mutableMapOf<Int, List<Plant>>()
+
+        for (i in field.indices) {
+            for (j in field[0].indices) {
+                val p = field[i][j]!!
+                grouped[p.groupId] = grouped.getOrElse(p.groupId) { emptyList() } + listOf(p)
+            }
+        }
+        return grouped
     }
 
     fun fencesUp(charField: Array<Array<Char>>): Int {
@@ -114,6 +123,51 @@ object GardenGroups {
                 // new fence in case left the same letter but not fence
                 if (lastFence != charField.get(p)) {
                     fences++
+                    lastFence = charField.get(p)
+                }
+
+            }
+
+            println("Row: $i   Fences: $fences")
+
+        }
+        return fences
+    }
+
+    fun fencesUpForGroup(charField: Array<Array<Char>>, group: Set<Point>): Int {
+        var fences = 0
+        for (i in charField.indices) {
+            // go by line
+            var lastFence: Char = '0'
+            for (j in charField[0].indices) {
+
+                val p = Point(i, j)
+                val up = p.move(Dir.Up)
+                val left = p.move(Dir.Left)
+
+                val upSame = when {
+                    !charField.isPointInside(up) -> false
+                    else -> charField.get(up) == charField.get(p)
+                }
+                val leftSame = when {
+                    !charField.isPointInside(left) -> false
+                    else -> charField.get(left) == charField.get(p)
+                }
+
+
+                // not fence
+                if (upSame) {
+                    continue
+                }
+                // fence but a part of already counted fence
+                if (!upSame && leftSame && lastFence == charField.get(p)) {
+                    continue
+                }
+
+                // new fence in case left the same letter but not fence
+                if (lastFence != charField.get(p)) {
+                    if (p in group)
+                        fences++
                     lastFence = charField.get(p)
                 }
 
@@ -177,7 +231,7 @@ fun main() {
     val res1 = GardenGroups.part1(input)
     val res2 = GardenGroups.part2(input)
 
-    checkResult(res1, 0)
+    checkResult(res1, 1522850)
     checkResult(res2, 0)
 
     println(res1)
