@@ -13,36 +13,38 @@ class GardenGroupsTest {
 
     @Test
     fun testPart2() {
-        val result = GardenGroups.part2(input2.split("\n"))
+        val result = GardenGroups.part2(input.split("\n"))
         assertEquals(1206, result)
+    }
+
+    @Test
+    fun testPart21() {
+        val result = GardenGroups.part2(inputFences.split("\n"))
+        assertEquals(80, result)
+    }
+
+    @Test
+    fun testPart22() {
+        val result = GardenGroups.part2(input22.split("\n"))
+        assertEquals(436, result)
+    }
+
+    @Test
+    fun testPart23() {
+        val result = GardenGroups.part2(input23.split("\n"))
+        assertEquals(236, result)
+    }
+
+    @Test
+    fun testPart24() {
+        val result = GardenGroups.part2(input24.split("\n"))
+        assertEquals(368, result)
     }
 
     @Test
     fun testFencesUp() {
         val result = GardenGroups.fencesUp(inputFences.split("\n").parseToMap())
         assertEquals(6, result)
-    }
-
-    @Test
-    fun testFencesUpForGroup() {
-        val charField = inputFences.split("\n").parseToMap()
-        val grouped = extractGroups(charField)
-
-        val result = GardenGroups.fencesUpForGroup(charField, grouped[0]!!.map { it.point }.toSet())
-        assertEquals(1, result)
-        val result2 = GardenGroups.fencesUpForGroup(charField, grouped[2]!!.map { it.point }.toSet())
-        assertEquals(2, result2)
-    }
-
-    @Test
-    fun testFencesDownForGroup() {
-        val charField = inputFences.split("\n").parseToMap()
-        val grouped = extractGroups(charField)
-
-        val result = GardenGroups.fencesDownForGroup(charField, grouped[0]!!.map { it.point }.toSet())
-        assertEquals(1, result)
-        val result2 = GardenGroups.fencesDownForGroup(charField, grouped[2]!!.map { it.point }.toSet())
-        assertEquals(2, result2)
     }
 
     @Test
@@ -98,3 +100,24 @@ private val inputFences2 = """
     EXXXX
     EEEEE
 """.trimIndent()
+private val input22 = """
+    OOOOO
+    OXOXO
+    OOOOO
+    OXOXO
+    OOOOO
+""".trimIndent()
+private val input23 = """
+EEEEE
+EXXXX
+EEEEE
+EXXXX
+EEEEE
+""".trimIndent()
+private val input24 = """
+AAAAAA
+AAABBA
+AAABBA
+ABBAAA
+ABBAAA
+AAAAAA""".trimIndent()
