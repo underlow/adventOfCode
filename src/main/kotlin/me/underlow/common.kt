@@ -87,6 +87,11 @@ fun <T> Array<Array<T>>.isPointInside(p: Point): Boolean {
     return p.row in this.indices && p.col in this[0].indices
 }
 
+fun <T> Array<Array<T>>.get(p: Point): T {
+    return this[p.row][p.col]
+}
+
+
 // '5' -> 5 as int
 fun Char.asInt() = code - '0'.code
 

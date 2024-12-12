@@ -1,10 +1,8 @@
 package me.underlow.advent2024
 
-import me.underlow.Point
+import me.underlow.*
 import me.underlow.advent2022.checkResult
 import me.underlow.advent2022.readInput
-import me.underlow.isPointInside
-import me.underlow.parseToMap
 
 object GardenGroups {
 
@@ -78,7 +76,53 @@ object GardenGroups {
     fun part2(list: List<String>): Int {
         val charField = list.parseToMap()
 
+        var fences = fencesUp(charField)
+
         return 0
+    }
+
+    fun fencesUp(charField: Array<Array<Char>>): Int {
+        var fences = 0
+        for (i in charField.indices) {
+            // go by line
+            var lastFence: Char = '0'
+            for (j in charField[0].indices) {
+
+                val p = Point(i, j)
+                val up = p.move(Dir.Up)
+                val left = p.move(Dir.Left)
+
+                val upSame = when {
+                    !charField.isPointInside(up) -> false
+                    else -> charField.get(up) == charField.get(p)
+                }
+                val leftSame = when {
+                    !charField.isPointInside(left) -> false
+                    else -> charField.get(left) == charField.get(p)
+                }
+
+
+                // not fence
+                if (upSame) {
+                    continue
+                }
+                // fence but a part of already counted fence
+                if (!upSame && leftSame && lastFence == charField.get(p)) {
+                    continue
+                }
+
+                // new fence in case left the same letter but not fence
+                if (lastFence != charField.get(p)) {
+                    fences++
+                    lastFence = charField.get(p)
+                }
+
+            }
+
+            println("Row: $i   Fences: $fences")
+
+        }
+        return fences
     }
 
 }
