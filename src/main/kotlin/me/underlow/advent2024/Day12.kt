@@ -47,7 +47,6 @@ object GardenGroups {
 
         var fences = fencesUp(charField)
         var fences1 = fencesUpForGroup(charField, grouped[0]!!.map { it.point }.toSet())
-        fences = fencesDown(charField)
 
         return 0
     }
@@ -63,8 +62,8 @@ object GardenGroups {
                 if (field[i][j] != null)
                     continue
                 //                println("Searching for : ${Point(i,j)}")
-                val visited = mutableSetOf(Point(i, i))
-                val groupPoints = findPoints(charField, i, j, visited) + visited
+                val visited = mutableSetOf(Point(i, j))
+                val groupPoints = findPoints(charField, i, j, visited)
                 groupPoints.forEach { p ->
                     field[p.row][p.col] =
                         Plant(
@@ -179,7 +178,7 @@ object GardenGroups {
         return fences
     }
 
-    fun fencesDown(charField: Array<Array<Char>>): Int {
+    fun fencesDownForGroup(charField: Array<Array<Char>>, group: Set<Point>): Int {
         var fences = 0
         for (i in charField.indices) {
             // go by line
@@ -211,7 +210,8 @@ object GardenGroups {
 
                 // new fence in case left the same letter but not fence
                 if (lastFence != charField.get(p)) {
-                    fences++
+                    if (p in group)
+                        fences++
                     lastFence = charField.get(p)
                 }
 

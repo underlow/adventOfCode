@@ -35,21 +35,30 @@ class GardenGroupsTest {
     }
 
     @Test
+    fun testFencesDownForGroup() {
+        val charField = inputFences.split("\n").parseToMap()
+        val grouped = extractGroups(charField)
+
+        val result = GardenGroups.fencesDownForGroup(charField, grouped[0]!!.map { it.point }.toSet())
+        assertEquals(1, result)
+        val result2 = GardenGroups.fencesDownForGroup(charField, grouped[2]!!.map { it.point }.toSet())
+        assertEquals(2, result2)
+    }
+
+    @Test
     fun testFencesUp2() {
         val result = GardenGroups.fencesUp(inputFences2.split("\n").parseToMap())
         assertEquals(5, result)
     }
 
     @Test
-    fun testFencesDown() {
-        val result = GardenGroups.fencesUp(inputFences.split("\n").parseToMap())
-        assertEquals(6, result)
-    }
+    fun extractGroupsTest() {
+        val charField = inputFences.split("\n").parseToMap()
+        val grouped = extractGroups(charField)
 
-    @Test
-    fun testFencesDown2() {
-        val result = GardenGroups.fencesUp(inputFences2.split("\n").parseToMap())
-        assertEquals(5, result)
+        assertEquals(5, grouped.size)
+
+        assertEquals(true, grouped.entries.all { it.value.map { it.char }.toSet().size == 1 })
     }
 
 }
