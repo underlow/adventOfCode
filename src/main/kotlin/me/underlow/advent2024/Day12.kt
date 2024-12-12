@@ -27,7 +27,7 @@ object GardenGroups {
                 if (field[i][j] != null)
                     continue
 
-                val groupPoints = findPoints(charField, i, j, emptySet())
+                val groupPoints = findPoints(charField, i, j, setOf(Point(i, j)))
                 groupPoints.forEach { p ->
                     field[p.row][p.col] =
                         Plant(
@@ -62,17 +62,13 @@ object GardenGroups {
     }
 
     private fun findPoints(field: Array<Array<Char>>, i: Int, j: Int, visited: Set<Point>): Set<Point> {
-        val p = Point(i, j)
-
-        if (p in visited)
-            return emptySet()
-
         val c = field[i][j]
+        val p = Point(i, j)
 
         val candidates = p.around()
             .filter { field.isPointInside(it) }
             .filter { field[it.row][it.col] == c }
-//            .filter { it !in visited }
+            .filter { it !in visited }
         return (candidates + listOf(p) + candidates.map { findPoints(field, it.row, it.col, visited + it) }
             .flatten()).toSet()
     }
@@ -91,7 +87,7 @@ fun main() {
     val res1 = GardenGroups.part1(input)
     val res2 = GardenGroups.part2(input)
 
-    checkResult(res1, 0) // 34262 low
+    checkResult(res1, 0)
     checkResult(res2, 0)
 
     println(res1)
