@@ -2,22 +2,21 @@ package me.underlow.advent2024
 
 import me.underlow.advent2022.checkResult
 import me.underlow.advent2022.readInput
+import me.underlow.parseToMap
 
 object GardenGroups {
 
     fun part1(list: List<String>): Int {
-        val directions = parseInput(list)
+        val charField = list.parseToMap()
         return 0
     }
 
     fun part2(list: List<String>): Int {
-        val directions = parseInput(list)
+        val charField = list.parseToMap()
+
         return 0
     }
 
-    private fun parseInput(list: List<String>): Any {
-        return 0
-    }
 }
 
 
