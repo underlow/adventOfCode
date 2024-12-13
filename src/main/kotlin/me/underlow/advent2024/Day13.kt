@@ -2,29 +2,9 @@ package me.underlow.advent2024
 
 import me.underlow.advent2022.checkResult
 import me.underlow.advent2022.readInput
-import kotlin.math.max
 
 object ClawContraption {
     data class ClawMachine(val xA: Int, val yA: Int, val xB: Int, val yB: Int, val xPrice: Long, val yPrice: Long) {
-        fun calc(): Long {
-            val presses = mutableListOf<Pair<Long, Long>>()
-
-
-            val maxAPresses = max(xPrice / xA, yPrice / yA)
-            val maxBPresses = max(xPrice / xB, yPrice / yB)
-            for (a in 0 until maxAPresses) {
-                for (b in 0 until maxBPresses) {
-                    if (a * xA + b * xB == xPrice && a * yA + b * yB == yPrice) {
-                        presses += a to b
-                    }
-                }
-            }
-
-            if (presses.isEmpty())
-                return 0
-
-            return presses.map { aButton * it.first + bButton * it.second }.min()
-        }
 
         fun calc2(): Long {
             val a1 = xA
@@ -36,10 +16,6 @@ object ClawContraption {
 
             val y = (c2 * a1 - c1 * a2) / (b2 * a1 - b1 * a2)
             val x = (c1 - b1 * y) / a1
-
-
-//            val y = (yPrice * xA - xPrice * xB) / (yB * xA - xB * yA)
-//            val x = (xPrice - xB * y) / xA
 
             if (x * xA + y * xB == xPrice && y * yB + x * yA == yPrice) {
                 return x * aButton + y
@@ -56,7 +32,6 @@ object ClawContraption {
     fun part1(list: List<String>): Long {
         val clawMachines = parseInput(list)
 
-        // brute force
         val calc = clawMachines.map { it.calc2() }
 
         return calc.sum()
@@ -67,7 +42,6 @@ object ClawContraption {
             it.copy(xPrice = it.xPrice + 10000000000000, yPrice = it.yPrice + 10000000000000)
         }
 
-        // brute force
         val calc = clawMachines.map { it.calc2() }
 
         return calc.sum()
