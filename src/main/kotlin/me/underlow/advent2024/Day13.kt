@@ -23,16 +23,29 @@ object ClawContraption {
             if (presses.isEmpty())
                 return 0
 
-            return presses.map { 3 * it.first + it.second }.min()
+            return presses.map { aButton * it.first + bButton * it.second }.min()
         }
 
         fun calc2(): Long {
-            val presses = mutableListOf<Pair<Long, Long>>()
+            val a1 = xA
+            val b1 = xB
+            val c1 = xPrice
+            val a2 = yA
+            val b2 = yB
+            val c2 = yPrice
 
-            if (presses.isEmpty())
-                return 0
+            val y = (c2 * a1 - c1 * a2) / (b2 * a1 - b1 * a2)
+            val x = (c1 - b1 * y) / a1
 
-            return presses.map { 3 * it.first + it.second }.min()
+
+//            val y = (yPrice * xA - xPrice * xB) / (yB * xA - xB * yA)
+//            val x = (xPrice - xB * y) / xA
+
+            if (x * xA + y * xB == xPrice && y * yB + x * yA == yPrice) {
+                return x * aButton + y
+            }
+
+            return 0L
         }
 
     }
@@ -44,7 +57,7 @@ object ClawContraption {
         val clawMachines = parseInput(list)
 
         // brute force
-        val calc = clawMachines.map { it.calc() }
+        val calc = clawMachines.map { it.calc2() }
 
         return calc.sum()
     }
@@ -91,7 +104,7 @@ fun main() {
     val res2 = ClawContraption.part2(input)
 
     checkResult(res1, 27157)
-    checkResult(res2, 0)
+    checkResult(res2, 104015411578548)
 
     println(res1)
     println(res2)

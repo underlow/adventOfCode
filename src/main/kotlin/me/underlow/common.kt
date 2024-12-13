@@ -103,3 +103,11 @@ inline fun speed(block: () -> Unit) {
     println("Execution time: $t")
 
 }
+
+fun gcd(x: Long, y: Long): Long {
+    return if (y == 0L) x else gcd(y, x % y)
+}
+
+fun gcd(x: Int, y: Int): Int {
+    return if (y == 0) x else gcd(y, x % y)
+}
