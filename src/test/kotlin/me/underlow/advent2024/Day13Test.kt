@@ -6,7 +6,7 @@ class ClawContraptionTest {
     @Test
     fun testPart1() {
         val result = ClawContraption.part1(input.split("\n"))
-        assertEquals(0, result)
+        assertEquals(480, result)
     }
 
     @Test
