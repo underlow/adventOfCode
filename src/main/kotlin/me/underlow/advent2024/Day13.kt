@@ -5,9 +5,9 @@ import me.underlow.advent2022.readInput
 import kotlin.math.max
 
 object ClawContraption {
-    data class ClawMachine(val xA: Int, val yA: Int, val xB: Int, val yB: Int, val xPrice: Int, val yPrice: Int) {
-        fun calc(): Int {
-            val presses = mutableListOf<Pair<Int, Int>>()
+    data class ClawMachine(val xA: Int, val yA: Int, val xB: Int, val yB: Int, val xPrice: Long, val yPrice: Long) {
+        fun calc(): Long {
+            val presses = mutableListOf<Pair<Long, Long>>()
 
 
             val maxAPresses = max(xPrice / xA, yPrice / yA)
@@ -26,21 +26,12 @@ object ClawContraption {
             return presses.map { 3 * it.first + it.second }.min()
         }
 
-        private fun find(xA: Int, yA: Int, priceX: Int): Int {
-            for (i in 0 until priceX / xA) {
-                for (j in 0 until (priceX - i * xA) / xB) {
-                    if (xA * i + xB * j == priceX)
-                        return 1
-                }
-            }
-            return -1
-        }
     }
 
     const val aButton = 3
     const val bButton = 1
 
-    fun part1(list: List<String>): Int {
+    fun part1(list: List<String>): Long {
         val clawMachines = parseInput(list)
 
         // brute force
@@ -49,9 +40,15 @@ object ClawContraption {
         return calc.sum()
     }
 
-    fun part2(list: List<String>): Int {
-        val directions = parseInput(list)
-        return 0
+    fun part2(list: List<String>): Long {
+        val clawMachines = parseInput(list).map {
+            it.copy(xPrice = it.xPrice + 10000000000000, yPrice = it.yPrice + 10000000000000)
+        }
+
+        // brute force
+        val calc = clawMachines.map { it.calc() }
+
+        return calc.sum()
     }
 
     private fun parseInput(list: List<String>): List<ClawMachine> {
@@ -70,7 +67,7 @@ object ClawContraption {
             val xP = p.split(", ")[0].removePrefix("Prize: X=").toInt()
             val yP = p.split(", ")[1].removePrefix("Y=").toInt()
 
-            l += ClawMachine(xA, yA, xB, yB, xP, yP)
+            l += ClawMachine(xA, yA, xB, yB, xP.toLong(), yP.toLong())
 
         }
         return l
