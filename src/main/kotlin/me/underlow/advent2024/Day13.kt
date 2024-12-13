@@ -26,6 +26,15 @@ object ClawContraption {
             return presses.map { 3 * it.first + it.second }.min()
         }
 
+        fun calc2(): Long {
+            val presses = mutableListOf<Pair<Long, Long>>()
+
+            if (presses.isEmpty())
+                return 0
+
+            return presses.map { 3 * it.first + it.second }.min()
+        }
+
     }
 
     const val aButton = 3
@@ -46,7 +55,7 @@ object ClawContraption {
         }
 
         // brute force
-        val calc = clawMachines.map { it.calc() }
+        val calc = clawMachines.map { it.calc2() }
 
         return calc.sum()
     }
