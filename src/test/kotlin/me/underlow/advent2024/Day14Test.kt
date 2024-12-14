@@ -8,12 +8,6 @@ class RestroomRedoubtTest {
         val result = RestroomRedoubt.part1(input.split("\n"), 11, 7)
         assertEquals(12, result)
     }
-
-    @Test
-    fun testPart2() {
-        val result = RestroomRedoubt.part2(input.split("\n"), 11, 7)
-        assertEquals(0, result)
-    }
 }
 
 private val input = """

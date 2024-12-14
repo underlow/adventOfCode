@@ -28,14 +28,31 @@ object RestroomRedoubt {
         }
 
         val res =
-            r.filter { it.point.x in (0 until fieldX / 2) && it.point.y in (0 until fieldY / 2) }.size * r.filter { it.point.x in (0 until fieldX / 2) && it.point.y in (fieldY / 2 + 1 until fieldY) }.size * r.filter { it.point.x in (fieldX / 2 + 1 until fieldX) && it.point.y in (0 until fieldY / 2) }.size * r.filter { it.point.x in (fieldX / 2 + 1 until fieldX) && it.point.y in (fieldY / 2 + 1 until fieldY) }.size
+            r.filter { it.point.x in (0 until fieldX / 2) && it.point.y in (0 until fieldY / 2) }.size *
+                    r.filter { it.point.x in (0 until fieldX / 2) && it.point.y in (fieldY / 2 + 1 until fieldY) }.size *
+                    r.filter { it.point.x in (fieldX / 2 + 1 until fieldX) && it.point.y in (0 until fieldY / 2) }.size *
+                    r.filter { it.point.x in (fieldX / 2 + 1 until fieldX) && it.point.y in (fieldY / 2 + 1 until fieldY) }.size
 
         return res
     }
 
     fun part2(list: List<String>, fieldX: Int, fieldY: Int): Int {
-        val directions = parseInput(list, fieldX, fieldY)
-        return 0
+
+
+        val robots = parseInput(list, fieldX, fieldY)
+
+        var r = robots.toList()
+
+        var res = 0
+        do {
+            r = r.map { it.copy(point = it.point.move(it.velocity)) }
+            res++
+        } while (
+        // wild guess. have no idea how to solve it without looking to visualization
+            r.map { it.point }.toSet().size != r.size
+        )
+
+        return res
     }
 
     private fun parseInput(list: List<String>, fieldX: Int, fieldY: Int): List<Robot> {
@@ -60,7 +77,7 @@ fun main() {
     val res1 = RestroomRedoubt.part1(input, 101, 103)
     val res2 = RestroomRedoubt.part2(input, 101, 103)
 
-    checkResult(res1, 0)
+    checkResult(res1, 223020000)
     checkResult(res2, 0)
 
     println(res1)
