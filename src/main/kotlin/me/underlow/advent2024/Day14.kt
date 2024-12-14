@@ -78,7 +78,7 @@ fun main() {
     val res2 = RestroomRedoubt.part2(input, 101, 103)
 
     checkResult(res1, 223020000)
-    checkResult(res2, 0)
+    checkResult(res2, 7338)
 
     println(res1)
     println(res2)
