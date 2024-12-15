@@ -1,6 +1,6 @@
 package me.underlow.advent2023
 
-import me.underlow.advent2023.ParabolicReflectorDish.dump
+import me.underlow.dump
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test

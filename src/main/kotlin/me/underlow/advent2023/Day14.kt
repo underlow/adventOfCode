@@ -89,17 +89,6 @@ object ParabolicReflectorDish {
         }
     }
 
-    fun Array<Array<Char>>.dump() {
-        println()
-        for (row in this.indices) {
-            for (column in this[0].indices) {
-                print(this[row][column])
-            }
-            println()
-        }
-    }
-
-
     fun part2(list: List<String>, count: Long = 1_000_000_000): Int {
         val input = parseInput(list)
         val results = mutableListOf<Int>()

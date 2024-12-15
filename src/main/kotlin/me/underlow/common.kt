@@ -115,3 +115,28 @@ fun gcd(x: Long, y: Long): Long {
 fun gcd(x: Int, y: Int): Int {
     return if (y == 0) x else gcd(y, x % y)
 }
+
+private val xAxis = "012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789"
+
+fun Array<Array<Char>>.dumpWithAxis() {
+    println("")
+    println("  " + xAxis.take(this[0].size))
+    for (row in this.indices) {
+        print("$row ")
+        for (column in this[0].indices) {
+            print(this[row][column])
+        }
+        println()
+    }
+}
+
+
+fun Array<Array<Char>>.dump() {
+    println()
+    for (row in this.indices) {
+        for (column in this[0].indices) {
+            print(this[row][column])
+        }
+        println()
+    }
+}
