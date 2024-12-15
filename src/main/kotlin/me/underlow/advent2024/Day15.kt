@@ -91,7 +91,7 @@ fun main() {
     val res1 = WarehouseWoes.part1(input)
     val res2 = WarehouseWoes.part2(input)
 
-    checkResult(res1, 0)
+    checkResult(res1, 1527563)
     checkResult(res2, 0)
 
     println(res1)
