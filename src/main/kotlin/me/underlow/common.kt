@@ -91,6 +91,10 @@ fun <T> Array<Array<T>>.get(p: Point): T {
     return this[p.row][p.col]
 }
 
+operator fun <T> Array<Array<T>>.set(p: Point, value: T) {
+    this[p.row][p.col] = value
+}
+
 
 // '5' -> 5 as int
 fun Char.asInt() = code - '0'.code
