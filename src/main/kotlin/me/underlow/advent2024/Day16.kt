@@ -151,7 +151,7 @@ object ReindeerMaze {
 
         field.dumpWithAxis()
 
-        return resultPath.size
+        return resultPath.size + 1 /* plus start */
     }
 
 }
@@ -163,7 +163,7 @@ fun main() {
     val res2 = ReindeerMaze.part2(input)
 
     checkResult(res1, 103512) // 105508 high
-    checkResult(res2, 0)
+    checkResult(res2, 554)
 
     println(res1)
     println(res2)

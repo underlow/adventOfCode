@@ -29,7 +29,13 @@ class ReindeerMazeTest {
     @Test
     fun testPart2() {
         val result = ReindeerMaze.part2(input.split("\n"))
-        assertEquals(0, result)
+        assertEquals(45, result)
+    }
+
+    @Test
+    fun testPart22() {
+        val result = ReindeerMaze.part2(input3.split("\n"))
+        assertEquals(64, result)
     }
 }
 
