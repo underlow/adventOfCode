@@ -182,10 +182,7 @@ object ClumsyCrucible {
     }
 
     data class Crucible(val point: Point, val dir: Dir, val straightSteps: Int)
-    data class Task(val crucible: Crucible, val heat: Int, val path: List<Point>)
-
-    data class Key(val point: Point, val dir: Dir, val straightSteps: Int, val stepsToTurn: Int)
-
+    data class Task(val crucible: Crucible, val heat: Int)
 
     fun part22(list: List<String>): Int {
         val field = parseInput(list)
@@ -193,8 +190,8 @@ object ClumsyCrucible {
         val cache = mutableMapOf<Crucible, Int>()
 
         val tasks = mutableListOf<Task>()
-        tasks += Task(Crucible(Point(0, 0), Dir.Right, 0), field[0][0].heat, listOf(Point(0, 0)))
-        tasks += Task(Crucible(Point(0, 0), Dir.Down, 0), field[0][0].heat, listOf(Point(0, 0)))
+        tasks += Task(Crucible(Point(0, 0), Dir.Right, 0), 0)
+        tasks += Task(Crucible(Point(0, 0), Dir.Down, 0), 0)
 
         var result = Int.MAX_VALUE
 
@@ -202,85 +199,77 @@ object ClumsyCrucible {
             val task = tasks.removeLast()
             val crucible = task.crucible
 
-            if (cache[task.crucible] != null) {
-                if (cache[task.crucible]!! < task.heat)
+            if (tasks.size % 50000 == 0) {
+                println("Queue: ${tasks.size}")
+            }
+
+            if (cache[crucible] != null) {
+                if (cache[crucible]!! < task.heat)
                     continue
             } else {
-                cache[task.crucible] = task.heat
+                cache[crucible] = task.heat
             }
 
             if (task.crucible.point == Point(field.size - 1, field[0].size - 1)) {
                 if (task.crucible.straightSteps >= 4) {
                     if (result > task.heat) {
-                        println("Path: $result")
                         result = task.heat
+                        println("Path: $result")
                     }
                     continue
                 }
             }
 
-            if (crucible.straightSteps < 4 && field.isPointInside(crucible.point.move(crucible.dir))) {
-                val next = Crucible(
-                    crucible.point.move(crucible.dir),
-                    crucible.dir,
-                    crucible.straightSteps + 1
-                )
-                tasks += Task(next, task.heat + field.get(next.point).heat, task.path + next.point)
-//                println("Forward: $crucible -> $next")
+//            if (823 < task.heat)
+//                continue
+
+            val point = crucible.point.move(crucible.dir)
+            val pointRight = crucible.point.move(crucible.dir.rotateRight())
+            val pointLeft = crucible.point.move(crucible.dir.rotateLeft())
+
+            if (crucible.straightSteps < 4 && field.isPointInside(point)) {
+                val next = Crucible(point, crucible.dir, crucible.straightSteps + 1)
+                if (task.heat + field.get(next.point).heat > result)
+                    continue
+                tasks += Task(next, task.heat + field.get(next.point).heat)
                 continue
             }
 
-            if (crucible.straightSteps >= 4 && crucible.straightSteps < 10) {
-                if (field.isPointInside(crucible.point.move(crucible.dir))) {
-                    val next = Crucible(
-                        crucible.point.move(crucible.dir),
-                        crucible.dir,
-                        crucible.straightSteps + 1,
-                    )
-//                    println("Forward: $crucible -> $next")
-                    tasks += Task(next, task.heat + field.get(next.point).heat, task.path + next.point)
+            if (crucible.straightSteps in 4..9) {
+                if (field.isPointInside(point)) {
+                    val next = Crucible(point, crucible.dir, crucible.straightSteps + 1)
+                    if (task.heat + field.get(next.point).heat > result)
+                        continue
+                    tasks += Task(next, task.heat + field.get(next.point).heat)
                 }
-                if (field.isPointInside(crucible.point.move(crucible.dir.rotateRight()))) {
-                    val next2 = Crucible(
-                        crucible.point.move(crucible.dir.rotateRight()),
-                        crucible.dir.rotateRight(),
-                        1,
-                    )
-//                    println("Right: $crucible -> $next2")
-                    tasks += Task(next2, task.heat + field.get(next2.point).heat, task.path + next2.point)
+                if (field.isPointInside(pointRight)) {
+                    val next2 = Crucible(pointRight, crucible.dir.rotateRight(), 1)
+                    if (task.heat + field.get(next2.point).heat > result)
+                        continue
+                    tasks += Task(next2, task.heat + field.get(next2.point).heat)
                 }
-                if (field.isPointInside(crucible.point.move(crucible.dir.rotateLeft()))) {
-                    val next3 = Crucible(
-                        crucible.point.move(crucible.dir.rotateLeft()),
-                        crucible.dir.rotateLeft(),
-                        1,
-                    )
-//                    println("Left: $crucible -> $next3")
-                    tasks += Task(next3, task.heat + field.get(next3.point).heat, task.path + next3.point)
+                if (field.isPointInside(pointLeft)) {
+                    val next3 = Crucible(pointLeft, crucible.dir.rotateLeft(), 1)
+                    if (task.heat + field.get(next3.point).heat > result)
+                        continue
+                    tasks += Task(next3, task.heat + field.get(next3.point).heat)
                 }
 
                 continue
             }
 
             if (crucible.straightSteps == 10) {
-                if (field.isPointInside(crucible.point.move(crucible.dir.rotateRight()))) {
-                    val next2 = Crucible(
-                        crucible.point.move(crucible.dir.rotateRight()),
-                        crucible.dir.rotateRight(),
-                        1
-                    )
-//                    println("Right: $crucible -> $next2")
-                    tasks += Task(next2, task.heat + field.get(next2.point).heat, task.path + next2.point)
+                if (field.isPointInside(pointRight)) {
+                    val next2 = Crucible(pointRight, crucible.dir.rotateRight(), 1)
+                    if (task.heat + field.get(next2.point).heat > result)
+                        continue
+                    tasks += Task(next2, task.heat + field.get(next2.point).heat)
                 }
-                if (field.isPointInside(crucible.point.move(crucible.dir.rotateLeft()))) {
-
-                    val next3 = Crucible(
-                        crucible.point.move(crucible.dir.rotateLeft()),
-                        crucible.dir.rotateLeft(),
-                        1,
-                    )
-//                    println("Left: $crucible -> $next3")
-                    tasks += Task(next3, task.heat + field.get(next3.point).heat, task.path + next3.point)
+                if (field.isPointInside(pointLeft)) {
+                    val next3 = Crucible(pointLeft, crucible.dir.rotateLeft(), 1)
+                    if (task.heat + field.get(next3.point).heat > result)
+                        continue
+                    tasks += Task(next3, task.heat + field.get(next3.point).heat)
                 }
                 continue
             }
@@ -297,7 +286,7 @@ object ClumsyCrucible {
 fun main() {
     val input = readInput("$pathPrefix23/day17.txt")
 //    val res1 = ClumsyCrucible.part1(input)
-    val res2 = ClumsyCrucible.part2(input)
+    val res2 = ClumsyCrucible.part22(input)
 
 //    println("part 1: $res1")
     println("part 2: $res2")
