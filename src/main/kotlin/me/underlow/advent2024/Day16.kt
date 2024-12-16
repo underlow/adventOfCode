@@ -25,7 +25,7 @@ object ReindeerMaze {
         var result = Int.MAX_VALUE
         var resultPath = emptyList<Point>()
         val queue = mutableListOf<Reindeer>()
-        queue += Reindeer(start, Dir.Left, 0, emptyList())
+        queue += Reindeer(start, Dir.Right, 0, emptyList())
 
         while (queue.isNotEmpty()) {
             val r = queue.removeLast()
@@ -69,6 +69,15 @@ object ReindeerMaze {
         }
 
         println("Path is: $resultPath")
+
+        resultPath.forEach {
+            if (field.get(it) == '#')
+                error("www")
+            field[it] = '*'
+        }
+
+        field.dumpWithAxis()
+
         return result
     }
 
@@ -86,7 +95,7 @@ fun main() {
     val res1 = ReindeerMaze.part1(input)
     val res2 = ReindeerMaze.part2(input)
 
-    checkResult(res1, 0)// 105508
+    checkResult(res1, 0) // 105508 high
     checkResult(res2, 0)
 
     println(res1)

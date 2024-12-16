@@ -122,7 +122,7 @@ fun Array<Array<Char>>.dumpWithAxis() {
     println("")
     println("  " + xAxis.take(this[0].size))
     for (row in this.indices) {
-        print("$row ")
+        print("${row % 10} ")
         for (column in this[0].indices) {
             print(this[row][column])
         }
