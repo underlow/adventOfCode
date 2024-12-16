@@ -6,6 +6,7 @@ import me.underlow.advent2022.checkResult
 import me.underlow.advent2022.readInput
 import me.underlow.get
 import me.underlow.isPointInside
+import java.util.*
 import kotlin.math.min
 
 object ClumsyCrucible {
@@ -189,14 +190,15 @@ object ClumsyCrucible {
 
         val cache = mutableMapOf<Crucible, Int>()
 
-        val tasks = mutableListOf<Task>()
+//        val tasks = mutableListOf<Task>()
+        val tasks = PriorityQueue { t1: Task, t2: Task -> t1.heat - t2.heat }
         tasks += Task(Crucible(Point(0, 0), Dir.Right, 0), 0)
         tasks += Task(Crucible(Point(0, 0), Dir.Down, 0), 0)
 
         var result = Int.MAX_VALUE
 
         while (tasks.isNotEmpty()) {
-            val task = tasks.removeLast()
+            val task = tasks.poll()
             val crucible = task.crucible
 
             if (tasks.size % 50000 == 0) {
@@ -285,12 +287,12 @@ object ClumsyCrucible {
 
 fun main() {
     val input = readInput("$pathPrefix23/day17.txt")
-//    val res1 = ClumsyCrucible.part1(input)
+    val res1 = ClumsyCrucible.part1(input)
     val res2 = ClumsyCrucible.part22(input)
 
-//    println("part 1: $res1")
+    println("part 1: $res1")
     println("part 2: $res2")
 
-//    checkResult(res1, 684) // 999 high
-    checkResult(res2, 0) // 823 high
+    checkResult(res1, 684) // 999 high
+    checkResult(res2, 822) // 823 high
 }
