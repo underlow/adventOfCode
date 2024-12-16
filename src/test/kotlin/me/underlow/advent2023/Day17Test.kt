@@ -21,6 +21,12 @@ class ClumsyCrucibleTest {
         val result = ClumsyCrucible.part2(input12.split("\n"))
         assertEquals(71, result)
     }
+
+    @Test
+    fun testPart23() {
+        val result = ClumsyCrucible.part22(input12.split("\n"))
+        assertEquals(71, result)
+    }
 }
 
 private val input = """
