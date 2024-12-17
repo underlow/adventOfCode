@@ -1,5 +1,6 @@
 package me.underlow.advent2024
 
+import me.underlow.advent2022.checkResult
 import me.underlow.advent2022.readInput
 import java.lang.Math.pow
 import kotlin.math.truncate
@@ -113,52 +114,36 @@ object ChronospatialComputer {
         return out
     }
 
+    /**
+     * idea here is that program process all 3bit of input number as  independent number and each prints its own result,
+     * so 1st 3 bits of the result will print last number, 2nd will print number before last ....
+     * so I need to find a number each 3 bits of it will print corresponding output
+     */
     fun part2(list: List<String>): Long {
-        println("PART2")
         val program = parseInput(list)
 
-        var res = 0L
-        for (firstNum in 0..7) {
-            for (inst in program.instructions.indices.reversed()) {
-                if (inst == program.instructions.size - 1)
-                    continue
-                for (num in 0..7) {
-                    val num2 = 7
-                    val execute = execute(program.copy(rA = (res shl 3) + num2))
-                    if (program.instructions[inst] == execute.first()) {
-                        if (num == 0 && inst == program.instructions.size - 1) {
-                            continue
-                        }
-                        res = (res shl 3) + num
-                        println("Found for $inst: ${program.instructions[inst]}, result: $res")
-                        break
-                    }
+        fun findList(program: Programm, start: Int, sum: Long): List<Long> {
+            if (start < 0) {
+                val execute = execute(program.copy(rA = sum))
+                if (execute == program.instructions) {
+                    println("WOW")
                 }
 
+                return listOf(sum)
+            }
+            val r = mutableListOf<Long>()
+            for (i in 0..7) {
+                val execute = execute(program.copy(rA = (sum shl 3) + i))
+                if (execute.first() == program.instructions[start]) {
+                    r += findList(program, start - 1, (sum shl 3) + i)
+                }
             }
 
-            // lets check
-
-            val e = execute(program.copy(rA = res))
-            if (e != program.instructions) {
-                println("Not correct $res")
-            } else {
-                println("Great: $res")
-            }
+            return r
         }
 
-        return res
-
-
-        for (i in program.rA..program.rA) {
-//            if (i % 1000000 == 0)
-//                println("i == $i")
-            val result = execute(program.copy(rA = i))
-            if (result == program.instructions)
-                return i
-            println("$i: $result")
-        }
-        return -1
+        val rest = findList(program, program.instructions.size - 1, 0)
+        return rest[0]
     }
 
     private fun parseInput(list: List<String>): Programm {
@@ -176,12 +161,12 @@ object ChronospatialComputer {
 fun main() {
     ChronospatialComputer.debug = false
     val input = readInput("$pathPrefix24/day17.txt")
-//    val res1 = ChronospatialComputer.part1(input)
+    val res1 = ChronospatialComputer.part1(input)
     val res2 = ChronospatialComputer.part2(input)
 
-//    checkResult(res1, "6,7,5,2,1,3,5,1,7")
-//    checkResult(res2, 0)
+    checkResult(res1, "6,7,5,2,1,3,5,1,7")
+    checkResult(res2, 216549846240877)
 
-//    println(res1)
+    println(res1)
     println(res2)
 }
