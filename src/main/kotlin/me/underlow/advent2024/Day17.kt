@@ -10,13 +10,17 @@ object ChronospatialComputer {
     data class Programm(val rA: Int, val rB: Int, val rC: Int, val instructions: List<Int>)
 
     fun part1(list: List<String>): String {
-        var program = parseInput(list)
+        val program = parseInput(list)
+
+        return execute(program)
+    }
+
+    private fun execute(program: Programm): String {
+        val out = mutableListOf<Int>()
 
         var registerA = program.rA
         var registerB = program.rB
         var registerC = program.rC
-
-        val out = mutableListOf<Int>()
 
         var pointer = 0
 
@@ -52,7 +56,7 @@ object ChronospatialComputer {
                     registerB = operand.comboOperand() % 8
                     pointer += 2
                 }
-//                jnz
+                //                jnz
                 3 -> {
                     if (registerA != 0) {
                         pointer = operand.literalOperand()
