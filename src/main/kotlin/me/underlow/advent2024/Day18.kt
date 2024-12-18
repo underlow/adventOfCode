@@ -26,8 +26,23 @@ object RAMRun {
         val bytes = parseInput(list)
         val field: Array<Array<Char>> = Array<Array<Char>>(x, { Array<Char>(y, { '.' }) })
 
+        var path = field.findShortestPathWithPoints(Point(0, 0), Point(x - 1, y - 1))
+
         for (i in 0 until steps) {
             field[bytes[i]] = '#'
+            // we need to modify the path if point is on the path
+            if (path.contains(bytes[i])) {
+                val index = path.indexOf(bytes[i])
+                // first and last shouldn't be in bytes so no IndexOutOfBounds
+                val from = path[index - 1]
+                val to = path[index + 1]
+
+                val p = field.findShortestPathWithPoints(from, to)
+                println(p)
+
+                path = path.subList(0, index - 1) + p + path.subList(index + 1, path.size)
+                println("Step #$i: path: ${path.size}")
+            }
         }
 
         field.dumpWithAxis()
@@ -48,7 +63,7 @@ object RAMRun {
 
     private fun Array<Array<Char>>.findShortestPath(from: Point, to: Point): Int {
         val visited = mutableMapOf<Point, Int>()
-        val queue = PriorityQueue<Pair<Point, Int>>(Comparator { o1, o2 -> -o2.second + o1.second })
+        val queue = PriorityQueue<Pair<Point, Int>>(Comparator { o1, o2 -> o2.second - o1.second })
 
         queue += (from to 0)
 
@@ -64,6 +79,12 @@ object RAMRun {
                     continue
                 }
             }
+
+            if ((visited[current.first] ?: Int.MAX_VALUE) <= current.second) {
+                continue
+            }
+
+
             val c = visited.size
             visited[current.first] = current.second
             if (visited.size != c)
@@ -105,10 +126,13 @@ object RAMRun {
                     continue
                 }
             }
-            val c = visited.size
+
+            if ((visited[current.path.last()] ?: Int.MAX_VALUE) < current.path.size) {
+                continue
+            }
+
             visited[current.path.last()] = current.path.size
-            if (visited.size != c)
-                println("Visited: ${visited.size}")
+
 
             val next = current.path.last().around().filter { this.isPointInside(it) }.filter {
                 this.get(it) != '#'
