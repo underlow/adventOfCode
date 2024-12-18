@@ -156,7 +156,7 @@ fun main() {
     val res1 = RAMRun.part1(input, 1024, 71, 71)
     val res2 = RAMRun.part2(input)
 
-    checkResult(res1, 0)
+    checkResult(res1, 250)
     checkResult(res2, 0)
 
     println(res1)
