@@ -16,7 +16,7 @@ object RAMRun {
 
         field.dumpWithAxis()
 
-        val result = field.findShortesPath(Point(0, 0), Point(x - 1, y - 1))
+        val result = field.findShortestPath(Point(0, 0), Point(x - 1, y - 1))
 
         return result
     }
@@ -31,7 +31,7 @@ object RAMRun {
 
         field.dumpWithAxis()
 
-        val result = field.findShortesPath(Point(0, 0), Point(x - 1, y - 1))
+        val result = field.findShortestPath(Point(0, 0), Point(x - 1, y - 1))
 
         return result
     }
@@ -45,7 +45,7 @@ object RAMRun {
         return list.map { Point(it.split(",")[1].toInt(), it.split(",")[0].toInt()) }
     }
 
-    private fun Array<Array<Char>>.findShortesPath(from: Point, to: Point): Int {
+    private fun Array<Array<Char>>.findShortestPath(from: Point, to: Point): Int {
         val visited = mutableMapOf<Point, Int>()
         val queue = PriorityQueue<Pair<Point, Int>>(Comparator { o1, o2 -> -o2.second + o1.second })
 
