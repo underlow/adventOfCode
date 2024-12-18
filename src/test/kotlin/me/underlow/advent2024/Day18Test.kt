@@ -9,6 +9,12 @@ class RAMRunTest {
     }
 
     @Test
+    fun testPart12() {
+        val result = RAMRun.part12(input.split("\n"), steps = 12, x = 7, y = 7)
+        assertEquals(22, result)
+    }
+
+    @Test
     fun testPart2() {
         val result = RAMRun.part2(input.split("\n"))
         assertEquals(0, result)

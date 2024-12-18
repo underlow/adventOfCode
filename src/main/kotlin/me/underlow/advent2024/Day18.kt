@@ -21,6 +21,7 @@ object RAMRun {
         return result
     }
 
+    // smarter
     fun part12(list: List<String>, steps: Int, x: Int, y: Int): Int {
         val bytes = parseInput(list)
         val field: Array<Array<Char>> = Array<Array<Char>>(x, { Array<Char>(y, { '.' }) })
@@ -31,9 +32,9 @@ object RAMRun {
 
         field.dumpWithAxis()
 
-        val result = field.findShortestPath(Point(0, 0), Point(x - 1, y - 1))
+        val result = field.findShortestPathWithPoints(Point(0, 0), Point(x - 1, y - 1))
 
-        return result
+        return result.size - 1 // result is a path, returning steps
     }
 
     fun part2(list: List<String>): Int {
@@ -81,6 +82,47 @@ object RAMRun {
         }
 
         return result
+    }
+
+    data class Path(val path: List<Point>)
+
+    private fun Array<Array<Char>>.findShortestPathWithPoints(from: Point, to: Point): List<Point> {
+        val visited = mutableMapOf<Point, Int>()
+        val queue = PriorityQueue<Path>(Comparator { o1, o2 -> -o2.path.size + o1.path.size })
+
+        queue += Path(listOf(from))
+
+        var result = Int.MAX_VALUE
+        var resultPath: Path = Path(emptyList())
+        while (queue.isNotEmpty()) {
+            val current = queue.poll()
+
+            if (current.path.last() == to) {
+                if (result > current.path.size) {
+                    println("New path: ${current.path}")
+                    result = current.path.size
+                    resultPath = current
+                    continue
+                }
+            }
+            val c = visited.size
+            visited[current.path.last()] = current.path.size
+            if (visited.size != c)
+                println("Visited: ${visited.size}")
+
+            val next = current.path.last().around().filter { this.isPointInside(it) }.filter {
+                this.get(it) != '#'
+            }.filter { p ->
+                if (visited[p] != null && visited[p]!! < current.path.size)
+                    return@filter false
+                return@filter true
+//                (visited[p] ?: Int.MAX_VALUE) > current.second
+            }
+
+            queue += next.map { current.copy(path = current.path + it) }
+        }
+
+        return resultPath.path
     }
 }
 
