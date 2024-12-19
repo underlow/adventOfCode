@@ -10,6 +10,12 @@ class LinenLayoutTest {
     }
 
     @Test
+    fun testPart12() {
+        val result = LinenLayout.part12(input.split("\n"))
+        assertEquals(6, result)
+    }
+
+    @Test
     fun testPart2() {
         val result = LinenLayout.part2(input.split("\n"))
         assertEquals(0, result)
