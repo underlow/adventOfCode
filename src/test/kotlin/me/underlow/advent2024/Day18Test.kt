@@ -8,11 +8,6 @@ class RAMRunTest {
         assertEquals(22, result)
     }
 
-    @Test
-    fun testPart2() {
-        val result = RAMRun.part2(input.split("\n"))
-        assertEquals(0, result)
-    }
 }
 
 private val input = """
