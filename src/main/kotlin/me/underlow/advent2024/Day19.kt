@@ -5,28 +5,6 @@ import me.underlow.advent2022.readInput
 
 object LinenLayout {
 
-
-    data class Node(val char: Char, val link: MutableSet<Char>, var terminal: Boolean)
-
-    fun MutableMap<Char, Node>.add(string: String) {
-        for (i in string.indices) {
-            val from = string[i]
-            val to = string.getOrNull(i + 1) ?: string[0]
-
-            val fromNode = this[from] ?: Node(from, mutableSetOf(), false)
-            val toNode = this[to] ?: Node(to, mutableSetOf(), false)
-
-            fromNode.link.add(to)
-            if (i == string.length - 1)
-                toNode.terminal = true
-
-            this[from] = fromNode
-            if (from != to) {
-                this[to] = toNode
-            }
-        }
-    }
-
     // brute force, too slow
     fun part1(list: List<String>): Int {
         val towels = parseInput(list)
@@ -50,55 +28,6 @@ object LinenLayout {
 
         return r.count { it }
     }
-
-    fun part12(list: List<String>): Int {
-        val towels = parseInput(list)
-        val graph = mutableMapOf<Char, Node>()
-        towels.options.values.flatten().forEach { graph.add(it) }
-
-        val r = towels.design.map {
-            val possible = isPossible2(it, 0, graph)
-            if (possible)
-                println("Design $it is possible")
-            else
-                println("Design $it is NOT possible")
-            possible
-        }
-
-
-        return r.count { it }
-    }
-
-    private fun isPossible2(design: String, position: Int, graph: MutableMap<Char, Node>): Boolean {
-        var current = 0
-        var currentNode = graph[design[current]] ?: return false
-
-        while (current < design.length) {
-            // if we can make a move to next node
-            if (current + 1 == design.length) {
-                if (currentNode.terminal)
-                    return true
-                else
-                    return false
-            }
-
-            if (currentNode.terminal) {
-                current++
-                currentNode = graph[design[current]] ?: return false
-                continue
-            }
-            val nextChar = design[current + 1]
-            if (nextChar !in currentNode.link) {
-                return false
-            }
-
-            currentNode = graph[nextChar]!!
-            current++
-        }
-
-        return false
-    }
-
 
     fun part2(list: List<String>): Int {
         val directions = parseInput(list)
