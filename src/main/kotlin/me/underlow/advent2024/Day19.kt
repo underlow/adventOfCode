@@ -85,7 +85,7 @@ fun main() {
     val res1 = LinenLayout.part1(input) //392 high
     val res2 = LinenLayout.part2(input)
 
-    checkResult(res1, 0)
+    checkResult(res1, 306)
     checkResult(res2, 0)
 
     println(res1)
