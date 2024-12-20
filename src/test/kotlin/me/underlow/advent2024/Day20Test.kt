@@ -6,7 +6,7 @@ class RaceConditionTest {
     @Test
     fun testPart1() {
         val result = RaceCondition.part1(input.split("\n"))
-        assertEquals(42, result) // ??
+        assertEquals(44, result) // ??
     }
 
     @Test

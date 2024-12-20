@@ -30,20 +30,20 @@ object RaceCondition {
         // for each pair of close walls calculate path and store it
 
         for (p1 in walls) {
-            val p2List = p1.around().filter { field.isPointInside(it) }.filter { field.get(it) != 'S' }
+//            val p2List = p1.around().filter { field.isPointInside(it) }.filter { field.get(it) != 'S' }
 
-            for (p2 in p2List) {
+//            for (p2 in p2List) {
 //                if (p1 == Point(1,8) && p2 == Point(1, 9)){
 //                    field.dumpWithAxis()
 //                }
 //                if (cheatPairs[CheatPair(p1, p2)] == null) {
                 field[p1] = '.'
-                val p1Old = field.get(p2)
+//                val p1Old = field.get(p2)
 //                field[p2] = '.'
 //                    if (p1 == Point(1,8) && p2 == Point(1, 9)){
 //                        field.dumpWithAxis()
 //                    }
-                val path = listOf(start) + field.findShortestPath(start, finish)
+            val path = field.findShortestPath(start, finish)
                 field[p1] = '#'
 //                field[p2] = p1Old
                 // let's find cheat points
@@ -69,6 +69,7 @@ object RaceCondition {
 //                    m1 < m2 -> {
 //                        cheatPairs[CheatPair(path[m1 - 1], path[m1])] = path.size
 //                    }
+                    m1 == 0 -> cheatPairs[CheatPair(start, path[m1])] = path.size
                     else -> {
                         cheatPairs[CheatPair(path[m1 - 1], path[m1])] = path.size
                     }
@@ -79,13 +80,17 @@ object RaceCondition {
 
 //                    field.dumpWithAxis()
 //                }
-            }
+//            }
         }
 
         val ss = cheatPairs.entries
             .filter { it.value < baseline }
         val ss2 = cheatPairs.entries
             .filter { it.value == 21 }
+
+        ss.sortedBy { it.value }.groupBy { it.value }.forEach { (t, u) ->
+            println("${baseline - t}: ${u.size}")
+        }
 
         return cheatPairs.entries
             .filter { it.value < baseline }
@@ -105,7 +110,7 @@ fun main() {
     val res1 = RaceCondition.part1(input)
     val res2 = RaceCondition.part2(input)
 
-    checkResult(res1, 0)
+    checkResult(res1, 0) // 6966 high
     checkResult(res2, 0)
 
     println(res1)
