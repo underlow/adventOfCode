@@ -5,19 +5,13 @@ import org.junit.jupiter.api.Test
 class RaceConditionTest {
     @Test
     fun testPart1() {
-        val result = RaceCondition.part1(input.split("\n"), 1)
-        assertEquals(44, result) // ??
-    }
-
-    @Test
-    fun testPart21() {
-        val result = RaceCondition.part2(input.split("\n"), 1)
+        val result = RaceCondition.part2(input.split("\n"), 1, cheatDistance = 1)
         assertEquals(44, result) // ??
     }
 
     @Test
     fun testPart2() {
-        val result = RaceCondition.part2(input.split("\n"), 50)
+        val result = RaceCondition.part2(input.split("\n"), 50, 20)
         assertEquals(285, result)
     }
 }
