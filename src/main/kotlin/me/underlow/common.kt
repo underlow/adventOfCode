@@ -61,6 +61,44 @@ data class Point(val row: Int, val col: Int) {
 fun List<String>.parseToMap(): Array<Array<Char>> =
     map { it.toCharArray().map { it }.toTypedArray() }.toTypedArray()
 
+fun Array<Array<Char>>.findShortestPath(from: Point, to: Point): Int {
+    val visited: Array<Array<Int>> = Array(this.size, { Array(this[0].size, { Int.MAX_VALUE }) })
+    val queue = mutableListOf<Pair<Point, Int>>()
+
+    queue += (from to 0)
+
+    var result = Int.MAX_VALUE
+
+    while (queue.isNotEmpty()) {
+        val current = queue.removeLast()
+
+        if (current.first == to) {
+            if (result > current.second) {
+//                    println("New path: ${current.second}")
+                result = current.second
+                continue
+            }
+        }
+
+        if (visited.get(current.first) <= current.second) {
+            continue
+        }
+
+        visited[current.first] = current.second
+
+        val next = current.first
+            .around()
+            .filter { this.isPointInside(it) }
+            .filter { this.get(it) != '#' }
+            .filter { p -> visited.get(p) > current.second }
+
+
+        queue += next.map { it to (current.second + 1) }
+    }
+
+    return result
+}
+
 fun Array<Array<Char>>.findFirst(c: Char): Point {
     for (i in this.indices) {
         for (j in this[0].indices) {
