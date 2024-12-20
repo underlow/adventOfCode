@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test
 class RaceConditionTest {
     @Test
     fun testPart1() {
-        val result = RaceCondition.part2(input.split("\n"), 1, cheatDistance = 1)
+        val result = RaceCondition.part2(input.split("\n"), 1, cheatDistance = 2)
         assertEquals(44, result) // ??
     }
 

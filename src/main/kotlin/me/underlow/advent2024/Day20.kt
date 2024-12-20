@@ -77,7 +77,7 @@ object RaceCondition {
         for ((idx, p1) in (listOf(start) + baseline).withIndex()) {
 
             // all points we can get to in 20 steps
-            val allPointsDistance = field.getAllPointsDistance(p1, cheatDistance + 1)
+            val allPointsDistance = field.getAllPointsDistance(p1, cheatDistance)
 
             for (p2 in allPointsDistance) {
                 if (p2 == p1)
@@ -138,8 +138,8 @@ private fun Array<Array<Char>>.getAllPointsDistance(p1: Point, distance: Int): M
 
 fun main() {
     val input = readInput("$pathPrefix24/day20.txt")
-    val res1 = RaceCondition.part2(input, 100, 1)
-    val res2 = RaceCondition.part2(input, 100, 20)
+    val res1 = RaceCondition.part2(input, 100, 2)
+    val res2 = RaceCondition.part2(readInput("$pathPrefix24/day20.txt"), 100, 20)
 
     checkResult(res1, 1409) // 6966 high, 1385 low
     checkResult(res2, 0) // 1144969 high
