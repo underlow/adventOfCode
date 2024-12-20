@@ -10,9 +10,15 @@ class RaceConditionTest {
     }
 
     @Test
+    fun testPart21() {
+        val result = RaceCondition.part2(input.split("\n"), 1)
+        assertEquals(44, result) // ??
+    }
+
+    @Test
     fun testPart2() {
-        val result = RaceCondition.part2(input.split("\n"))
-        assertEquals(0, result)
+        val result = RaceCondition.part2(input.split("\n"), 50)
+        assertEquals(285, result)
     }
 }
 

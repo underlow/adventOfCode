@@ -1,5 +1,6 @@
 package me.underlow
 
+import kotlin.math.abs
 import kotlin.time.ExperimentalTime
 import kotlin.time.measureTime
 
@@ -51,6 +52,10 @@ data class Point(val row: Int, val col: Int) {
     }
 
     operator fun plus(other: Point) = Point(row + other.row, col + other.col)
+    fun distance(p2: Point): Int {
+        return abs(this.row - p2.row) + abs(this.col - p2.col)
+
+    }
 
     companion object {
         val ZERO = Point(0, 0)
