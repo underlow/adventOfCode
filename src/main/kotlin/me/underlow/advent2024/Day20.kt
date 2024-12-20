@@ -2,22 +2,20 @@ package me.underlow.advent2024
 
 import me.underlow.advent2022.checkResult
 import me.underlow.advent2022.readInput
+import me.underlow.parseToMap
 
 object RaceCondition {
 
     fun part1(list: List<String>): Int {
-        val directions = parseInput(list)
+        val field = list.parseToMap()
         return 0
     }
 
     fun part2(list: List<String>): Int {
-        val directions = parseInput(list)
+        val field = list.parseToMap()
         return 0
     }
 
-    private fun parseInput(list: List<String>): Any {
-        return 0
-    }
 }
 
 
