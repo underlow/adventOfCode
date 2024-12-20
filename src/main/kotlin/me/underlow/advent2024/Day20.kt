@@ -68,15 +68,6 @@ object RaceCondition {
 
         val baseline = field.findShortestPath(start, finish)
 
-        // find all walls
-        val walls = mutableListOf<Point>()
-        for (i in field.indices) {
-            for (j in field[0].indices) {
-                if (field[i][j] == '#')
-                    walls += Point(i, j)
-            }
-        }
-
         data class CheatPair(val p1: Point, val p2: Point)
 
         //deduplicate pairs of cheating points
