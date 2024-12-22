@@ -147,6 +147,53 @@ fun Array<Array<Char>>.findShortestPath(from: Point, to: Point): List<Point> {
     return resultPath
 }
 
+fun Array<Array<Char>>.findAllShortestPaths(from: Point, to: Point): List<List<Point>> {
+    val visited: Array<Array<Int>> = Array(this.size, { Array(this[0].size, { Int.MAX_VALUE }) })
+
+    data class Task(val p: Point, val count: Int, val path: List<Point>)
+
+    val queue = mutableListOf<Task>()
+
+    queue += Task(from, 0, emptyList())
+
+    var result = Int.MAX_VALUE
+    var resultPath = mutableListOf<List<Point>>()
+
+    while (queue.isNotEmpty()) {
+        val current = queue.removeLast()
+
+        if (current.p == to) {
+            if (result > current.count) {
+//                    println("New path: ${current.second}")
+                result = current.count
+                resultPath = mutableListOf(current.path)
+                continue
+            }
+            if (result == current.count) {
+                resultPath += current.path
+
+            }
+        }
+
+        if (visited.get(current.p) < current.count) {
+            continue
+        }
+
+        visited[current.p] = current.count
+
+        val next = current.p
+            .around()
+            .filter { this.isPointInside(it) }
+            .filter { this.get(it) != '#' }
+            .filter { p -> visited.get(p) > current.count }
+
+
+        queue += next.map { Task(it, (current.count + 1), current.path + it) }
+    }
+
+    return resultPath
+}
+
 fun Array<Array<Char>>.findFirst(c: Char): Point {
     for (i in this.indices) {
         for (j in this[0].indices) {
