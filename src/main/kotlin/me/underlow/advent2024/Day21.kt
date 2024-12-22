@@ -109,45 +109,50 @@ object KeypadConundrum {
         return ret
     }
 
-    private fun shortestPath(code: String): List<Char> {
+    private fun shortestPath(code: String): String {
         // start on A, but than
         var start = numericKeypad.findFirst('A')
 
-        val firstDirectionalPad: List<List<String>> = code.map { char ->
-            // for each char we have to move to it and get back and press A button
-            // get all paths from A to char and then find all paths to print it by directional keypad
+        val numericPaths: List<List<String>> = code.map { char ->
             val to = numericKeypad.findFirst(char)
             val pathsOnNumeric: List<String> = numericPaths[Move(start, to)]!!.map { it + 'A' }
-            println("Paths on numeric from $start to $to:")
-            pathsOnNumeric.forEach { println(it) }
             start = to
             pathsOnNumeric
-            // now let's find all paths on directional
-//
-//            var startOnDirectional = directionalKeypad.findFirst('A')
-//
-//            val pathsOnDirectional: List<String> = pathsOnNumeric.map { paths: String ->
-//                // todo: here we have to go back to A so maybe multiply by 2
-//                paths
-//                    .map { p ->
-//                        val lists: List<String> = directionalToDirectional[Move(
-//                            startOnDirectional,
-//                            directionalKeypad.findFirst(p)
-//                        )]!!
-//
-//                        lists.minBy { it.length } + 'A'
-//                    }
-//
-//            }.flatten()
-//
-//            pathsOnDirectional
         }
 
-        val allfirstDirectionPad = joinAll(firstDirectionalPad, 0)
+        val allNumericPaths = joinAll(numericPaths, 0)
 
-        //
+        val directionalPaths: List<List<String>> = allNumericPaths.map { s ->
+            start = directionalKeypad.findFirst('A')
+            val map = s.map { char ->
+                val to = directionalKeypad.findFirst(char)
+                val pathsOnDirectional: List<String> = directionalToDirectional[Move(start, to)]!!.map { it + 'A' }
+                start = to
+                pathsOnDirectional
+            }
+            joinAll(map, 0)
+            //
+        }
 
-        return emptyList()
+        val allDirectionPaths = directionalPaths.flatten()//joinAll(directionalPaths, 0)
+        val secondDirectionalPaths: List<List<String>> = allDirectionPaths.map { s ->
+            start = directionalKeypad.findFirst('A')
+            val map = s.map { char ->
+                // for each char we have to move to it and get back and press A button
+                // get all paths from A to char and then find all paths to print it by directional keypad
+                val to = directionalKeypad.findFirst(char)
+                val pathsOnDirectional: String = directionalToDirectional[Move(start, to)]!!.map { it + 'A' }[0]
+                start = to
+                pathsOnDirectional
+            }
+//            joinAll(map, 0)
+            map
+            //
+        }
+
+        val all2DirectionPaths = secondDirectionalPaths.map { it.joinToString("") }// joinAll(secondDirectionalPaths, 0)
+
+        return all2DirectionPaths.minBy { it.length }
     }
 
     private fun joinAll(directions: List<List<String>>, start: Int): List<String> {
@@ -167,7 +172,7 @@ object KeypadConundrum {
             val shortestPath = shortestPath(code)
             println("Shortest path for $code is ${shortestPath}")
             val numericCode = code.filter { it.isDigit() }.toInt()
-            return@map shortestPath.size * numericCode
+            return@map shortestPath.length * numericCode
         }
 
         return list.sum()
@@ -185,7 +190,7 @@ fun main() {
     val res1 = KeypadConundrum.part1(input)
     val res2 = KeypadConundrum.part2(input)
 
-    checkResult(res1, 0)
+    checkResult(res1, 188398)
     checkResult(res2, 0)
 
     println(res1)
