@@ -20,7 +20,7 @@ class Day22Test {
 
     @Test
     fun testPart2() {
-        val result = MonkeyMarket.part2(input.split("\n"))
+        val result = MonkeyMarket.part2(input2.split("\n"))
         assertEquals(23, result)
     }
 }
