@@ -62,32 +62,32 @@ object LANParty {
 
     private fun runPointer(pointer: Pointer, graph: List<Node>, current: Node): List<String> {
 //        if (pointer.count == size) {
-
+        var result = emptyList<String>()
         // if next is the start
-        if (pointer.start in current.nodes)
-            return pointer.visited/*+ current.id*/
+//        if (pointer.start == current && pointer.count > 1)
+//            return pointer.visited/*+ current.id*/
 
 //            return emptyList()
 //        }
 
         // if not found and not in the end of the cycle
-        for (node in current.nodes) {
-            if (node.id !in pointer.visited) {
-                // if we can get from node to any already visited
-                if (pointer.visited.all { it in node.nodes.map { it.id } }) {
-                    val found = runPointer(
-                        pointer.copy(count = pointer.count + 1, visited = pointer.visited + node.id),
-                        graph,
-//                        size,
-                        node
-                    )
-                    if (found.isNotEmpty())
-                        return found
+        val notInVisited = current.nodes.filter { it.id !in pointer.visited }
+        for (node in notInVisited) {
+            // if we can get from node to any already visited
+            val lll = node.nodes.map { it.id }
+            if (pointer.visited.all { it in lll }) {
+                val newPointer = pointer.copy(count = pointer.count + 1, visited = pointer.visited + node.id)
+                val found = runPointer(newPointer, graph, node)
+                if (found.isNotEmpty() && result.size <= found.size) {
+                    result = found + node.id
+                } else {
+                    if (result.isEmpty())
+                        result = listOf(node.id)
                 }
             }
         }
 
-        return emptyList()
+        return result
     }
 
 
@@ -96,15 +96,19 @@ object LANParty {
 
         var cycle = emptyList<String>()
 
+        val result = emptyList<String>()
+
 //        for (i in 4..graph.size) {
         for (node in graph) {
 //                if (node.id != "co")
 //                    continue
-            val c = findCycleT(node, graph)
+            val c = listOf(node.id) + runPointer(Pointer(node, 1, listOf(node.id)), graph, node)
+//            val c = findCycleT(node, graph)
 
-            if (c.isNotEmpty()) {
+            if (c.isNotEmpty() && cycle.size < c.size) {
                 println("Cycle for $node is $c")
                 cycle = c
+
 //                    if (i == 3) {
 //                        println("For 3 found $c")
 //                    }
