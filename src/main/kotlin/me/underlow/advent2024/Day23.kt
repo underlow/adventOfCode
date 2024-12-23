@@ -74,7 +74,7 @@ fun main() {
     val res1 = LANParty.part1(input)
     val res2 = LANParty.part2(input)
 
-    checkResult(res1, 0)
+    checkResult(res1, 1046)
     checkResult(res2, 0)
 
     println(res1)
