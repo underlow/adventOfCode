@@ -45,9 +45,74 @@ object LANParty {
         return result
     }
 
-    fun part2(list: List<String>): Int {
-        val directions = parseInput(list)
-        return 0
+    data class Pointer(val start: Node, val count: Int, val visited: List<String>)
+
+    fun findCycleT(node: Node, graph: List<Node>): List<String> {
+        var result = mutableListOf<String>()
+        val first = node
+
+        node.nodes.forEach { second ->
+            val cycle = runPointer(Pointer(first, 1, listOf(first.id)), graph, first)
+            if (cycle.isNotEmpty())
+                result = cycle.toMutableList()
+        }
+
+        return result
+    }
+
+    private fun runPointer(pointer: Pointer, graph: List<Node>, current: Node): List<String> {
+//        if (pointer.count == size) {
+
+        // if next is the start
+        if (pointer.start in current.nodes)
+            return pointer.visited/*+ current.id*/
+
+//            return emptyList()
+//        }
+
+        // if not found and not in the end of the cycle
+        for (node in current.nodes) {
+            if (node.id !in pointer.visited) {
+                // if we can get from node to any already visited
+                if (pointer.visited.all { it in node.nodes.map { it.id } }) {
+                    val found = runPointer(
+                        pointer.copy(count = pointer.count + 1, visited = pointer.visited + node.id),
+                        graph,
+//                        size,
+                        node
+                    )
+                    if (found.isNotEmpty())
+                        return found
+                }
+            }
+        }
+
+        return emptyList()
+    }
+
+
+    fun part2(list: List<String>): String {
+        val graph = parseInput(list)
+
+        var cycle = emptyList<String>()
+
+//        for (i in 4..graph.size) {
+        for (node in graph) {
+//                if (node.id != "co")
+//                    continue
+            val c = findCycleT(node, graph)
+
+            if (c.isNotEmpty()) {
+                println("Cycle for $node is $c")
+                cycle = c
+//                    if (i == 3) {
+//                        println("For 3 found $c")
+//                    }
+            }
+//            }
+        }
+
+        return cycle.sortedBy { it }.joinToString(",")
     }
 
     private fun parseInput(list: List<String>): List<Node> {

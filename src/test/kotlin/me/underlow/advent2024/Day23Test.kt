@@ -12,7 +12,7 @@ class LANPartyTest {
     @Test
     fun testPart2() {
         val result = LANParty.part2(input.split("\n"))
-        assertEquals(0, result)
+        assertEquals("co,de,ka,ta", result)
     }
 }
 
